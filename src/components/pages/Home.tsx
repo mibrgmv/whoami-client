@@ -1,6 +1,6 @@
 const Home = () => {
     return (
-        <div className='h-150 w-full flex flex-col items-center justify-center text-black'>
+        <div className='content'>
             <div className='text-center'>
                 <div className='p-2 text-4xl font-bold'>
                     Home Page

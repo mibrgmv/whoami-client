@@ -32,7 +32,7 @@ const Login = () => {
     };
 
     return (
-        <div>
+        <div className="content">
             <form onSubmit={handleSubmit} className="space-y-4">
                 <label>Username</label>
                 <input

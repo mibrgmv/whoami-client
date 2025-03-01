@@ -9,7 +9,7 @@ const Navbar = () => {
     const { user, logout } = useAuth();
 
     return (
-        <div className='min-h-16 w-full flex justify-between items-center text-sm text-white bg-black'>
+        <div className='absolute top-0 min-h-20 w-full flex justify-between items-center text-sm text-white bg-black'>
             <div>
                 <span className='text-3xl my-5 ms-5 md:ms-[5vw]'>.testapp</span>
             </div>

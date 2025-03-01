@@ -40,7 +40,7 @@ const Profile = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
+        <div className="content">
             <h2>Profile</h2>
             {profile && (
                 <pre>{JSON.stringify(profile, null, 2)}</pre>
