@@ -3,13 +3,13 @@ import Button from "../ui/Button.tsx";
 const Home = () => {
     return (
         <div className='content'>
-            <div className='p-2 text-4xl font-bold'>
-                Welcome to the .testapp!
+            <div className='text-4xl font-bold'>
+                welcome to whoami
             </div>
-            <div className='p-2 text-3xl font-bold'>
-                Some question?
+            <div className='p-5 text-3xl font-bold'>
+                want to know who are you?
             </div>
-            <Button text="Find out" />
+            <Button text="find out" />
         </div>
     );
 };

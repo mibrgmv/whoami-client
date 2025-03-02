@@ -12,7 +12,7 @@ const Navbar = () => {
     return (
         <div className={styles.navbar}>
             <div className={styles.logo}>
-                .testapp
+                ./whoami
             </div>
 
             <ul className={styles.navLinks}>
@@ -40,7 +40,7 @@ const Navbar = () => {
                 {!nav ? <FaBars /> : <FaTimes />}
             </div>
 
-            <ul className={!nav ? styles.hidden : styles.navLinksMobile}>
+            <ul className={!nav ? 'hidden' : styles.navLinksMobile}>
                 <li>
                     <RouterLink onClick={handleClick} to='/'>Home</RouterLink>
                 </li>
@@ -52,7 +52,7 @@ const Navbar = () => {
                 </li>
                 {user ? (
                     <li>
-                        <button onClick={logout}>Logout</button>
+                        <button className='inline' onClick={logout}>Logout</button>
                     </li>
                 ) : (
                     <li>
