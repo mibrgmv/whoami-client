@@ -7,7 +7,7 @@ import styles from './Navbar.module.css';
 const Navbar = () => {
     const [nav, setNav] = useState(false);
     const handleClick = () => setNav(!nav);
-    const { user, logout } = useAuth();
+    const { token, logout } = useAuth();
 
     return (
         <div className={styles.navbar}>
@@ -25,7 +25,7 @@ const Navbar = () => {
                 <li>
                     <RouterLink to='/profile'>Profile</RouterLink>
                 </li>
-                {user ? (
+                {token ? (
                     <li>
                         <button className='inline' onClick={logout}>Logout</button>
                     </li>
@@ -50,7 +50,7 @@ const Navbar = () => {
                 <li>
                     <RouterLink onClick={handleClick} to='/profile'>Profile</RouterLink>
                 </li>
-                {user ? (
+                {token ? (
                     <li>
                         <button className='inline' onClick={logout}>Logout</button>
                     </li>
