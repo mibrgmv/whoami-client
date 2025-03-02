@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.tsx';
+import Button from "../ui/Button.tsx";
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -48,12 +49,10 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button
-                    type="submit"
-                    className="w-full py-2 px-4 border rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-                >
-                    Log in
-                </button>
+                <Button text="Log in" type="submit"/>
+                <div>
+                    Don't have an account? <Link to="/register">Register here</Link>
+                </div>
             </form>
             {error && <p style={{color: 'red'}}>{error}</p>}
         </div>

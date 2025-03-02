@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext.tsx';
 
+interface ProfileData {
+    username: string;
+    createdAt: string;
+    lastLogin: string;
+}
+
 const Profile = () => {
     const { token } = useAuth();
-    const [profile, setProfile] = useState<any>(null);
+    const [profile, setProfile] = useState<ProfileData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -41,9 +47,12 @@ const Profile = () => {
 
     return (
         <div className="content">
-            <h2>Profile</h2>
             {profile && (
-                <pre>{JSON.stringify(profile, null, 2)}</pre>
+                <div>
+                    <p><strong>Username:</strong> {profile.username}</p>
+                    <p><strong>Created At:</strong> {new Date(profile.createdAt).toLocaleString()}</p>
+                    <p><strong>Last Login:</strong> {new Date(profile.lastLogin).toLocaleString()}</p>
+                </div>
             )}
         </div>
     );

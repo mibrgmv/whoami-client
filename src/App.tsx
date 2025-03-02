@@ -5,6 +5,7 @@ import Login from './components/pages/Login.tsx';
 import Users from "./components/pages/Users.tsx";
 import { useAuth } from './context/AuthContext';
 import Layout from "./components/Layout.tsx";
+import Register from "./components/pages/Register.tsx";
 
 function App() {
     const { user } = useAuth();
@@ -28,6 +29,7 @@ function App() {
                         path="/login"
                         element={user ? <Navigate to="/" /> : <Login />}
                     />
+                    <Route path="/register" element={<Register />} />
                 </Route>
             </Routes>
         </Router>

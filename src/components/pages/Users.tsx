@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext.tsx';
+import Leaderboard from "../ui/Leaderboard.tsx";
+
+interface User {
+    userId: number;
+    username: string;
+    lastLogin: string;
+}
 
 const Users = () => {
     const { token } = useAuth();
-    const [users, setUsers] = useState<any[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -39,9 +46,8 @@ const Users = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
-            <h2>Users</h2>
-            <pre>{JSON.stringify(users, null, 2)}</pre>
+        <div className="content">
+            <Leaderboard users={users} />
         </div>
     );
 };
