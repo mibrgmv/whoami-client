@@ -1,13 +1,13 @@
-import React, { ButtonHTMLAttributes } from 'react';
-import styles from './Button.module.css';
+import React, {ButtonHTMLAttributes, CSSProperties} from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     text: string;
+    style: CSSProperties;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({ text, style, ...rest }) => {
     return (
-        <button className={styles.button} {...rest}>
+        <button style={style} {...rest}>
             {text}
         </button>
     );

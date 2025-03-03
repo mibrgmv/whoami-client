@@ -1,4 +1,5 @@
 import Button from "../ui/Button.tsx";
+import button from "../ui/Button.module.css";
 
 const Home = () => {
     return (
@@ -9,7 +10,9 @@ const Home = () => {
             <div className='p-5 text-3xl font-bold'>
                 Want to know who are you?
             </div>
-            <Button text="Find out" />
+            <div>
+                <Button text="Find out" style={button} />
+            </div>
         </div>
     );
 };

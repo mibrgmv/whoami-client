@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext.tsx';
+import React, {useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {useAuth} from '../../context/AuthContext.tsx';
 import Button from "../ui/Button.tsx";
 import styles from "./Login.module.css"
+import button from "./../ui/Button.module.css"
+import {PasswordField} from "../ui/PasswordField.tsx";
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -36,21 +38,22 @@ const Login = () => {
     return (
         <div className="content">
             <form onSubmit={handleSubmit} className={styles.form}>
-                <label>Username</label>
+                <label>Username:</label>
                 <input
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
-                <label>Password</label>
-                <input
-                    type="password"
+                <label>Password:</label>
+                <PasswordField
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e)}
                 />
-                <Button text="Log in" type="submit"/>
-                <div>
-                    Don't have an account? <Link to="/register">Register here</Link>
+                <div className="flex flex-col mt-8 gap-2">
+                    <Button text="Log in" style={button} type="submit"/>
+                    <Link to="/register">
+                        <Button text="Register" style={button}/>
+                    </Link>
                 </div>
             </form>
             {error && <p style={{color: 'red'}}>{error}</p>}

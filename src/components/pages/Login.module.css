@@ -9,5 +9,5 @@
     border-radius: calc(infinity * 1px);
     border-width: 1px;
     border-color: black;
-    padding: 0.75rem;
+    padding: 0.75rem calc(0.75rem + 25px) 0.75rem 0.75rem;
 }

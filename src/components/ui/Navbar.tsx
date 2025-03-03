@@ -7,7 +7,7 @@ import styles from './Navbar.module.css';
 const Navbar = () => {
     const [nav, setNav] = useState(false);
     const handleClick = () => setNav(!nav);
-    const { token, logout } = useAuth();
+    const {token, logout} = useAuth();
 
     return (
         <div className={styles.navbar}>

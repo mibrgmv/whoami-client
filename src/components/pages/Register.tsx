@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import Button from "../ui/Button.tsx";
 import styles from "./Login.module.css"
+import button from "../ui/Button.module.css";
+import {PasswordField} from "../ui/PasswordField.tsx";
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -47,21 +49,21 @@ const Register = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
-                <label>Password</label>
-                <input
-                    type="password"
+                <label>Password:</label>
+                <PasswordField
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e)}
                 />
-                <label>Confirm Password</label>
-                <input
-                    type="password"
+                <label>Confirm Password:</label>
+                <PasswordField
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) => setConfirmPassword(e)}
                 />
-                <Button text="Register" type="submit"/>
-                <div>
-                    Already have an account? <Link to="/login">Log in here</Link>
+                <div className="flex flex-col mt-8 gap-2">
+                    <Button text="Register" style={button} type="submit"/>
+                    <Link to="/login">
+                        <Button text="Log in" style={button}/>
+                    </Link>
                 </div>
             </form>
             {error && <span style={{color: 'red'}}>{error}</span>}
