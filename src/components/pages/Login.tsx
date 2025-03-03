@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.tsx';
 import Button from "../ui/Button.tsx";
+import styles from "./Login.module.css"
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -34,17 +35,15 @@ const Login = () => {
 
     return (
         <div className="content">
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className={styles.form}>
                 <label>Username</label>
                 <input
-                    className="mt-1 block rounded-md border-gray-300 shadow-sm"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
                 <label>Password</label>
                 <input
-                    className="mt-1 block rounded-md border-gray-300 shadow-sm  "
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

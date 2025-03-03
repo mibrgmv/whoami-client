@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import Button from "../ui/Button.tsx";
+import styles from "./Login.module.css"
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -39,25 +40,21 @@ const Register = () => {
 
     return (
         <div className="content">
-            <h1>Register</h1>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className={styles.form}>
                 <label htmlFor="username">Username:</label>
                 <input
-                    className="mt-1 block rounded-md border-gray-300 shadow-sm"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
                 <label>Password</label>
                 <input
-                    className="mt-1 block rounded-md border-gray-300 shadow-sm"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <label>Confirm Password</label>
                 <input
-                    className="mt-1 block rounded-md border-gray-300 shadow-sm"
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -67,7 +64,7 @@ const Register = () => {
                     Already have an account? <Link to="/login">Log in here</Link>
                 </div>
             </form>
-            {error && <div className="error">{error}</div>}
+            {error && <span style={{color: 'red'}}>{error}</span>}
         </div>
     );
 };

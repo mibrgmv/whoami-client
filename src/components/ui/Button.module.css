@@ -5,6 +5,7 @@
     color: white;
     background-color: black;
     border-color: black;
+    width: max-content;
 }
 
 .button:hover {
