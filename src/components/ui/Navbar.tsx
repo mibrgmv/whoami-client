@@ -15,32 +15,13 @@ export const Navbar = () => {
                 ./whoami
             </div>
 
-            <ul className={styles.navLinks}>
-                <li>
-                    <RouterLink to='/'>Home</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to='/users'>Users</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to='/profile'>Profile</RouterLink>
-                </li>
-                {token ? (
-                    <li>
-                        <button className='inline' onClick={logout}>Logout</button>
-                    </li>
-                ) : (
-                    <li>
-                        <RouterLink to='/login'>Login</RouterLink>
-                    </li>
-                )}
-            </ul>
-
-            <div onClick={handleClick} className={styles.mobileIcon}>
-                {!nav ? <FaBars/> : <FaTimes/>}
+            <div onClick={handleClick} className={styles.toggle}>
+                {!nav
+                    ? <FaBars className='text-black'/>
+                    : <FaTimes className='text-white'/>}
             </div>
 
-            <ul className={!nav ? 'hidden' : styles.navLinksMobile}>
+            <ul className={!nav ? 'hidden' : styles.navLinks}>
                 <li>
                     <RouterLink onClick={handleClick} to='/'>Home</RouterLink>
                 </li>
