@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from '../../context/AuthContext.tsx';
+import {useEffect, useState} from 'react';
+import {useAuth} from '../AuthContext.tsx';
 
 interface ProfileData {
     username: string;
@@ -7,8 +7,8 @@ interface ProfileData {
     lastLogin: string;
 }
 
-const Profile = () => {
-    const { token } = useAuth();
+export const Profile = () => {
+    const {token} = useAuth();
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -57,5 +57,3 @@ const Profile = () => {
         </div>
     );
 };
-
-export default Profile;

@@ -1,13 +1,13 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Home from './components/pages/Home.tsx';
-import Profile from './components/pages/Profile.tsx';
-import Login from './components/pages/Login.tsx';
-import Users from "./components/pages/Users.tsx";
-import Layout from "./components/Layout.tsx";
-import Register from "./components/pages/Register.tsx";
-import PrivateRoute from "./components/PrivateRoute.tsx";
+import {PrivateRoute} from "./components/PrivateRoute.tsx";
+import {Layout} from "./components/Layout.tsx";
+import {Home} from "./pages/Home.tsx";
+import {Login} from "./pages/Login.tsx";
+import {Register} from "./pages/Register.tsx";
+import {Profile} from "./pages/Profile.tsx";
+import {Users} from "./pages/Users.tsx";
 
-function App() {
+export function App() {
     return (
         <Router>
             <Routes>
@@ -30,5 +30,3 @@ function App() {
         </Router>
     );
 }
-
-export default App;

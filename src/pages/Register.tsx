@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import Button from "../ui/Button.tsx";
+import {Button} from "../components/ui/Button.tsx";
 import styles from "./Login.module.css"
-import button from "../ui/Button.module.css";
-import {PasswordField} from "../ui/PasswordField.tsx";
+import button from "../components/ui/Button.module.css";
+import {PasswordField} from "../components/ui/PasswordField.tsx";
 
-const Register = () => {
+export const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,8 +24,8 @@ const Register = () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/register`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, password}),
             });
 
             if (response.ok) {
@@ -70,5 +70,3 @@ const Register = () => {
         </div>
     );
 };
-
-export default Register;

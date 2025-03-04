@@ -1,14 +1,11 @@
-import React from 'react';
-import Navbar from "./ui/Navbar.tsx";
 import {Outlet} from "react-router-dom";
+import {Navbar} from "./ui/Navbar.tsx";
 
-const Layout = () => {
+export const Layout = () => {
     return (
-        <React.Fragment>
-            <Navbar />
-            <Outlet />
-        </React.Fragment>
+        <>
+            <Navbar/>
+            <Outlet/>
+        </>
     );
 };
-
-export default Layout;

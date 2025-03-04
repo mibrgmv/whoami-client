@@ -10,7 +10,7 @@ interface LeaderboardProps {
     users: User[];
 }
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
+export const Leaderboard: React.FC<LeaderboardProps> = ({users}) => {
     return (
         <div>
             <div className="grid grid-cols-3 gap-4">
@@ -19,15 +19,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
                 <div className="font-bold">Last Login</div>
 
                 {users.map((user, index) => (
-                    <React.Fragment key={user.userId}>
+                    <div key={user.userId}>
                         <div>{index + 1}</div>
                         <div>{user.username}</div>
                         <div>{new Date(user.lastLogin).toLocaleString()}</div>
-                    </React.Fragment>
+                    </div>
                 ))}
             </div>
         </div>
     );
 };
-
-export default Leaderboard;

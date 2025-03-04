@@ -5,12 +5,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     style: CSSProperties;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, style, ...rest }) => {
+export const Button: React.FC<ButtonProps> = ({text, style, ...rest}) => {
     return (
         <button style={style} {...rest}>
             {text}
         </button>
     );
 };
-
-export default Button;

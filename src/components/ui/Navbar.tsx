@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
-import { Link as RouterLink } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext.tsx';
+import {useState} from 'react';
+import {FaBars, FaTimes} from 'react-icons/fa';
+import {Link as RouterLink} from 'react-router-dom';
+import {useAuth} from '../../AuthContext.tsx';
 import styles from './Navbar.module.css';
 
-const Navbar = () => {
+export const Navbar = () => {
     const [nav, setNav] = useState(false);
     const handleClick = () => setNav(!nav);
     const {token, logout} = useAuth();
@@ -37,7 +37,7 @@ const Navbar = () => {
             </ul>
 
             <div onClick={handleClick} className={styles.mobileIcon}>
-                {!nav ? <FaBars /> : <FaTimes />}
+                {!nav ? <FaBars/> : <FaTimes/>}
             </div>
 
             <ul className={!nav ? 'hidden' : styles.navLinksMobile}>
@@ -63,5 +63,3 @@ const Navbar = () => {
         </div>
     );
 };
-
-export default Navbar;

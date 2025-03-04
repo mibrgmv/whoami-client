@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from '../../context/AuthContext.tsx';
-import Leaderboard from "../ui/Leaderboard.tsx";
+import {useEffect, useState} from 'react';
+import {useAuth} from '../AuthContext.tsx';
+import {Leaderboard} from "../components/ui/Leaderboard.tsx";
 
 interface User {
     userId: number;
@@ -8,8 +8,8 @@ interface User {
     lastLogin: string;
 }
 
-const Users = () => {
-    const { token } = useAuth();
+export const Users = () => {
+    const {token} = useAuth();
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -47,9 +47,7 @@ const Users = () => {
 
     return (
         <div className="content">
-            <Leaderboard users={users} />
+            <Leaderboard users={users}/>
         </div>
     );
 };
-
-export default Users;

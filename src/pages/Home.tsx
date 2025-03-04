@@ -1,7 +1,7 @@
-import Button from "../ui/Button.tsx";
-import button from "../ui/Button.module.css";
+import button from "../components/ui/Button.module.css";
+import {Button} from "../components/ui/Button.tsx";
 
-const Home = () => {
+export const Home = () => {
     return (
         <div className='content'>
             <div className='text-4xl font-bold'>
@@ -11,10 +11,8 @@ const Home = () => {
                 Want to know who are you?
             </div>
             <div>
-                <Button text="Find out" style={button} />
+                <Button text="Find out" style={button}/>
             </div>
         </div>
     );
 };
-
-export default Home;
