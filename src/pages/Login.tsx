@@ -1,37 +1,38 @@
 import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {useAuth} from '../../context/AuthContext.tsx';
-import Button from "../ui/Button.tsx";
+import {useAuth} from '../AuthContext.tsx';
+import {Button} from "../components/ui/Button.tsx";
 import styles from "./Login.module.css"
-import button from "./../ui/Button.module.css"
-import {PasswordField} from "../ui/PasswordField.tsx";
+import {PasswordField} from "../components/ui/PasswordField.tsx";
+import {ErrorModal} from "../components/ui/ErrorModal.tsx";
 
-const Login = () => {
+export const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const {login} = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null);
+        setError('');
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({username, password}),
             });
             if (!response.ok) {
-                throw new Error('Login failed');
+                throw new Error('Failed to login');
             }
             const data = await response.json();
             login(data.access_token);
             navigate('/profile');
-        } catch (err: any) {
-            setError(err.message);
+        } catch (error) {
+            setError('An error occurred');
+            console.error(error);
         }
     };
 
@@ -50,15 +51,13 @@ const Login = () => {
                     onChange={(e) => setPassword(e)}
                 />
                 <div className="flex flex-col mt-8 gap-2">
-                    <Button text="Log in" style={button} type="submit"/>
+                    <Button text="Log in" type="submit"/>
                     <Link to="/register">
-                        <Button text="Register" style={button}/>
+                        <Button text="Register" type="button"/>
                     </Link>
                 </div>
             </form>
-            {error && <p style={{color: 'red'}}>{error}</p>}
+            {error && (<ErrorModal message={error} onClose={() => setError('')}/>)}
         </div>
     );
 };
-
-export default Login;

@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Button} from "../components/ui/Button.tsx";
 import styles from "./Login.module.css"
-import button from "../components/ui/Button.module.css";
 import {PasswordField} from "../components/ui/PasswordField.tsx";
 
 export const Register = () => {
@@ -60,9 +59,9 @@ export const Register = () => {
                     onChange={(e) => setConfirmPassword(e)}
                 />
                 <div className="flex flex-col mt-8 gap-2">
-                    <Button text="Register" style={button} type="submit"/>
+                    <Button text="Register" type="submit"/>
                     <Link to="/login">
-                        <Button text="Log in" style={button}/>
+                        <Button text="Log in" type="button"/>
                     </Link>
                 </div>
             </form>
