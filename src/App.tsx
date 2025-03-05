@@ -27,11 +27,11 @@ export function App() {
                             path="/users"
                             element={<Users/>}
                         />
-                    </Route>
                         <Route
                             path="/quiz/:id"
                             element={<Quiz/>}
                         />
+                    </Route>
                 </Route>
             </Routes>
         </Router>

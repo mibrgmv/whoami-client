@@ -19,7 +19,7 @@ const quizzes: QuizData[] = [
 export const Quizzes: React.FC = () => {
     const navigate = useNavigate();
 
-    const handleQuizClick = (quizId: number) => {
+    const handleQuizClick = (quizId: bigint) => {
         navigate(`/quiz/${quizId}`);
     };
 
@@ -32,7 +32,7 @@ export const Quizzes: React.FC = () => {
                         name={quiz.name}
                         description={quiz.description}
                         buttonText="Start Quiz"
-                        onClick={() => handleQuizClick(index)}
+                        onClick={() => handleQuizClick(quiz.id)}
                     />
                 ))}
             </div>
