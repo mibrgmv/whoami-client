@@ -1,4 +1,3 @@
-import button from "../components/ui/Button.module.css";
 import {Button} from "../components/ui/Button.tsx";
 import {Container} from "../components/Container.tsx";
 
@@ -12,7 +11,7 @@ export const Home = () => {
                 Want to know who are you?
             </div>
             <div>
-                <Button text="Find out" to="/quizzes" style={button}/>
+                <Button text="Find out" to="/quizzes"/>
             </div>
         </Container>
     );

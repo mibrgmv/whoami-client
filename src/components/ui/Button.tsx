@@ -1,5 +1,4 @@
 import React, {ButtonHTMLAttributes} from 'react';
-import styles from "./Button.module.css"
 import {useNavigate} from "react-router-dom";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -20,7 +19,11 @@ export const Button: React.FC<ButtonProps> = ({text, to, ...rest}) => {
     };
 
     return (
-        <button style={styles} onClick={handleClick} {...rest}>
+        <button
+            className="w-full py-3 px-6 rounded-full text-white bg-black border border-black hover:text-black hover:bg-transparent hover:cursor-pointer"
+            onClick={handleClick}
+            {...rest}
+        >
             {text}
         </button>
     );
