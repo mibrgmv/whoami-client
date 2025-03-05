@@ -6,6 +6,7 @@ import {Login} from "./pages/Login.tsx";
 import {Register} from "./pages/Register.tsx";
 import {Profile} from "./pages/Profile.tsx";
 import {Users} from "./pages/Users.tsx";
+import {Quizzes} from "./pages/Quizzes.tsx";
 
 export function App() {
     return (
@@ -15,6 +16,7 @@ export function App() {
                     <Route index element={<Home/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>
+                    <Route path="/quizzes" element={<Quizzes/>}/>
                     <Route element={<PrivateRoute/>}>
                         <Route
                             path="/profile"

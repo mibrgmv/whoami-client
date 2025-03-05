@@ -3,6 +3,8 @@ import {Link, useNavigate} from 'react-router-dom';
 import {Button} from "../components/ui/Button.tsx";
 import styles from "./Login.module.css"
 import {PasswordField} from "../components/ui/PasswordField.tsx";
+import {Container} from "../components/Container.tsx";
+import {ErrorModal} from "../components/ui/ErrorModal.tsx";
 
 export const Register = () => {
     const [username, setUsername] = useState('');
@@ -40,7 +42,7 @@ export const Register = () => {
     };
 
     return (
-        <div className="content">
+        <Container>
             <form onSubmit={handleSubmit} className={styles.form}>
                 <label htmlFor="username">Username:</label>
                 <input
@@ -65,7 +67,7 @@ export const Register = () => {
                     </Link>
                 </div>
             </form>
-            {error && <span style={{color: 'red'}}>{error}</span>}
-        </div>
+            {error && (<ErrorModal message={error} onClose={() => setError('')}/>)}
+        </Container>
     );
 };

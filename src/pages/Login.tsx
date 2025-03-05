@@ -5,6 +5,7 @@ import {Button} from "../components/ui/Button.tsx";
 import styles from "./Login.module.css"
 import {PasswordField} from "../components/ui/PasswordField.tsx";
 import {ErrorModal} from "../components/ui/ErrorModal.tsx";
+import {Container} from "../components/Container.tsx";
 
 export const Login = () => {
     const [username, setUsername] = useState('');
@@ -37,7 +38,7 @@ export const Login = () => {
     };
 
     return (
-        <div className="content">
+        <Container>
             <form onSubmit={handleSubmit} className={styles.form}>
                 <label>Username:</label>
                 <input
@@ -58,6 +59,6 @@ export const Login = () => {
                 </div>
             </form>
             {error && (<ErrorModal message={error} onClose={() => setError('')}/>)}
-        </div>
+        </Container>
     );
 };

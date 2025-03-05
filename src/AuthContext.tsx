@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, {createContext, useContext, useState} from 'react';
 
 interface AuthContextType {
     token: string | null;
@@ -12,7 +12,7 @@ const AuthContext = createContext<AuthContextType>({
     logout: () => {}
 })
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
     const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
 
     const login = (token: string) => {
