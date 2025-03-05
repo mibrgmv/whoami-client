@@ -7,6 +7,7 @@ import {Register} from "./pages/Register.tsx";
 import {Profile} from "./pages/Profile.tsx";
 import {Users} from "./pages/Users.tsx";
 import {Quizzes} from "./pages/Quizzes.tsx";
+import {Quiz} from "./pages/Quiz.tsx";
 
 export function App() {
     return (
@@ -27,6 +28,10 @@ export function App() {
                             element={<Users/>}
                         />
                     </Route>
+                        <Route
+                            path="/quiz/:id"
+                            element={<Quiz/>}
+                        />
                 </Route>
             </Routes>
         </Router>
