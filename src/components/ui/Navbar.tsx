@@ -1,8 +1,36 @@
 import {useState} from 'react';
 import {FaBars, FaTimes} from 'react-icons/fa';
 import {Link as RouterLink} from 'react-router-dom';
-import {useAuth} from '../../AuthContext.tsx';
 import styles from './Navbar.module.css';
+import {useAuth} from "../../AuthContext.tsx";
+
+interface RouteData {
+    name: string;
+    path: string;
+}
+
+const routes: RouteData[] = [
+    {name: "Home", path: "/"},
+    {name: "Quizzes", path: "/quizzes"},
+    {name: "Users", path: "/users"},
+    {name: "Profile", path: "/profile"},
+];
+
+const LoginLogout: React.FC<{ token: string | null; logout: () => void }> = ({token, logout}) => (
+    <>
+        {token ? (
+            <li>
+                <button className="inline" onClick={logout}>
+                    Logout
+                </button>
+            </li>
+        ) : (
+            <li>
+                <RouterLink to="/login">Login</RouterLink>
+            </li>
+        )}
+    </>
+);
 
 export const Navbar = () => {
     const [nav, setNav] = useState(false);
@@ -22,24 +50,14 @@ export const Navbar = () => {
             </div>
 
             <ul className={!nav ? 'hidden' : styles.navLinks}>
-                <li>
-                    <RouterLink onClick={handleClick} to='/'>Home</RouterLink>
-                </li>
-                <li>
-                    <RouterLink onClick={handleClick} to='/users'>Users</RouterLink>
-                </li>
-                <li>
-                    <RouterLink onClick={handleClick} to='/profile'>Profile</RouterLink>
-                </li>
-                {token ? (
-                    <li>
-                        <button className='inline' onClick={logout}>Logout</button>
+                {routes.map((route, index) => (
+                    <li key={index}>
+                        <RouterLink to={route.path} onClick={handleClick}>
+                            {route.name}
+                        </RouterLink>
                     </li>
-                ) : (
-                    <li>
-                        <RouterLink onClick={handleClick} to='/login'>Login</RouterLink>
-                    </li>
-                )}
+                ))}
+                <LoginLogout token={token} logout={logout}/>
             </ul>
         </div>
     );
