@@ -1,27 +1,45 @@
+import {useState, useEffect} from "react";
 import {Card} from "../components/ui/Card.tsx";
 import {useNavigate} from "react-router-dom";
 
 interface QuizData {
     id: bigint;
-    name: string;
-    description: string;
+    title: string;
 }
-
-const quizzes: QuizData[] = [
-    {id: 1n, name: "Quiz 1", description: "lorem ipsum dolorem"},
-    {id: 2n, name: "Quiz 2", description: "lorem ipsum dolorem"},
-    {id: 3n, name: "Quiz 3", description: "lorem ipsum dolorem"},
-    {id: 4n, name: "Quiz 4", description: "lorem ipsum dolorem"},
-    {id: 5n, name: "Quiz 5", description: "lorem ipsum dolorem"},
-    {id: 6n, name: "Quiz 6", description: "lorem ipsum dolorem"},
-];
 
 export const Quizzes: React.FC = () => {
     const navigate = useNavigate();
+    const [quizzes, setQuizzes] = useState<QuizData[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchQuizzes = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz`, {
+                    method: 'GET',
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch');
+                }
+                const data = await response.json();
+                setQuizzes(data);
+                setLoading(false);
+            } catch (err: any) {
+                setError(err.message);
+                setLoading(false);
+            }
+        };
+
+        fetchQuizzes();
+    }, []);
 
     const handleQuizClick = (quizId: bigint) => {
         navigate(`/quiz/${quizId}`);
     };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <div>
@@ -29,8 +47,7 @@ export const Quizzes: React.FC = () => {
                 {quizzes.map((quiz, index) => (
                     <Card
                         key={index}
-                        name={quiz.name}
-                        description={quiz.description}
+                        name={quiz.title}
                         buttonText="Start Quiz"
                         onClick={() => handleQuizClick(quiz.id)}
                     />

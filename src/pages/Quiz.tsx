@@ -1,34 +1,47 @@
-import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
-import {Container} from "../components/Container.tsx";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Container } from "../components/Container.tsx";
 
 interface Question {
-    text: string;
+    id: bigint;
+    quiz_id: bigint;
+    body: string;
     options: string[];
-    answer: string[];
 }
 
-interface QuizData {
-    id: number;
-    name: string;
-    questions: Question[];
+interface Quiz {
+    id: bigint;
+    title: string;
 }
 
 export const Quiz: React.FC = () => {
     const {id} = useParams();
-    const [quiz, setQuiz] = useState<QuizData | null>(null);
+    const [quiz, setQuiz] = useState<Quiz | null>(null);
+    const [questions, setQuestions] = useState<Question[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchQuiz = async () => {
+        const fetchQuizAndQuestions = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/quizzes/${id}`);
-                if (!response.ok) {
+                const quizResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/${id}`);
+                if (!quizResponse.ok) {
                     throw new Error('Failed to fetch quiz');
                 }
-                const data = await response.json();
-                setQuiz(data);
+                const quizData: Quiz = await quizResponse.json();
+                setQuiz(quizData);
+
+                const questionsResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/${id}/questions`);
+                if (!questionsResponse.ok) {
+                    if (questionsResponse.status === 404) {
+                        setQuestions([]);
+                    } else {
+                        throw new Error('Failed to fetch questions');
+                    }
+                } else {
+                    const questionsData: Question[] = await questionsResponse.json();
+                    setQuestions(questionsData);
+                }
             } catch (err: any) {
                 setError(err.message);
             } finally {
@@ -36,29 +49,31 @@ export const Quiz: React.FC = () => {
             }
         };
 
-        if (id) {
-            fetchQuiz();
-        }
+        fetchQuizAndQuestions();
     }, [id]);
 
-    if (loading) {
-        return <div>Loading quiz...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     if (!quiz) {
         return <div>Quiz not found</div>;
     }
 
+    if (!questions || questions.length === 0) {
+        return <div>No questions found.</div>;
+    }
+
     return (
         <Container>
-            <h1>{quiz.name}</h1>
-            {quiz.questions.map((question, index) => (
+            <h1>{quiz.title}</h1>
+            {questions.map((question, index) => (
                 <div key={index}>
-                    <p>{question.text}</p>
+                    <p>{question.body}</p>
+                    <ul>
+                        {question.options.map((option, optionIndex) => (
+                            <li key={optionIndex}>{option}</li>
+                        ))}
+                    </ul>
                 </div>
             ))}
         </Container>
