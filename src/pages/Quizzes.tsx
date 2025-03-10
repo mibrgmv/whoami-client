@@ -16,7 +16,7 @@ export const Quizzes: React.FC = () => {
     useEffect(() => {
         const fetchQuizzes = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/q`, {
                     method: 'GET',
                 });
                 if (!response.ok) {
