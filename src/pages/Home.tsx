@@ -1,7 +1,7 @@
 import {Button} from "../components/ui/Button.tsx";
 import {Container} from "../components/Container.tsx";
 
-export const Home = () => {
+export const HomePage = () => {
     return (
         <Container>
             <div className='text-4xl font-bold'>

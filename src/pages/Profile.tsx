@@ -7,7 +7,7 @@ interface ProfileData {
     lastLogin: string;
 }
 
-export const Profile = () => {
+export const ProfilePage = () => {
     const {token} = useAuth();
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [loading, setLoading] = useState(true);

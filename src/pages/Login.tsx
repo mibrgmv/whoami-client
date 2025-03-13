@@ -7,7 +7,7 @@ import {PasswordField} from "../components/ui/PasswordField.tsx";
 import {ErrorModal} from "../components/ui/ErrorModal.tsx";
 import {Container} from "../components/Container.tsx";
 
-export const Login = () => {
+export const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
