@@ -39,9 +39,9 @@ export const Navbar = () => {
 
     return (
         <div className={styles.navbar}>
-            <div className={styles.logo}>
+            <RouterLink to="/" className="absolute top-4 left-8 text-3xl">
                 ./whoami
-            </div>
+            </RouterLink>
 
             <div onClick={handleClick} className={styles.toggle}>
                 {!nav
