@@ -1,6 +1,9 @@
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import {Card} from "../components/ui/Card.tsx";
 import {useNavigate} from "react-router-dom";
+import {Container} from "../components/Container.tsx";
+import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
+import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
 
 interface QuizData {
     id: bigint;
@@ -38,8 +41,21 @@ export const Quizzes: React.FC = () => {
         navigate(`/quiz/${quizId}`);
     };
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (loading) {
+        return (
+            <Container>
+                <LoadingSpinner/>
+            </Container>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container>
+                <ErrorMessage message={error}/>
+            </Container>
+        );
+    }
 
     return (
         <div>
