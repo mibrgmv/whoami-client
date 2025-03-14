@@ -24,9 +24,7 @@ export const Navbar = () => {
     return (
         <div>
             <Logo/>
-
             <ToggleButton nav={nav} handleClick={handleClick}/>
-
             <NavLinks nav={nav} routes={routes} handleClick={handleClick} token={token} logout={logout}/>
         </div>
     );
