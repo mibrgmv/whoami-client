@@ -7,7 +7,10 @@ interface ToggleButtonProps {
 }
 
 export const ToggleButton: React.FC<ToggleButtonProps> = ({nav, handleClick}) => (
-    <div onClick={handleClick} className="z-10 cursor-pointer fixed top-8 right-8 text-black">
+    <div
+        onClick={handleClick}
+        className="fixed top-5 right-5 p-3 z-10 cursor-pointer rounded-full text-black bg-transparent hover:bg-black/10"
+    >
         {nav ? <FaTimes/> : <FaBars/>}
     </div>
 );
