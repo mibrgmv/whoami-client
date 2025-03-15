@@ -3,16 +3,11 @@ import {useAuth} from '../AuthContext.tsx';
 import {Container} from "../components/Container.tsx";
 import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
 import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
-
-interface ProfileData {
-    username: string;
-    createdAt: string;
-    lastLogin: string;
-}
+import {User} from "../shared/types/User.tsx";
 
 export const ProfilePage = () => {
     const {token} = useAuth();
-    const [profile, setProfile] = useState<ProfileData | null>(null);
+    const [profile, setProfile] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 

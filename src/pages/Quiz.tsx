@@ -4,17 +4,14 @@ import {Container} from "../components/Container.tsx";
 import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
 import {NotFoundMessage} from "../components/ui/NotFoundMessage.tsx";
 import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
-import {ResultView} from "../views/ResultView.tsx";
-import {QuestionView} from "../views/QuestionView.tsx";
-import {QuizNavigation} from "../views/QuizNavigation.tsx";
-import {QuizProgress} from "../views/QuizProgress.tsx";
-import {Quiz} from "../shared/Quiz.tsx";
-import {Question} from "../shared/Question.tsx";
-import {Answer} from "../shared/Answer.tsx";
-
-interface QuizResult {
-    title: string;
-}
+import {QuestionView} from "../components/ui/quiz/QuestionView.tsx";
+import {QuizNavigation} from "../components/ui/quiz/QuizNavigation.tsx";
+import {QuizProgress} from "../components/ui/quiz/QuizProgress.tsx";
+import {Quiz} from "../shared/types/Quiz.tsx";
+import {Question} from "../shared/types/Question.tsx";
+import {Answer} from "../shared/types/Answer.tsx";
+import {Result} from "../shared/types/Result.tsx";
+import {ResultView} from "../components/ui/quiz/ResultView.tsx";
 
 export const QuizPage: React.FC = () => {
     const {id} = useParams();
@@ -24,7 +21,7 @@ export const QuizPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [submitting, setSubmitting] = useState(false);
-    const [result, setResult] = useState<QuizResult | null>(null);
+    const [result, setResult] = useState<Result | null>(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
     useEffect(() => {
@@ -113,8 +110,8 @@ export const QuizPage: React.FC = () => {
             }
 
             const data = await response.json();
-            if (data && data.result) {
-                setResult(data.result);
+            if (data) {
+                setResult(data);
             } else {
                 throw new Error('Invalid result format from server');
             }
@@ -124,10 +121,6 @@ export const QuizPage: React.FC = () => {
             setSubmitting(false);
         }
     };
-
-    // const isQuestionAnswered = (questionId: bigint) => {
-    //     return answers.some(answer => answer.question_id === Number(questionId));
-    // };
 
     const handleNextQuestion = () => {
         if (currentQuestionIndex < questions.length - 1) {

@@ -11,7 +11,7 @@ export const PasswordField: FC<Props> = ({value, onChange}): JSX.Element => {
     return (
         <div className="relative">
             <input
-                className="10px"
+                className="input"
                 value={value}
                 type={visible ? "text" : "password"}
                 onChange={(e) => onChange(e.target.value)}

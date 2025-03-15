@@ -1,6 +1,6 @@
 import React from 'react';
-import {Question} from "../shared/Question.tsx";
-import {Answer} from "../shared/Answer.tsx";
+import {Question} from "../../../shared/types/Question.tsx";
+import {Answer} from "../../../shared/types/Answer.tsx";
 
 interface QuestionViewProps {
     question: Question;
@@ -8,7 +8,7 @@ interface QuestionViewProps {
     handleOptionSelect: (questionId: bigint, option: string) => void;
 }
 
-export const QuestionView: React.FC<QuestionViewProps> = ({ question, answers, handleOptionSelect }) => {
+export const QuestionView: React.FC<QuestionViewProps> = ({question, answers, handleOptionSelect}) => {
     return (
         <div className="space-y-2 ml-8">
             {question.options.map((option, optionIndex) => {

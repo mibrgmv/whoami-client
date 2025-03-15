@@ -1,11 +1,12 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import {Result} from "../../../shared/types/Result.tsx";
 
 interface ResultViewProps {
-    result: any;
+    result: Result;
 }
 
-export const ResultView: React.FC<ResultViewProps> = ({ result }) => {
+export const ResultView: React.FC<ResultViewProps> = ({result}) => {
     const navigate = useNavigate();
 
     return (
@@ -14,7 +15,10 @@ export const ResultView: React.FC<ResultViewProps> = ({ result }) => {
 
             <div className="bg-blue-50 p-6 rounded-lg border-2 border-blue-100">
                 <h2 className="text-2xl font-semibold text-center mb-4 text-blue-800">
-                    {JSON.stringify(result, null, 2)}
+                    Your result: {JSON.stringify(result.result, null, 2)}
+                </h2>
+                <h2 className="text-xl text-center mb-4 text-blue-800">
+                    {JSON.stringify(result.description, null, 2)}
                 </h2>
 
                 <div className="flex flex-col items-center justify-center py-4">

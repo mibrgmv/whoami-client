@@ -4,12 +4,7 @@ import {Leaderboard} from "../components/ui/Leaderboard.tsx";
 import {Container} from "../components/Container.tsx";
 import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
 import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
-
-interface User {
-    userId: number;
-    username: string;
-    lastLogin: string;
-}
+import {User} from "../shared/types/User.tsx";
 
 export const Users = () => {
     const {token} = useAuth();

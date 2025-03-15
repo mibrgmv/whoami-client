@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import {useAuth} from "../../AuthContext.tsx";
-import {NavLinks} from "../navbar/NavLinks.tsx";
-import {ToggleButton} from "../navbar/ToggleButton.tsx";
-import {Logo} from "../navbar/Logo.tsx";
+import {Logo} from "./navbar/Logo.tsx";
+import {ToggleButton} from "./navbar/ToggleButton.tsx";
+import {NavLinks} from "./navbar/NavLinks.tsx";
 
 interface RouteData {
     name: string;
