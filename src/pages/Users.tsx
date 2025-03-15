@@ -1,6 +1,9 @@
 import {useEffect, useState} from 'react';
 import {useAuth} from '../AuthContext.tsx';
 import {Leaderboard} from "../components/ui/Leaderboard.tsx";
+import {Container} from "../components/Container.tsx";
+import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
+import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
 
 interface User {
     userId: number;
@@ -42,12 +45,25 @@ export const Users = () => {
         fetchUsers();
     }, [token]);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (loading) {
+        return (
+            <Container>
+                <LoadingSpinner/>
+            </Container>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container>
+                <ErrorMessage message={error}/>
+            </Container>
+        );
+    }
 
     return (
-        <div className="content">
+        <Container>
             <Leaderboard users={users}/>
-        </div>
+        </Container>
     );
 };

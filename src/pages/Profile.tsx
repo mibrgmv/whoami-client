@@ -1,5 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useAuth} from '../AuthContext.tsx';
+import {Container} from "../components/Container.tsx";
+import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
+import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
 
 interface ProfileData {
     username: string;
@@ -21,7 +24,7 @@ export const ProfilePage = () => {
                 return;
             }
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/profile`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/profile`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -42,11 +45,24 @@ export const ProfilePage = () => {
         fetchProfile();
     }, [token]);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (loading) {
+        return (
+            <Container>
+                <LoadingSpinner/>
+            </Container>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container>
+                <ErrorMessage message={error}/>
+            </Container>
+        );
+    }
 
     return (
-        <div className="content">
+        <Container>
             {profile && (
                 <div>
                     <p><strong>Username:</strong> {profile.username}</p>
@@ -54,6 +70,6 @@ export const ProfilePage = () => {
                     <p><strong>Last Login:</strong> {new Date(profile.lastLogin).toLocaleString()}</p>
                 </div>
             )}
-        </div>
+        </Container>
     );
 };
