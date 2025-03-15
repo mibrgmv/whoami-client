@@ -16,18 +16,21 @@ interface NavLinksProps {
     routes: RouteData[];
 }
 
-export const NavLinks: React.FC<NavLinksProps> = ({nav, handleClick, token, logout, routes}) => (
-    <>
-        <FadeOverlay isVisible={nav} onClick={handleClick}/>
-        <ul className={`${nav ? "z-1 flex flex-col justify-center items-center fixed top-0 right-0 w-2/3 md:w-1/4 h-screen text-black bg-white" : "hidden"}`}>
-            {routes.map((route, index) => (
-                <li key={index} className="my-5 text-2xl md:text-xl cursor-pointer hover:underline">
-                    <RouterLink to={route.path} onClick={handleClick}>
-                        {route.name}
-                    </RouterLink>
-                </li>
-            ))}
-            <LoginLogout token={token} handleClick={handleClick} logout={logout}/>
-        </ul>
-    </>
-);
+export const NavLinks: React.FC<NavLinksProps> = ({nav, handleClick, token, logout, routes}) => {
+    const liStyle = "p-3 mx-3 rounded-lg text-2xl md:text-xl cursor-pointer bg-transparent hover:bg-black/10";
+    return (
+        <>
+            <FadeOverlay isVisible={nav} onClick={handleClick}/>
+            <ul className={`${nav ? "z-1 flex flex-col justify-center fixed top-0 right-0 w-2/3 md:w-1/4 h-screen text-black bg-white" : "hidden"}`}>
+                {routes.map((route, _) => (
+                    <li className={liStyle} >
+                        <RouterLink to={route.path} onClick={handleClick}>
+                            {route.name}
+                        </RouterLink>
+                    </li>
+                ))}
+                <LoginLogout className={liStyle} token={token} handleClick={handleClick} logout={logout}/>
+            </ul>
+        </>
+    );
+};

@@ -5,10 +5,11 @@ interface LoginLogoutProps {
     token: string | null;
     handleClick: () => void;
     logout: () => void;
+    className: string;
 }
 
-export const LoginLogout: React.FC<LoginLogoutProps> = ({token, handleClick, logout}) => (
-    <li className="my-5 text-2xl md:text-xl cursor-pointer hover:underline">
+export const LoginLogout: React.FC<LoginLogoutProps> = ({token, handleClick, logout, className}) => (
+    <li className={className}>
         {token ? (
             <button className="inline" onClick={logout}>
                 Logout

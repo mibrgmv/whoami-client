@@ -6,7 +6,7 @@ interface LogoProps {
 
 export const Logo: React.FC<LogoProps> = () => {
     return (
-        <RouterLink to="/" className="absolute top-6 left-8 text-3xl">
+        <RouterLink to="/" className="fixed p-3 top-3 left-5 text-3xl rounded-full">
             ./whoami
         </RouterLink>
     );
