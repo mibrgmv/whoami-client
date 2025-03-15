@@ -3,15 +3,11 @@ import {useNavigate} from 'react-router-dom';
 
 interface NotFoundMessageProps {
     message: string;
-    buttonText?: string;
-    navigateTo?: string;
+    buttonText: string;
+    navigateTo: string;
 }
 
-export const NotFoundMessage: React.FC<NotFoundMessageProps> = ({
-                                                                    message,
-                                                                    buttonText = "Back to Home",
-                                                                    navigateTo = "/"
-                                                                }) => {
+export const NotFoundMessage: React.FC<NotFoundMessageProps> = ({message, buttonText, navigateTo}) => {
     const navigate = useNavigate();
 
     return (

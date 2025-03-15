@@ -155,7 +155,8 @@ export const QuizPage: React.FC = () => {
             <Container>
                 <NotFoundMessage message="Quiz not found"
                                  buttonText="Back to Quizzes"
-                                 navigateTo="/quizzes"/>
+                                 navigateTo="/quizzes"
+                />
             </Container>
         );
     }
@@ -165,7 +166,8 @@ export const QuizPage: React.FC = () => {
             <Container>
                 <NotFoundMessage message="No questions found for this quiz"
                                  buttonText="Back to Quizzes"
-                                 navigateTo="/quizzes"/>
+                                 navigateTo="/quizzes"
+                />
             </Container>
         );
     }

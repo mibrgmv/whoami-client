@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+.form {
+    @apply flex flex-col gap-2;
+}
+
+.input {
+    @apply p-3 border border-black rounded-full;
+}

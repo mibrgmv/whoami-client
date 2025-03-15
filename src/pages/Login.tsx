@@ -2,10 +2,9 @@ import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {useAuth} from '../AuthContext.tsx';
 import {Button} from "../components/ui/Button.tsx";
-import styles from "./Login.module.css"
-import {PasswordField} from "../components/ui/PasswordField.tsx";
 import {ErrorModal} from "../components/ui/ErrorModal.tsx";
 import {Container} from "../components/Container.tsx";
+import {PasswordField} from "../components/ui/inputs/PasswordField.tsx";
 
 export const LoginPage = () => {
     const [username, setUsername] = useState('');
@@ -39,9 +38,10 @@ export const LoginPage = () => {
 
     return (
         <Container>
-            <form onSubmit={handleSubmit} className={styles.form}>
+            <form onSubmit={handleSubmit} className="form">
                 <label>Username:</label>
                 <input
+                    className="input"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}

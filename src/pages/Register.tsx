@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Button} from "../components/ui/Button.tsx";
-import styles from "./Login.module.css"
 import {Container} from "../components/Container.tsx";
 import {ErrorModal} from "../components/ui/ErrorModal.tsx";
 import {PasswordField} from "../components/ui/inputs/PasswordField.tsx";
@@ -43,9 +42,10 @@ export const Register = () => {
 
     return (
         <Container>
-            <form onSubmit={handleSubmit} className={styles.form}>
+            <form onSubmit={handleSubmit} className="form">
                 <label htmlFor="username">Username:</label>
                 <input
+                    className="input"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
