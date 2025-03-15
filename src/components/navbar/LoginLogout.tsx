@@ -9,13 +9,15 @@ interface LoginLogoutProps {
 }
 
 export const LoginLogout: React.FC<LoginLogoutProps> = ({token, handleClick, logout, className}) => (
-    <li className={className}>
+    <>
         {token ? (
-            <button className="inline" onClick={logout}>
+            <div className={className} onClick={logout}>
                 Logout
-            </button>
+            </div>
         ) : (
-            <RouterLink to="/login" onClick={handleClick}>Login</RouterLink>
+            <RouterLink className={className} to="/login" onClick={handleClick}>
+                Login
+            </RouterLink>
         )}
-    </li>
+    </>
 );
