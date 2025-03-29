@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Button} from "../components/ui/Button.tsx";
 import {Container} from "../components/Container.tsx";
 import {PasswordInput} from "../components/ui/inputs/PasswordInput.tsx";
 import {InputError} from "../components/ui/inputs/InputError.tsx";
 import {CustomInput} from "../components/ui/inputs/CustomInput.tsx";
 import {InputWrapper} from "../components/ui/inputs/InputWrapper.tsx";
+import {register} from "../api/register.ts";
 
 export const Register = () => {
     const [username, setUsername] = useState('');
@@ -15,7 +16,6 @@ export const Register = () => {
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -27,22 +27,11 @@ export const Register = () => {
         }
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/auth`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, password}),
-            });
-
-            if (response.ok) {
-                navigate('/login');
-            } else {
-                const data = await response.json();
-                setError(data.message || 'Registration failed');
-            }
-        } catch (error) {
-            setError('An error occurred');
-            console.error(error);
+            await register({username, password});
+        } catch (error: any) {
+            setError(error.message);
         }
+
 
         if (!username) {
             setUsernameError("Username is required");

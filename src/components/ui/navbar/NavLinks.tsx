@@ -11,7 +11,7 @@ interface RouteData {
 interface NavLinksProps {
     nav: boolean;
     handleClick: () => void;
-    token: string | null;
+    token: string | undefined;
     logout: () => void;
     routes: RouteData[];
 }

@@ -2,7 +2,7 @@ import React from "react";
 import {Link as RouterLink} from "react-router-dom";
 
 interface LoginLogoutProps {
-    token: string | null;
+    token: string | undefined;
     handleClick: () => void;
     logout: () => void;
     className: string;

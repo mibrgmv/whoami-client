@@ -4,29 +4,20 @@ import {useNavigate} from "react-router-dom";
 import {Container} from "../components/Container.tsx";
 import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
 import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
-
-interface QuizData {
-    id: bigint;
-    title: string;
-}
+import {Quiz} from "../shared/types/Quiz.tsx";
+import {getQuizzes} from "../api/get-quizzes.ts";
 
 export const Quizzes: React.FC = () => {
     const navigate = useNavigate();
-    const [quizzes, setQuizzes] = useState<QuizData[]>([]);
+    const [quizzes, setQuizzes] = useState<Quiz[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchQuizzes = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/q`, {
-                    method: 'GET',
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to fetch');
-                }
-                const data = await response.json();
-                setQuizzes(data);
+                const quizzes = await getQuizzes();
+                setQuizzes(quizzes);
                 setLoading(false);
             } catch (err: any) {
                 setError(err.message);
