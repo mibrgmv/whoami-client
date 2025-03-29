@@ -7,6 +7,7 @@ import {InputWrapper} from "../components/ui/inputs/InputWrapper.tsx";
 import {PasswordInput} from "../components/ui/inputs/PasswordInput.tsx";
 import {CustomInput} from "../components/ui/inputs/CustomInput.tsx";
 import {InputError} from "../components/ui/inputs/InputError.tsx";
+import {login} from "../api/login.ts";
 
 export const LoginPage = () => {
     const [username, setUsername] = useState('');
@@ -15,7 +16,7 @@ export const LoginPage = () => {
     const [passwordError, setPasswordError] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const {login} = useAuth();
+    const {setLoginData} = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,22 +24,11 @@ export const LoginPage = () => {
         setPasswordError('');
         setError('')
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({username, password}),
-            });
-            if (!response.ok) {
-                throw new Error('Failed to login');
-            }
-            const data = await response.json();
-            login(data.access_token);
+            const loginData = await login({username, password})
+            setLoginData(loginData);
             navigate('/profile');
-        } catch (error) {
-            setError('An error occurred');
-            console.error(error);
+        } catch (error: any) {
+            setError(error.message);
         }
 
         if (!username) {

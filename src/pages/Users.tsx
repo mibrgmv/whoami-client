@@ -20,7 +20,7 @@ export const Users = () => {
                 return;
             }
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

@@ -19,7 +19,7 @@ export const ProfilePage = () => {
                 return;
             }
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/profile`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/current`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,

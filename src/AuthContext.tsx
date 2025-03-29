@@ -1,32 +1,32 @@
 import React, {createContext, useContext, useState} from 'react';
+import {LoginResponse} from "./api/login.ts";
 
 interface AuthContextType {
-    token: string | null;
-    login(token: string): void;
-    logout(): void;
+    loginData: LoginResponse | null;
+    setLoginData(loginData: LoginResponse): void;
+    removeLoginData(): void;
 }
 
 const AuthContext = createContext<AuthContextType>({
-    token: null,
-    login: () => {},
-    logout: () => {}
+    loginData: null,
+    setLoginData: () => {},
+    removeLoginData: () => {}
 })
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
-    const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
+    const [loginData, setLoginData] = useState<LoginResponse | null>(JSON.parse(localStorage.getItem("loginData") as string));
 
-    const login = (token: string) => {
-        setToken(token);
-        localStorage.setItem("token", token);
+    const login = (loginData: LoginResponse) => {
+        setLoginData(loginData);
     };
 
     const logout = () => {
-        setToken(null);
-        localStorage.removeItem("token");
+        setLoginData(null);
+        localStorage.removeItem("loginData");
     };
 
     return (
-        <AuthContext.Provider value={{token, login, logout}}>
+        <AuthContext.Provider value={{loginData, setLoginData: login, removeLoginData: logout}}>
             {children}
         </AuthContext.Provider>
     );
