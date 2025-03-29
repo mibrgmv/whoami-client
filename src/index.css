@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .form {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col gap-4;
 }
 
 .input {

@@ -1,20 +1,15 @@
 import {FaEye, FaEyeSlash} from 'react-icons/fa';
-import {FC, JSX, SetStateAction, useState} from "react";
+import React, {useState} from "react";
+import {CustomInputProps} from "./CustomInput.tsx";
 
-interface Props {
-    value: string;
-    onChange: (value: SetStateAction<string>) => void;
-}
-
-export const PasswordField: FC<Props> = ({value, onChange}): JSX.Element => {
+export const PasswordInput: React.FC<CustomInputProps & {}> = (props) => {
     const [visible, setVisible] = useState<boolean>(false);
     return (
         <div className="relative">
             <input
+                {...props}
                 className="input"
-                value={value}
                 type={visible ? "text" : "password"}
-                onChange={(e) => onChange(e.target.value)}
             />
 
             <span
