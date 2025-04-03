@@ -1,10 +1,5 @@
 import React from 'react';
-
-interface User {
-    userId: number;
-    username: string;
-    lastLogin: string;
-}
+import {User} from "../../shared/types/User.tsx";
 
 interface LeaderboardProps {
     users: User[];

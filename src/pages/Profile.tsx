@@ -6,14 +6,14 @@ import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
 import {User} from "../shared/types/User.tsx";
 
 export const ProfilePage = () => {
-    const {token} = useAuth();
+    const {loginData} = useAuth();
     const [profile, setProfile] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchProfile = async () => {
-            if (!token) {
+            if (!loginData) {
                 setLoading(false);
                 setError('No token available');
                 return;
@@ -22,7 +22,7 @@ export const ProfilePage = () => {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/current`, {
                     method: 'GET',
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${loginData.token}`,
                     },
                 });
                 if (!response.ok) {
@@ -38,7 +38,7 @@ export const ProfilePage = () => {
         };
 
         fetchProfile();
-    }, [token]);
+    }, [loginData]);
 
     if (loading) {
         return (

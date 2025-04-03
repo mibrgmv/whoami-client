@@ -5,31 +5,24 @@ import {Container} from "../components/Container.tsx";
 import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
 import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
 import {User} from "../shared/types/User.tsx";
+import {getUsers} from "../api/get-users.ts";
 
 export const Users = () => {
-    const {token} = useAuth();
+    const {loginData} = useAuth();
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchUsers = async () => {
-            if (!token) {
+            if (!loginData) {
                 setLoading(false);
-                setError('No token available');
+                setError('Not logged in');
                 return;
             }
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to fetch users');
-                }
-                const data = await response.json();
-                setUsers(data);
+                const response = await getUsers(loginData)
+                setUsers(response.users);
                 setLoading(false);
             } catch (err: any) {
                 setError(err.message);
@@ -38,7 +31,7 @@ export const Users = () => {
         };
 
         fetchUsers();
-    }, [token]);
+    }, [loginData]);
 
     if (loading) {
         return (
