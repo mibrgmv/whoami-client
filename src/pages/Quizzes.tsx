@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {Container} from "../components/Container.tsx";
 import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
 import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
+import {GetQuizzesResponse} from "../api/get-quizzes.ts";
 import {Quiz} from "../shared/types/Quiz.tsx";
 import {getQuizzes} from "../api/get-quizzes.ts";
 
@@ -12,12 +13,15 @@ export const Quizzes: React.FC = () => {
     const [quizzes, setQuizzes] = useState<Quiz[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [nextPageToken, setNextPageToken] = useState<string>("");
+    const pageSize = 4;
 
     useEffect(() => {
         const fetchQuizzes = async () => {
             try {
-                const quizzes = await getQuizzes();
-                setQuizzes(quizzes);
+                const response: GetQuizzesResponse = await getQuizzes(pageSize, nextPageToken);
+                setQuizzes(response.quizzes);
+                setNextPageToken(response.nextPageToken);
                 setLoading(false);
             } catch (err: any) {
                 setError(err.message);
@@ -26,9 +30,9 @@ export const Quizzes: React.FC = () => {
         };
 
         fetchQuizzes();
-    }, []);
+    }, [nextPageToken]);
 
-    const handleQuizClick = (quizId: bigint) => {
+    const handleQuizClick = (quizId: string) => {
         navigate(`/quiz/${quizId}`);
     };
 
@@ -60,6 +64,9 @@ export const Quizzes: React.FC = () => {
                     />
                 ))}
             </div>
+            {nextPageToken && (
+                <button onClick={() => setNextPageToken(nextPageToken)}>Load More</button>
+            )}
         </div>
-    )
-}
+    );
+};

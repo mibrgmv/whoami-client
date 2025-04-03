@@ -1,4 +1,4 @@
 export interface Quiz {
-    id: bigint;
+    id: string;
     title: string;
 }
