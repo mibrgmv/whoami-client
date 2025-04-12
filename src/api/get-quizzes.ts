@@ -21,9 +21,6 @@ export const getQuizzes = async (pageSize: number, pageToken: string) => {
     if (!response.ok) {
         throw new Error('Failed to fetch quizzes');
     }
-    const data = await response.json();
-    return {
-        quizzes: data.quizzes,
-        nextPageToken: data.next_page_token,
-    };
+    const data: GetQuizzesResponse = await response.json();
+    return data;
 };
