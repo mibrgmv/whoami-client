@@ -40,6 +40,17 @@ export const ProfilePage = () => {
         fetchProfile();
     }, [loginData]);
 
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        }).format(date);
+    };
+
     if (loading) {
         return (
             <Container>
@@ -59,10 +70,54 @@ export const ProfilePage = () => {
     return (
         <Container>
             {profile && (
-                <div>
-                    <p><strong>Username:</strong> {profile.username}</p>
-                    <p><strong>Created At:</strong> {new Date(profile.createdAt).toLocaleString()}</p>
-                    <p><strong>Last Login:</strong> {new Date(profile.lastLogin).toLocaleString()}</p>
+                <div className="bg-white rounded-lg shadow overflow-hidden">
+                    {/*<div className="px-6 py-4 border-b border-gray-200">*/}
+                    {/*    <h2 className="text-xl font-semibold text-gray-800">User Profile</h2>*/}
+                    {/*</div>*/}
+
+                    <div className="p-6">
+                        <div className="mb-6">
+                            <div className="text-sm font-medium text-gray-500 uppercase mb-1">ID</div>
+                            <div className="text-md font-medium text-gray-900 break-all">{profile.userId}</div>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <div className="text-sm font-medium text-gray-500 uppercase mb-1">Username</div>
+                                <div className="text-lg text-gray-800">{profile.username}</div>
+                            </div>
+
+                  {/*          <div>*/}
+                  {/*              <div className="text-sm font-medium text-gray-500 uppercase mb-1">Account Status</div>*/}
+                  {/*              <div className="text-lg">*/}
+                  {/*<span className="px-2 py-1 text-sm font-medium bg-green-100 text-green-800 rounded-full">*/}
+                  {/*  Active*/}
+                  {/*</span>*/}
+                  {/*              </div>*/}
+                  {/*          </div>*/}
+
+                            <div>
+                                <div className="text-sm font-medium text-gray-500 uppercase mb-1">Created On</div>
+                                <div className="text-md text-gray-700">{formatDate(profile.createdAt)}</div>
+                            </div>
+
+                            <div>
+                                <div className="text-sm font-medium text-gray-500 uppercase mb-1">Last Login</div>
+                                <div className="text-md text-gray-700">{formatDate(profile.lastLogin)}</div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 pt-6 border-t border-gray-200">
+                            <button
+                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                                Edit Profile
+                            </button>
+                            <button
+                                className="ml-4 px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                                Change Password
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </Container>
