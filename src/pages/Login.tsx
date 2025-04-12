@@ -8,6 +8,12 @@ import {PasswordInput} from "../components/ui/inputs/PasswordInput.tsx";
 import {CustomInput} from "../components/ui/inputs/CustomInput.tsx";
 import {InputError} from "../components/ui/inputs/InputError.tsx";
 import {login} from "../api/login.ts";
+import z from "zod";
+
+const loginSchema = z.object({
+    username: z.string().min(1, {message: "required field"}),
+    password: z.string().min(1, {message: "required field"}),
+});
 
 export const LoginPage = () => {
     const [username, setUsername] = useState('');
@@ -23,20 +29,26 @@ export const LoginPage = () => {
         setUsernameError('');
         setPasswordError('');
         setError('')
+
         try {
-            const loginData = await login({username, password})
+            const validationResult = loginSchema.safeParse({ username, password });
+
+            if (!validationResult.success) {
+                validationResult.error.issues.forEach((issue) => {
+                    if (issue.path[0] === 'username') {
+                        setUsernameError(issue.message);
+                    } else if (issue.path[0] === 'password') {
+                        setPasswordError(issue.message);
+                    }
+                });
+                return;
+            }
+
+            const loginData = await login(validationResult.data);
             setLoginData(loginData);
             navigate('/profile');
         } catch (error: any) {
             setError(error.message);
-        }
-
-        if (!username) {
-            setUsernameError("Username is required");
-        }
-
-        if (!password) {
-            setPasswordError("Password is required");
         }
     };
 

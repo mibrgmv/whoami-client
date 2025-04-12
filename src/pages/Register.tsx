@@ -7,6 +7,16 @@ import {InputError} from "../components/ui/inputs/InputError.tsx";
 import {CustomInput} from "../components/ui/inputs/CustomInput.tsx";
 import {InputWrapper} from "../components/ui/inputs/InputWrapper.tsx";
 import {register} from "../api/register.ts";
+import z from "zod";
+
+const registerSchema = z.object({
+    username: z.string().min(1, {message: "Username is required"}),
+    password: z.string().min(6, {message: "Password is required"}),
+    confirmPassword: z.string().min(1, {message: "Confirm password is required"}),
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+});
 
 export const Register = () => {
     const [username, setUsername] = useState('');
@@ -19,10 +29,25 @@ export const Register = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setUsernameError('');
+        setPasswordError('');
+        setConfirmPasswordError('');
         setError('');
 
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
+        const validationResult = registerSchema.safeParse({ username, password, confirmPassword });
+
+        if (!validationResult.success) {
+            validationResult.error.issues.forEach((issue) => {
+                if (issue.path[0] === 'username') {
+                    setUsernameError(issue.message);
+                } else if (issue.path[0] === 'password') {
+                    setPasswordError(issue.message);
+                } else if (issue.path[0] === 'confirmPassword') {
+                    setConfirmPasswordError(issue.message);
+                } else {
+                    setError(issue.message);
+                }
+            });
             return;
         }
 
@@ -30,19 +55,6 @@ export const Register = () => {
             await register({username, password});
         } catch (error: any) {
             setError(error.message);
-        }
-
-
-        if (!username) {
-            setUsernameError("Username is required");
-        }
-
-        if (!password) {
-            setPasswordError("Password is required");
-        }
-
-        if (!confirmPassword) {
-            setConfirmPasswordError("Confirm password is required");
         }
     };
 
