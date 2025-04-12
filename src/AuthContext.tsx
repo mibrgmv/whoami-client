@@ -14,10 +14,14 @@ const AuthContext = createContext<AuthContextType>({
 })
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
-    const [loginData, setLoginData] = useState<LoginResponse | null>(JSON.parse(localStorage.getItem("loginData") as string));
+    const [loginData, setLoginData] = useState<LoginResponse | null>(() => {
+        const storedData = localStorage.getItem("loginData");
+        return storedData ? JSON.parse(storedData) : null;
+    });
 
-    const login = (loginData: LoginResponse) => {
-        setLoginData(loginData);
+    const login = (newLoginData: LoginResponse) => {
+        setLoginData(newLoginData);
+        localStorage.setItem("loginData", JSON.stringify(newLoginData));
     };
 
     const logout = () => {
