@@ -32,7 +32,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
                 <p className="text-sm text-gray-500 mt-1">Total users: {users.length}</p>
             </div>
 
-            {/* Desktop view - traditional table */}
+            {/* Desktop */}
             <div className="hidden md:block overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
@@ -62,27 +62,32 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
                 </table>
             </div>
 
-            {/* Mobile view - card based layout */}
+            {/* Mobile */}
             <div className="md:hidden">
                 {users.length > 0 ? (
                     <div className="divide-y divide-gray-200">
                         {users.map((user) => (
                             <div key={user.userId} className="p-4 hover:bg-gray-50">
-                                <div className="flex justify-between py-1">
-                                    <span className="text-xs font-medium text-gray-500 uppercase">ID</span>
-                                    <span className="text-sm font-medium text-gray-900">{user.userId}</span>
+                                <div className="mb-2">
+                                    <div className="text-xs font-medium text-gray-500 uppercase mb-1">ID</div>
+                                    <div className="text-sm font-medium text-gray-900 break-all">{user.userId}</div>
                                 </div>
-                                <div className="flex justify-between py-1">
-                                    <span className="text-xs font-medium text-gray-500 uppercase">Username</span>
-                                    <span className="text-sm text-gray-700">{user.username}</span>
-                                </div>
-                                <div className="flex justify-between py-1">
-                                    <span className="text-xs font-medium text-gray-500 uppercase">Created</span>
-                                    <span className="text-sm text-gray-500">{formatDate(user.createdAt)}</span>
-                                </div>
-                                <div className="flex justify-between py-1">
-                                    <span className="text-xs font-medium text-gray-500 uppercase">Last Login</span>
-                                    <span className="text-sm text-gray-500">{formatDate(user.lastLogin)}</span>
+
+                                <div className="grid grid-cols-2 gap-4 mt-3">
+                                    <div>
+                                        <div className="text-xs font-medium text-gray-500 uppercase mb-1">Username</div>
+                                        <div className="text-sm text-gray-700">{user.username}</div>
+                                    </div>
+
+                                    <div>
+                                        <div className="text-xs font-medium text-gray-500 uppercase mb-1">Created</div>
+                                        <div className="text-sm text-gray-500">{formatDate(user.createdAt)}</div>
+                                    </div>
+
+                                    <div className="col-span-2">
+                                        <div className="text-xs font-medium text-gray-500 uppercase mb-1">Last Login</div>
+                                        <div className="text-sm text-gray-500">{formatDate(user.lastLogin)}</div>
+                                    </div>
                                 </div>
                             </div>
                         ))}
