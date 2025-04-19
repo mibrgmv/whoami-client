@@ -4,9 +4,8 @@ import {useNavigate} from "react-router-dom";
 import {Container} from "../components/Container.tsx";
 import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
 import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
-import {GetQuizzesResponse} from "../api/get-quizzes.ts";
 import {Quiz} from "../shared/types/Quiz.tsx";
-import {getQuizzes} from "../api/get-quizzes.ts";
+import {getQuizzes, GetQuizzesResponse} from "../api/GET/quizzes.ts";
 
 export const Quizzes: React.FC = () => {
     const navigate = useNavigate();
@@ -22,9 +21,10 @@ export const Quizzes: React.FC = () => {
                 const response: GetQuizzesResponse = await getQuizzes(pageSize, nextPageToken);
                 setQuizzes(response.quizzes);
                 setNextPageToken(response.nextPageToken);
-                setLoading(false);
             } catch (err: any) {
                 setError(err.message);
+                setLoading(false);
+            } finally {
                 setLoading(false);
             }
         };
@@ -33,7 +33,7 @@ export const Quizzes: React.FC = () => {
     }, [nextPageToken]);
 
     const handleQuizClick = (quizId: string) => {
-        navigate(`/quiz/${quizId}`);
+        navigate(`/quizzes/${quizId}`);
     };
 
     if (loading) {

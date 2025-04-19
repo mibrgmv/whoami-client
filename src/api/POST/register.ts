@@ -1,6 +1,6 @@
-import {Endpoints} from "./endpoints.ts";
 import {useNavigate} from "react-router-dom";
-import {User} from "../shared/types/User.tsx";
+import {Endpoints} from "../endpoints.ts";
+import {User} from "../../shared/types/User.tsx";
 
 type RegisterRequest = { username: string, password: string }
 

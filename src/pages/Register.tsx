@@ -6,12 +6,12 @@ import {PasswordInput} from "../components/ui/inputs/PasswordInput.tsx";
 import {InputError} from "../components/ui/inputs/InputError.tsx";
 import {CustomInput} from "../components/ui/inputs/CustomInput.tsx";
 import {InputWrapper} from "../components/ui/inputs/InputWrapper.tsx";
-import {register} from "../api/register.ts";
 import z from "zod";
+import {register} from "../api/POST/register.ts";
 
 const registerSchema = z.object({
     username: z.string().min(1, {message: "Username is required"}),
-    password: z.string().min(6, {message: "Password is required"}),
+    password: z.string().min(1, {message: "Password is required"}),
     confirmPassword: z.string().min(1, {message: "Confirm password is required"}),
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

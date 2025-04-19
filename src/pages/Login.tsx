@@ -7,8 +7,8 @@ import {InputWrapper} from "../components/ui/inputs/InputWrapper.tsx";
 import {PasswordInput} from "../components/ui/inputs/PasswordInput.tsx";
 import {CustomInput} from "../components/ui/inputs/CustomInput.tsx";
 import {InputError} from "../components/ui/inputs/InputError.tsx";
-import {login} from "../api/login.ts";
 import z from "zod";
+import {login} from "../api/POST/login.ts";
 
 const loginSchema = z.object({
     username: z.string().min(1, {message: "required field"}),
@@ -46,7 +46,7 @@ export const LoginPage = () => {
 
             const loginData = await login(validationResult.data);
             setLoginData(loginData);
-            navigate('/profile');
+            navigate('/login/success');
         } catch (error: any) {
             setError(error.message);
         }

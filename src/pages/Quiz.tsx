@@ -12,9 +12,13 @@ import {Question} from "../shared/types/Question.tsx";
 import {Answer} from "../shared/types/Answer.tsx";
 import {Result} from "../shared/types/Result.tsx";
 import {ResultView} from "../components/ui/quiz/ResultView.tsx";
+import {useAuth} from "../AuthContext.tsx";
+import {getQuestionsByQuizId} from "../api/GET/questionsByQuizId.ts";
+import {getQuizById} from "../api/GET/quizById.ts";
 
 export const QuizPage: React.FC = () => {
-    const {id} = useParams();
+    const {quizId} = useParams();
+    const {loginData} = useAuth();
     const [quiz, setQuiz] = useState<Quiz | null>(null);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [answers, setAnswers] = useState<Answer[]>([]);
@@ -23,28 +27,31 @@ export const QuizPage: React.FC = () => {
     const [submitting, setSubmitting] = useState(false);
     const [result, setResult] = useState<Result | null>(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [nextPageToken, setNextPageToken] = useState<string>("");
+    const pageSize = 4;
 
     useEffect(() => {
         const fetchQuizAndQuestions = async () => {
-            try {
-                const quizResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/${id}`);
-                if (!quizResponse.ok) {
-                    throw new Error('Failed to fetch quiz');
-                }
-                const quizData: Quiz = await quizResponse.json();
-                setQuiz(quizData);
+            if (!quizId) {
+                setLoading(false);
+                setError('Quiz ID is not set');
+                return;
+            }
 
-                const questionsResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/${id}/questions`);
-                if (!questionsResponse.ok) {
-                    if (questionsResponse.status === 404) {
-                        setQuestions([]);
-                    } else {
-                        throw new Error('Failed to fetch questions');
-                    }
-                } else {
-                    const questionsData: Question[] = await questionsResponse.json();
-                    setQuestions(questionsData);
-                }
+            if (!loginData) {
+                setLoading(false);
+                setError('Not logged in');
+                return;
+            }
+
+            try {
+                const [quizResponse, questionsResponse] = await Promise.all([
+                    getQuizById(quizId, loginData),
+                    getQuestionsByQuizId({quizId: quizId, loginData: loginData, pageSize: pageSize, pageToken: nextPageToken}),
+                ]);
+                setQuiz(quizResponse);
+                setQuestions(questionsResponse.questions);
+                setNextPageToken(questionsResponse.nextPageToken);
             } catch (err: any) {
                 setError(err.message);
             } finally {
@@ -53,7 +60,7 @@ export const QuizPage: React.FC = () => {
         };
 
         fetchQuizAndQuestions();
-    }, [id]);
+    }, [quizId]);
 
     const handleOptionSelect = (questionId: bigint, option: string) => {
         const questionIdNum = Number(questionId);
@@ -95,7 +102,7 @@ export const QuizPage: React.FC = () => {
 
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_BACKEND_URL}/quiz/${id}/evaluate`,
+                `${import.meta.env.VITE_BACKEND_URL}/quiz/${quizId}/evaluate`,
                 {
                     method: 'POST',
                     headers: {
