@@ -34,24 +34,24 @@ export const Register = () => {
         setConfirmPasswordError('');
         setError('');
 
-        const validationResult = registerSchema.safeParse({ username, password, confirmPassword });
-
-        if (!validationResult.success) {
-            validationResult.error.issues.forEach((issue) => {
-                if (issue.path[0] === 'username') {
-                    setUsernameError(issue.message);
-                } else if (issue.path[0] === 'password') {
-                    setPasswordError(issue.message);
-                } else if (issue.path[0] === 'confirmPassword') {
-                    setConfirmPasswordError(issue.message);
-                } else {
-                    setError(issue.message);
-                }
-            });
-            return;
-        }
-
         try {
+            const validationResult = registerSchema.safeParse({username, password, confirmPassword});
+
+            if (!validationResult.success) {
+                validationResult.error.issues.forEach((issue) => {
+                    if (issue.path[0] === 'username') {
+                        setUsernameError(issue.message);
+                    } else if (issue.path[0] === 'password') {
+                        setPasswordError(issue.message);
+                    } else if (issue.path[0] === 'confirmPassword') {
+                        setConfirmPasswordError(issue.message);
+                    } else {
+                        setError(issue.message);
+                    }
+                });
+                return;
+            }
+
             await register({username, password});
         } catch (error: any) {
             setError(error.message);
