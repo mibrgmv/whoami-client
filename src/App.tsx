@@ -30,7 +30,7 @@ export function App() {
                             element={<Users/>}
                         />
                         <Route
-                            path="/quiz/:id"
+                            path="/quizzes/:quizId"
                             element={<QuizPage/>}
                         />
                     </Route>

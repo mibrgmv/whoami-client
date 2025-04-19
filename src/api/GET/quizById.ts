@@ -9,7 +9,9 @@ export const getQuizById = async (quizId: string, loginData: LoginResponse) => {
             Authorization: `Bearer ${loginData.token}`,
         },
     })
-    if (!quizResponse.ok) {
+    if (quizResponse.status === 404) {
+        return null;
+    } else if (!quizResponse.ok) {
         throw new Error('Failed to fetch quiz');
     }
     const quizData: Quiz = await quizResponse.json();
