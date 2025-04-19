@@ -8,6 +8,7 @@ import {ProfilePage} from "./pages/Profile.tsx";
 import {Users} from "./pages/Users.tsx";
 import {Quizzes} from "./pages/Quizzes.tsx";
 import {QuizPage} from "./pages/Quiz.tsx";
+import {Success} from "./pages/Success.tsx";
 
 export function App() {
     return (
@@ -18,6 +19,7 @@ export function App() {
                     <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/quizzes" element={<Quizzes/>}/>
+                    <Route path="/login/success" element={<Success name="login"/>}/>
                     <Route element={<PrivateRoute/>}>
                         <Route
                             path="/profile"
@@ -27,11 +29,11 @@ export function App() {
                             path="/users"
                             element={<Users/>}
                         />
-                    </Route>
                         <Route
                             path="/quiz/:id"
                             element={<QuizPage/>}
                         />
+                    </Route>
                 </Route>
             </Routes>
         </Router>
