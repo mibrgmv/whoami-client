@@ -17,7 +17,7 @@ interface NavLinksProps {
 }
 
 export const NavLinks: React.FC<NavLinksProps> = ({nav, handleClick, token, logout, routes}) => {
-    const liStyle = "px-6 py-3 mx-3 rounded-lg text-2xl md:text-xl cursor-pointer bg-transparent hover:bg-black/10";
+    const liStyle = "px-6 py-3 mx-3 rounded-lg text-2xl md:text-xl cursor-pointer hover:bg-black/10";
     return (
         <>
             <FadeOverlay isVisible={nav} onClick={handleClick}/>
