@@ -1,8 +1,8 @@
 import {Endpoints} from "../endpoints.ts";
 import {Quiz} from "../../shared/types/Quiz.tsx";
-import {LoginResponse} from "../POST/login.ts";
+import {LoginData} from "../../AuthContext.tsx";
 
-export const getQuizById = async (quizId: string, loginData: LoginResponse) => {
+export const getQuizById = async (quizId: string, loginData: LoginData) => {
     const quizResponse = await fetch(`${Endpoints.getQuizzes}/${quizId}`, {
         method: 'GET',
         headers: {

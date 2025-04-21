@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {useAuth} from '../AuthContext.tsx';
 import {Button} from "../components/ui/Button.tsx";
 import {Container} from "../components/Container.tsx";
@@ -11,18 +11,18 @@ import z from "zod";
 import {login} from "../api/POST/login.ts";
 
 const loginSchema = z.object({
-    username: z.string().min(1, {message: "required field"}),
-    password: z.string().min(1, {message: "required field"}),
+    username: z.string().min(1, {message: "Username is required"}),
+    password: z.string().min(1, {message: "Password is required"}),
 });
 
 export const LoginPage = () => {
+    const {setLoginData} = useAuth();
+    const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
-    const {setLoginData} = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,7 +31,7 @@ export const LoginPage = () => {
         setError('')
 
         try {
-            const validationResult = loginSchema.safeParse({ username, password });
+            const validationResult = loginSchema.safeParse({username, password});
 
             if (!validationResult.success) {
                 validationResult.error.issues.forEach((issue) => {
@@ -44,9 +44,9 @@ export const LoginPage = () => {
                 return;
             }
 
-            const loginData = await login(validationResult.data);
-            setLoginData(loginData);
-            navigate('/login/success');
+            const loginResponse = await login(validationResult.data);
+            setLoginData({token: loginResponse.token, userId: loginResponse.userId});
+            setIsLoginSuccessful(true);
         } catch (error: any) {
             setError(error.message);
         }

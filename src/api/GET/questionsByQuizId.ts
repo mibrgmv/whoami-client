@@ -1,10 +1,10 @@
 import {Question} from "../../shared/types/Question.tsx";
 import {Endpoints} from "../endpoints.ts";
-import {LoginResponse} from "../POST/login.ts";
+import {LoginData} from "../../AuthContext.tsx";
 
 interface Props {
     quizId: string
-    loginData: LoginResponse
+    loginData: LoginData
     pageSize: number
     pageToken: string
 }
@@ -14,16 +14,16 @@ export interface GetQuestionsByQuizIdResponse {
     nextPageToken: string;
 }
 
-export const getQuestionsByQuizId = async (props: Props) => {
-    let url = `${Endpoints.getQuizzes}/${props.quizId}/questions?page_size=${props.pageSize}`;
-    if (props.pageToken) {
-        url += `&page_token=${props.pageToken}`;
+export const getQuestionsByQuizId = async ({quizId, loginData, pageSize, pageToken}: Props) => {
+    let url = `${Endpoints.getQuizzes}/${quizId}/questions?page_size=${pageSize}`;
+    if (pageToken) {
+        url += `&page_token=${pageToken}`;
     }
 
     const questionsResponse = await fetch(url, {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${props.loginData.token}`,
+            Authorization: `Bearer ${loginData.token}`,
         },
     })
     if (!questionsResponse.ok) {

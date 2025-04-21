@@ -1,17 +1,17 @@
 import {User} from "../../shared/types/User.tsx";
 import {Endpoints} from "../endpoints.ts";
-import {LoginResponse} from "../POST/login.ts";
+import {LoginData} from "../../AuthContext.tsx";
 
 export interface GetUsersResponse {
     users: User[];
     nextPageToken: string;
 }
 
-export const getUsers = async (loginData: LoginResponse) => {
-    const response = await fetch(Endpoints.getUsers, {
+export const getUsers = async ({token}: LoginData) => {
+    const response = await fetch(Endpoints.users, {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${loginData.token}`,
+            Authorization: `Bearer ${token}`,
         },
     });
     if (!response.ok) {

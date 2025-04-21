@@ -1,9 +1,13 @@
 import React, {createContext, useContext, useState} from 'react';
-import {LoginResponse} from "./api/login.ts";
+
+export interface LoginData {
+    token: string,
+    userId: string
+}
 
 interface AuthContextType {
-    loginData: LoginResponse | null;
-    setLoginData(loginData: LoginResponse): void;
+    loginData: LoginData | null;
+    setLoginData(loginData: LoginData): void;
     removeLoginData(): void;
 }
 
@@ -14,12 +18,12 @@ const AuthContext = createContext<AuthContextType>({
 })
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
-    const [loginData, setLoginData] = useState<LoginResponse | null>(() => {
+    const [loginData, setLoginData] = useState<LoginData | null>(() => {
         const storedData = localStorage.getItem("loginData");
         return storedData ? JSON.parse(storedData) : null;
     });
 
-    const login = (newLoginData: LoginResponse) => {
+    const login = (newLoginData: LoginData) => {
         setLoginData(newLoginData);
         localStorage.setItem("loginData", JSON.stringify(newLoginData));
     };
