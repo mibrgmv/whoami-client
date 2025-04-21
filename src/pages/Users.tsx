@@ -5,7 +5,7 @@ import {Container} from "../components/Container.tsx";
 import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
 import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
 import {User} from "../shared/types/User.tsx";
-import {getUsers} from "../api/GET/users.ts";
+import {getUsers} from "../api/GET/getUsers.ts";
 
 export const Users = () => {
     const {loginData} = useAuth();

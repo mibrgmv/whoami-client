@@ -8,6 +8,7 @@ import {CustomInput} from "../components/ui/inputs/CustomInput.tsx";
 import {InputWrapper} from "../components/ui/inputs/InputWrapper.tsx";
 import z from "zod";
 import {register} from "../api/POST/register.ts";
+import {Success} from "./Success.tsx";
 
 const registerSchema = z.object({
     username: z.string().min(1, {message: "Username is required"}),
@@ -19,6 +20,7 @@ const registerSchema = z.object({
 });
 
 export const Register = () => {
+    const [isRegisterSuccessful, setIsRegisterSuccessful] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -45,18 +47,21 @@ export const Register = () => {
                         setPasswordError(issue.message);
                     } else if (issue.path[0] === 'confirmPassword') {
                         setConfirmPasswordError(issue.message);
-                    } else {
-                        setError(issue.message);
                     }
                 });
                 return;
             }
 
             await register({username, password});
+            setIsRegisterSuccessful(true);
         } catch (error: any) {
             setError(error.message);
         }
     };
+
+    if (isRegisterSuccessful) {
+        return <Success name="register" />;
+    }
 
     return (
         <Container>

@@ -9,6 +9,7 @@ import {CustomInput} from "../components/ui/inputs/CustomInput.tsx";
 import {InputError} from "../components/ui/inputs/InputError.tsx";
 import z from "zod";
 import {login} from "../api/POST/login.ts";
+import {Success} from "./Success.tsx";
 
 const loginSchema = z.object({
     username: z.string().min(1, {message: "Username is required"}),
@@ -51,6 +52,10 @@ export const LoginPage = () => {
             setError(error.message);
         }
     };
+
+    if (isLoginSuccessful) {
+        return <Success name="login" />;
+    }
 
     return (
         <Container>
