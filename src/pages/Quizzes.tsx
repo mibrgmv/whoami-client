@@ -75,14 +75,21 @@ export const Quizzes: React.FC = () => {
                                     {quizzes.map((quiz, index) => (
                                         <div
                                             key={quiz.id || index}
-                                            className="border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden cursor-pointer"
+                                            className="border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-200 overflow-hidden cursor-pointer"
                                             onClick={() => handleQuizClick(quiz.id)}
                                         >
                                             <div className="h-24 bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
                                                 <span className="text-2xl font-bold text-white opacity-80">Quiz</span>
                                             </div>
-                                            <div className="p-4">
-                                                <h3 className="font-medium text-gray-900">{quiz.title}</h3>
+                                            <div className="p-4 flex items-center justify-between"> {/* Added flex and justify-between */}
+                                                <div>
+                                                    <h3 className="font-medium text-gray-900">{quiz.title}</h3>
+                                                </div>
+                                                <div className="text-blue-600"> {/* Added the arrow icon */}
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                                    </svg>
+                                                </div>
                                             </div>
                                         </div>
                                     ))}
@@ -95,13 +102,13 @@ export const Quizzes: React.FC = () => {
                         </div>
 
                         {nextPageToken && (
-                                <button
-                                    onClick={handleLoadMore}
-                                    className="w-full py-4 border-t border-gray-200 flex justify-center px-4 text-gray-700 rounded hover:cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-                                    disabled={isLoadingMore}
-                                >
-                                    {isLoadingMore ? <LoadingSpinner /> : 'Load More'}
-                                </button>
+                            <button
+                                onClick={handleLoadMore}
+                                className="w-full py-4 border-t border-gray-200 flex justify-center px-4 text-gray-700 rounded hover:cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                disabled={isLoadingMore}
+                            >
+                                {isLoadingMore ? <LoadingSpinner /> : 'Load More'}
+                            </button>
                         )}
                     </div>
 
