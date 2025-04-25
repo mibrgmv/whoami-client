@@ -50,13 +50,6 @@ export const Quizzes: React.FC = () => {
         }
     };
 
-    const thClass = "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
-    const tdBase = "px-6 py-4 whitespace-nowrap text-sm";
-    const tdClasses = {
-        title: `${tdBase} font-medium text-gray-900`,
-        action: `${tdBase} text-right`
-    };
-
     return (
         <div className="min-h-screen pt-20 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto overflow-y-auto">
             {loading ? (
@@ -69,85 +62,89 @@ export const Quizzes: React.FC = () => {
                 </div>
             ) : (
                 <>
-                    <div className="bg-white rounded-lg shadow bg-red-300 overflow-hidden">
+                    {/* Desktop */}
+                    <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden">
                         <div className="px-6 py-4 border-b border-gray-200">
                             <h2 className="text-xl font-semibold text-gray-800">Available Quizzes</h2>
                             <p className="text-sm text-gray-500 mt-1">Total quizzes shown: {quizzes.length}</p>
                         </div>
 
-                        {/* Desktop */}
-                        <div className="hidden md:block overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
-                                <tr>
-                                    <th className={thClass}>Quiz Title</th>
-                                    <th className={`${thClass} text-right`}>Action</th>
-                                </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                {quizzes.length > 0 ? (
-                                    quizzes.map((quiz, index) => (
-                                        <tr key={quiz.id || index} className="hover:bg-gray-50">
-                                            <td className={tdClasses.title}>{quiz.title}</td>
-                                            <td className={tdClasses.action}>
-                                                <button
-                                                    onClick={() => handleQuizClick(quiz.id)}
-                                                    className="px-4 py-2 bg-blue-600 text-white text-s rounded cursor-pointer hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-                                                >
-                                                    Start
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan={2} className="px-6 py-4 text-center text-sm text-gray-500">No quizzes found</td>
-                                    </tr>
-                                )}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {/* Mobile */}
-                        <div className="md:hidden">
+                        <div className="p-6">
                             {quizzes.length > 0 ? (
-                                <div className="divide-y divide-gray-200">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {quizzes.map((quiz, index) => (
-                                        <div key={quiz.id || index} className="p-4 hover:bg-gray-50">
-                                            <div className="flex items-center justify-between">
-                                                <div>
-                                                    <div className="text-xs font-medium text-gray-500 uppercase mb-1">Quiz Title</div>
-                                                    <div className="text-sm font-medium text-gray-900">{quiz.title}</div>
-                                                </div>
-                                                <div className="mt-2">
-                                                    <button
-                                                        onClick={() => handleQuizClick(quiz.id)}
-                                                        className="px-4 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-                                                    >
-                                                        Start Quiz
-                                                    </button>
-                                                </div>
+                                        <div
+                                            key={quiz.id || index}
+                                            className="border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden cursor-pointer"
+                                            onClick={() => handleQuizClick(quiz.id)}
+                                        >
+                                            <div className="h-24 bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                                                <span className="text-2xl font-bold text-white opacity-80">Quiz</span>
+                                            </div>
+                                            <div className="p-4">
+                                                <h3 className="font-medium text-gray-900">{quiz.title}</h3>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
                             ) : (
-                                <div className="px-6 py-4 text-center text-sm text-gray-500">No quizzes found</div>
+                                <div className="text-center py-12">
+                                    <p className="text-gray-500">No quizzes found</p>
+                                </div>
                             )}
                         </div>
+
+                        {nextPageToken && (
+                                <button
+                                    onClick={handleLoadMore}
+                                    className="w-full py-4 border-t border-gray-200 flex justify-center px-4 text-gray-700 rounded hover:cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                    disabled={isLoadingMore}
+                                >
+                                    {isLoadingMore ? <LoadingSpinner /> : 'Load More'}
+                                </button>
+                        )}
                     </div>
 
-                    {nextPageToken && (
-                        <div className="mt-8 pt-4 border-t border-gray-200 flex justify-center">
-                            <button
-                                onClick={handleLoadMore}
-                                className="px-4 py-2 bg-blue-600 cursor-pointer text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-                                disabled={isLoadingMore}
-                            >
-                                {isLoadingMore ? <LoadingSpinner /> : 'Load More Quizzes'}
-                            </button>
-                        </div>
-                    )}
+                    {/* Mobile */}
+                    <div className="md:hidden">
+                        {quizzes.length > 0 ? (
+                            <div className="divide-y divide-gray-200">
+                                {quizzes.map((quiz, index) => (
+                                    <div
+                                        key={quiz.id || index}
+                                        className="p-4 hover:bg-gray-50 cursor-pointer"
+                                        onClick={() => handleQuizClick(quiz.id)}
+                                    >
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <div className="text-xs font-medium text-gray-500 uppercase mb-1">Quiz Title</div>
+                                                <div className="text-sm font-medium text-gray-900">{quiz.title}</div>
+                                            </div>
+                                            <div className="text-blue-600">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="px-6 py-4 text-center text-sm text-gray-500">No quizzes found</div>
+                        )}
+
+                        {nextPageToken && (
+                            <div className="pt-4 border-t border-gray-200 flex justify-center">
+                                <button
+                                    onClick={handleLoadMore}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                    disabled={isLoadingMore}
+                                >
+                                    {isLoadingMore ? <LoadingSpinner /> : 'Load More Quizzes'}
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </>
             )}
         </div>

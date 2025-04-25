@@ -68,7 +68,7 @@ export const Users = () => {
                     <Leaderboard users={users}/>
 
                     {nextPageToken && (
-                        <div className="mt-8 pt-4 border-t border-gray-200 flex justify-center">
+                        <div className="mt-6 pt-4 border-t border-gray-200 flex justify-center">
                             <button
                                 onClick={handleLoadMore}
                                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"

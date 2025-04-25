@@ -20,7 +20,6 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
     const thClass = "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
     const tdBase = "px-6 py-4 whitespace-nowrap text-sm";
     const tdClasses = {
-        id: `${tdBase} font-medium text-gray-900`,
         username: `${tdBase} text-gray-700`,
         date: `${tdBase} text-gray-500`
     };
