@@ -6,7 +6,7 @@ export interface GetQuizzesResponse {
     nextPageToken: string;
 }
 
-export const getQuizzes = async (pageSize: number, pageToken: string) => {
+export const getQuizzes = async (pageSize: number, pageToken: string): Promise<GetQuizzesResponse> => {
     let url = `${Endpoints.getQuizzes}?page_size=${pageSize}`;
     if (pageToken) {
         url += `&page_token=${pageToken}`;
@@ -21,6 +21,5 @@ export const getQuizzes = async (pageSize: number, pageToken: string) => {
     if (!response.ok) {
         throw new Error('Failed to fetch quizzes');
     }
-    const data: GetQuizzesResponse = await response.json();
-    return data;
+    return await response.json();
 };

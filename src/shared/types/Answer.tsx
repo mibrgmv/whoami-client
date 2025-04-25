@@ -1,5 +1,5 @@
 export interface Answer {
-    quiz_id: number;
-    question_id: number;
+    quiz_id: string;
+    question_id: string;
     body: string;
 }

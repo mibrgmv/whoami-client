@@ -5,7 +5,7 @@ import {Answer} from "../../../shared/types/Answer.tsx";
 interface QuestionViewProps {
     question: Question;
     answers: Answer[];
-    handleOptionSelect: (questionId: bigint, option: string) => void;
+    handleOptionSelect: (questionId: string, option: string) => void;
 }
 
 export const QuestionView: React.FC<QuestionViewProps> = ({question, answers, handleOptionSelect}) => {
@@ -13,7 +13,7 @@ export const QuestionView: React.FC<QuestionViewProps> = ({question, answers, ha
         <div className="space-y-2 ml-8">
             {question.options.map((option, optionIndex) => {
                 const isSelected = answers.some(
-                    answer => answer.question_id === Number(question.id) && answer.body === option
+                    answer => answer.question_id === question.id && answer.body === option
                 );
 
                 return (

@@ -13,8 +13,9 @@ import {Answer} from "../shared/types/Answer.tsx";
 import {Result} from "../shared/types/Result.tsx";
 import {ResultView} from "../components/ui/quiz/ResultView.tsx";
 import {useAuth} from "../AuthContext.tsx";
-import {getQuestionsByQuizId} from "../api/GET/questionsByQuizId.ts";
+import {getQuestionsByQuizId} from "../api/GET/getQuestionsByQuizId.ts";
 import {getQuizById} from "../api/GET/quizById.ts";
+import {evaluate} from "../api/POST/evaluate.ts";
 
 export const QuizPage: React.FC = () => {
     const {quizId} = useParams();
@@ -27,8 +28,6 @@ export const QuizPage: React.FC = () => {
     const [submitting, setSubmitting] = useState(false);
     const [result, setResult] = useState<Result | null>(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [nextPageToken, setNextPageToken] = useState<string>("");
-    const pageSize = 4;
 
     useEffect(() => {
         const fetchQuizAndQuestions = async () => {
@@ -47,11 +46,10 @@ export const QuizPage: React.FC = () => {
             try {
                 const [quizResponse, questionsResponse] = await Promise.all([
                     getQuizById(quizId, loginData),
-                    getQuestionsByQuizId({quizId: quizId, loginData: loginData, pageSize: pageSize, pageToken: nextPageToken}),
+                    getQuestionsByQuizId({quizId: quizId, loginData: loginData}),
                 ]);
                 setQuiz(quizResponse);
                 setQuestions(questionsResponse.questions);
-                setNextPageToken(questionsResponse.nextPageToken);
             } catch (err: any) {
                 setError(err.message);
             } finally {
@@ -60,21 +58,20 @@ export const QuizPage: React.FC = () => {
         };
 
         fetchQuizAndQuestions();
-    }, [quizId]);
+    }, [quizId, loginData]);
 
-    const handleOptionSelect = (questionId: bigint, option: string) => {
-        const questionIdNum = Number(questionId);
-        const quizIdNum = Number(quiz?.id);
+    const handleOptionSelect = (questionId: string, option: string) => {
+        const quizId = String(quiz?.id);
 
         const existingAnswerIndex = answers.findIndex(
-            (answer) => answer.question_id === questionIdNum
+            (answer) => answer.question_id === quiz?.id
         );
 
         if (existingAnswerIndex !== -1) {
             const updatedAnswers = [...answers];
             updatedAnswers[existingAnswerIndex] = {
-                quiz_id: quizIdNum,
-                question_id: questionIdNum,
+                quiz_id: quizId,
+                question_id: questionId,
                 body: option
             };
             setAnswers(updatedAnswers);
@@ -82,8 +79,8 @@ export const QuizPage: React.FC = () => {
             setAnswers([
                 ...answers,
                 {
-                    quiz_id: quizIdNum,
-                    question_id: questionIdNum,
+                    quiz_id: quizId,
+                    question_id: questionId,
                     body: option
                 }
             ]);
@@ -91,7 +88,14 @@ export const QuizPage: React.FC = () => {
     };
 
     const handleSubmit = async () => {
-        if (!quiz) return;
+        if (!quiz)
+            return;
+
+        if (!loginData) {
+            setLoading(false);
+            setError('Not logged in');
+            return;
+        }
 
         if (answers.length !== questions.length) {
             alert('Please answer all questions before submitting.');
@@ -101,27 +105,8 @@ export const QuizPage: React.FC = () => {
         setSubmitting(true);
 
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_BACKEND_URL}/quiz/${quizId}/evaluate`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(answers)
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error('Failed to submit answers');
-            }
-
-            const data = await response.json();
-            if (data) {
-                setResult(data);
-            } else {
-                throw new Error('Invalid result format from server');
-            }
+            const result: Result = await evaluate({quizId: quiz.id, answers: answers, loginData: loginData})
+            setResult(result);
         } catch (err: any) {
             setError(err.message);
         } finally {

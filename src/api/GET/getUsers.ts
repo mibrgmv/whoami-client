@@ -7,8 +7,13 @@ export interface GetUsersResponse {
     nextPageToken: string;
 }
 
-export const getUsers = async ({token}: LoginData) => {
-    const response = await fetch(Endpoints.users, {
+export const getUsers = async (pageSize: number, pageToken: string, {token}: LoginData) => {
+    let url = `${Endpoints.users}?page_size=${pageSize}`;
+    if (pageToken) {
+        url += `&page_token=${pageToken}`;
+    }
+
+    const response = await fetch(url, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${token}`,

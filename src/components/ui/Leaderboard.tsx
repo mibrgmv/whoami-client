@@ -29,7 +29,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
         <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200">
                 <h2 className="text-xl font-semibold text-gray-800">User List</h2>
-                <p className="text-sm text-gray-500 mt-1">Total users: {users.length}</p>
+                <p className="text-sm text-gray-500 mt-1">Total users shown: {users.length}</p>
             </div>
 
             {/* Desktop */}
@@ -37,7 +37,6 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                     <tr>
-                        <th className={thClass}>ID</th>
                         <th className={thClass}>Username</th>
                         <th className={thClass}>Created At</th>
                         <th className={thClass}>Last Login</th>
@@ -47,7 +46,6 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
                     {users.length > 0 ? (
                         users.map((user) => (
                             <tr key={user.userId} className="hover:bg-gray-50">
-                                <td className={tdClasses.id}>{user.userId}</td>
                                 <td className={tdClasses.username}>{user.username}</td>
                                 <td className={tdClasses.date}>{formatDate(user.createdAt)}</td>
                                 <td className={tdClasses.date}>{formatDate(user.lastLogin)}</td>
@@ -55,7 +53,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">No users found</td>
+                            <td colSpan={3} className="px-6 py-4 text-center text-sm text-gray-500">No users found</td>
                         </tr>
                     )}
                     </tbody>
@@ -68,11 +66,6 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
                     <div className="divide-y divide-gray-200">
                         {users.map((user) => (
                             <div key={user.userId} className="p-4 hover:bg-gray-50">
-                                <div className="mb-2">
-                                    <div className="text-xs font-medium text-gray-500 uppercase mb-1">ID</div>
-                                    <div className="text-sm font-medium text-gray-900 break-all">{user.userId}</div>
-                                </div>
-
                                 <div className="grid grid-cols-2 gap-4 mt-3">
                                     <div>
                                         <div className="text-xs font-medium text-gray-500 uppercase mb-1">Username</div>
@@ -80,7 +73,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
                                     </div>
 
                                     <div>
-                                        <div className="text-xs font-medium text-gray-500 uppercase mb-1">Created</div>
+                                        <div className="text-xs font-medium text-gray-500 uppercase mb-1">Created At</div>
                                         <div className="text-sm text-gray-500">{formatDate(user.createdAt)}</div>
                                     </div>
 

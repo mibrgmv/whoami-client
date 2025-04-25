@@ -1,6 +1,6 @@
 export interface Question {
-    id: bigint;
-    quiz_id: bigint;
+    id: string;
+    quiz_id: string;
     body: string;
     options: string[];
 }
