@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container } from "../components/Container.tsx";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner.tsx";
 import { ErrorMessage } from "../components/ui/ErrorMessage.tsx";
-import { Card } from "../components/ui/Card.tsx";
 import { Quiz } from "../shared/types/Quiz.tsx";
 import { getQuizzes, GetQuizzesResponse } from "../api/GET/getQuizzes.ts";
 
@@ -52,58 +50,106 @@ export const Quizzes: React.FC = () => {
         }
     };
 
-    if (loading) {
-        return (
-            <Container>
-                <LoadingSpinner />
-            </Container>
-        );
-    }
-
-    if (error) {
-        return (
-            <Container>
-                <ErrorMessage message={error} />
-            </Container>
-        );
-    }
+    const thClass = "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
+    const tdBase = "px-6 py-4 whitespace-nowrap text-sm";
+    const tdClasses = {
+        title: `${tdBase} font-medium text-gray-900`,
+        action: `${tdBase} text-right`
+    };
 
     return (
-        <Container>
-            <div className="bg-white rounded-lg shadow overflow-hidden">
-                <div className="p-6">
-                    <h1 className="text-2xl font-semibold text-gray-800 mb-6">Available Quizzes</h1>
+        <div className="min-h-screen pt-20 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto overflow-y-auto">
+            {loading ? (
+                <div className="flex justify-center">
+                    <LoadingSpinner />
+                </div>
+            ) : error ? (
+                <div className="mt-8">
+                    <ErrorMessage message={error} />
+                </div>
+            ) : (
+                <>
+                    <div className="bg-white rounded-lg shadow bg-red-300 overflow-hidden">
+                        <div className="px-6 py-4 border-b border-gray-200">
+                            <h2 className="text-xl font-semibold text-gray-800">Available Quizzes</h2>
+                            <p className="text-sm text-gray-500 mt-1">Total quizzes shown: {quizzes.length}</p>
+                        </div>
 
-                    {quizzes.length === 0 ? (
-                        <div className="text-center py-12">
-                            <p className="text-gray-500">No quizzes available</p>
+                        {/* Desktop */}
+                        <div className="hidden md:block overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                <tr>
+                                    <th className={thClass}>Quiz Title</th>
+                                    <th className={`${thClass} text-right`}>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                {quizzes.length > 0 ? (
+                                    quizzes.map((quiz, index) => (
+                                        <tr key={quiz.id || index} className="hover:bg-gray-50">
+                                            <td className={tdClasses.title}>{quiz.title}</td>
+                                            <td className={tdClasses.action}>
+                                                <button
+                                                    onClick={() => handleQuizClick(quiz.id)}
+                                                    className="px-4 py-2 bg-blue-600 text-white text-s rounded cursor-pointer hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                                >
+                                                    Start
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={2} className="px-6 py-4 text-center text-sm text-gray-500">No quizzes found</td>
+                                    </tr>
+                                )}
+                                </tbody>
+                            </table>
                         </div>
-                    ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {quizzes.map((quiz, index) => (
-                                <Card
-                                    key={quiz.id || index}
-                                    name={quiz.title}
-                                    buttonText="Start Quiz"
-                                    onClick={() => handleQuizClick(quiz.id)}
-                                />
-                            ))}
+
+                        {/* Mobile */}
+                        <div className="md:hidden">
+                            {quizzes.length > 0 ? (
+                                <div className="divide-y divide-gray-200">
+                                    {quizzes.map((quiz, index) => (
+                                        <div key={quiz.id || index} className="p-4 hover:bg-gray-50">
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <div className="text-xs font-medium text-gray-500 uppercase mb-1">Quiz Title</div>
+                                                    <div className="text-sm font-medium text-gray-900">{quiz.title}</div>
+                                                </div>
+                                                <div className="mt-2">
+                                                    <button
+                                                        onClick={() => handleQuizClick(quiz.id)}
+                                                        className="px-4 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                                    >
+                                                        Start Quiz
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="px-6 py-4 text-center text-sm text-gray-500">No quizzes found</div>
+                            )}
                         </div>
-                    )}
+                    </div>
 
                     {nextPageToken && (
                         <div className="mt-8 pt-4 border-t border-gray-200 flex justify-center">
                             <button
                                 onClick={handleLoadMore}
-                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                className="px-4 py-2 bg-blue-600 cursor-pointer text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                                 disabled={isLoadingMore}
                             >
                                 {isLoadingMore ? <LoadingSpinner /> : 'Load More Quizzes'}
                             </button>
                         </div>
                     )}
-                </div>
-            </div>
-        </Container>
+                </>
+            )}
+        </div>
     );
 };
