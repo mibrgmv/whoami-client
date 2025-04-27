@@ -1,11 +1,11 @@
 import {User} from "../../shared/types/User.tsx";
 import {Endpoints} from "../endpoints.ts";
 
-export const getCurrentUser = async (token: string): Promise<User> => {
+export const getCurrentUser = async (accessToken: string): Promise<User> => {
     const response = await fetch(Endpoints.getCurrentUser, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${accessToken}`,
         },
     });
     if (!response.ok) {

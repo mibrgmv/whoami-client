@@ -6,7 +6,8 @@ interface LoginRequest {
 }
 
 interface LoginResponse {
-    token: string,
+    accessToken: string,
+    refreshToken: string,
     userId: string
 }
 
@@ -18,12 +19,17 @@ export const login = async ({username, password}: LoginRequest) => {
         },
         body: JSON.stringify({username, password}),
     });
+
     if (!response.ok) {
-        // todo check what comes out on internal error
         const data = await response.json();
-        const errorMessage = data?.message || `failed to register`;
+        const errorMessage = data?.message || `Failed to login`;
         throw new Error(errorMessage);
     }
+
     const data: LoginResponse = await response.json();
-    return data;
+    return {
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        userId: data.userId
+    };
 }

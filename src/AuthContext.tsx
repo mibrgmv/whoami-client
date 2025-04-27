@@ -1,40 +1,89 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useContext, useState, useEffect, useCallback} from 'react';
+import {refreshToken} from "./api/POST/refreshToken.ts";
 
-export interface LoginData {
-    token: string,
+export interface AuthTokens {
+    accessToken: string,
+    refreshToken: string,
     userId: string
 }
 
 interface AuthContextType {
-    loginData: LoginData | null;
-    setLoginData(loginData: LoginData): void;
-    removeLoginData(): void;
+    authTokens: AuthTokens | null;
+    setAuthTokens(tokens: AuthTokens): void;
+    removeAuthTokens(): void;
+    getAccessToken(): Promise<string | null>;
 }
 
 const AuthContext = createContext<AuthContextType>({
-    loginData: null,
-    setLoginData: () => {},
-    removeLoginData: () => {}
-})
+    authTokens: null,
+    setAuthTokens: () => {},
+    removeAuthTokens: () => {},
+    getAccessToken: async () => null
+});
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
-    const [loginData, setLoginData] = useState<LoginData | null>(() => {
-        const storedData = localStorage.getItem("loginData");
-        return storedData ? JSON.parse(storedData) : null;
-    });
+    const [accessToken, setAccessToken] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string | null>(null);
 
-    const login = (newLoginData: LoginData) => {
-        setLoginData(newLoginData);
-        localStorage.setItem("loginData", JSON.stringify(newLoginData));
+    useEffect(() => {
+        const storedUserId = localStorage.getItem("userId");
+        if (storedUserId) {
+            setUserId(storedUserId);
+        }
+    }, []);
+
+    const getRefreshToken = useCallback(() => {
+        return localStorage.getItem("refreshToken");
+    }, []);
+
+    const setAuthTokens = ({accessToken, refreshToken, userId}: AuthTokens) => {
+        setAccessToken(accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        setUserId(userId);
+        localStorage.setItem("userId", userId);
     };
 
-    const logout = () => {
-        setLoginData(null);
-        localStorage.removeItem("loginData");
+    const removeAuthTokens = () => {
+        setAccessToken(null);
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("userId");
+        setUserId(null);
     };
+
+    const getAccessToken = useCallback(async (): Promise<string | null> => {
+        if (accessToken) {
+            return accessToken;
+        }
+
+        const refresh_token = getRefreshToken();
+        if (refresh_token && userId) {
+            try {
+                const response = await refreshToken({refreshToken: refresh_token})
+                setAccessToken(response.accessToken);
+                setUserId(response.userId);
+            } catch (error) {
+                console.error('Error refreshing token:', error);
+                removeAuthTokens();
+                return null;
+            }
+        }
+
+        return null;
+    }, [accessToken, userId, getRefreshToken]);
 
     return (
-        <AuthContext.Provider value={{loginData, setLoginData: login, removeLoginData: logout}}>
+        <AuthContext.Provider
+            value={{
+                authTokens: accessToken && userId ? {
+                    accessToken,
+                    refreshToken: getRefreshToken() || '',
+                    userId
+                } : null,
+                setAuthTokens,
+                removeAuthTokens,
+                getAccessToken
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );

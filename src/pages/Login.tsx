@@ -17,7 +17,7 @@ const loginSchema = z.object({
 });
 
 export const LoginPage = () => {
-    const {setLoginData} = useAuth();
+    const {setAuthTokens} = useAuth();
     const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -46,7 +46,12 @@ export const LoginPage = () => {
             }
 
             const loginResponse = await login(validationResult.data);
-            setLoginData({token: loginResponse.token, userId: loginResponse.userId});
+            setAuthTokens({
+                accessToken: loginResponse.accessToken,
+                refreshToken: loginResponse.refreshToken,
+                userId: loginResponse.userId
+            });
+
             setIsLoginSuccessful(true);
         } catch (error: any) {
             setError(error.message);

@@ -7,7 +7,7 @@ import {User} from "../shared/types/User.tsx";
 import {getUsers, GetUsersResponse} from "../api/GET/getUsers.ts";
 
 export const Users = () => {
-    const {loginData} = useAuth();
+    const {authTokens, getAccessToken} = useAuth();
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [nextPageToken, setNextPageToken] = useState<string>("");
@@ -17,20 +17,27 @@ export const Users = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            if (!loginData) {
+            if (!authTokens) {
                 setLoading(false);
                 setError('Not logged in');
                 return;
             }
 
             try {
+                const token = await getAccessToken();
+                if (!token) {
+                    setLoading(false);
+                    setError('No token available');
+                    return;
+                }
+
                 if (isLoadingMore) {
-                    const response: GetUsersResponse = await getUsers(pageSize, nextPageToken, loginData);
+                    const response: GetUsersResponse = await getUsers(pageSize, nextPageToken, token);
                     setUsers(prevUsers => [...prevUsers, ...response.users]);
                     setNextPageToken(response.nextPageToken);
                     setIsLoadingMore(false);
                 } else {
-                    const response: GetUsersResponse = await getUsers(pageSize, "", loginData);
+                    const response: GetUsersResponse = await getUsers(pageSize, "", token);
                     setUsers(response.users);
                     setNextPageToken(response.nextPageToken);
                     setLoading(false);
@@ -45,7 +52,7 @@ export const Users = () => {
         if (loading || isLoadingMore) {
             fetchUsers();
         }
-    }, [loading, isLoadingMore, nextPageToken, loginData]);
+    }, [loading, isLoadingMore, nextPageToken, authTokens, getAccessToken]);
 
     const handleLoadMore = () => {
         if (nextPageToken) {

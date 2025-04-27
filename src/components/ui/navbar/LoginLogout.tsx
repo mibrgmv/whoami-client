@@ -1,14 +1,14 @@
 import React from "react";
 import {Link as RouterLink} from "react-router-dom";
 
-interface LoginLogoutProps {
+interface Props {
     token: string | undefined;
     handleClick: () => void;
     logout: () => void;
     className: string;
 }
 
-export const LoginLogout: React.FC<LoginLogoutProps> = ({token, handleClick, logout, className}) => (
+export const LoginLogout: React.FC<Props> = ({token, handleClick, logout, className}) => (
     <>
         {token ? (
             <div className={className} onClick={logout}>

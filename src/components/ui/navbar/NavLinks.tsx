@@ -8,7 +8,7 @@ interface RouteData {
     path: string;
 }
 
-interface NavLinksProps {
+interface Props {
     nav: boolean;
     handleClick: () => void;
     token: string | undefined;
@@ -16,7 +16,7 @@ interface NavLinksProps {
     routes: RouteData[];
 }
 
-export const NavLinks: React.FC<NavLinksProps> = ({nav, handleClick, token, logout, routes}) => {
+export const NavLinks: React.FC<Props> = ({nav, handleClick, token, logout, routes}) => {
     const liStyle = "px-6 py-3 mx-3 rounded-lg text-2xl md:text-xl cursor-pointer hover:bg-black/10";
     return (
         <>

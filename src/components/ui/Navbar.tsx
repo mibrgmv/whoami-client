@@ -19,13 +19,19 @@ const routes: RouteData[] = [
 export const Navbar = () => {
     const [nav, setNav] = useState(false);
     const handleClick = () => setNav(!nav);
-    const {loginData, removeLoginData} = useAuth();
+    const {authTokens, removeAuthTokens} = useAuth();
 
     return (
         <div>
             <Logo/>
             <ToggleButton nav={nav} handleClick={handleClick}/>
-            <NavLinks nav={nav} routes={routes} handleClick={handleClick} token={loginData?.token} logout={removeLoginData}/>
+            <NavLinks
+                nav={nav}
+                routes={routes}
+                handleClick={handleClick}
+                token={authTokens?.accessToken}
+                logout={removeAuthTokens}
+            />
         </div>
     );
 };

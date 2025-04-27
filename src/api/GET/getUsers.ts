@@ -1,13 +1,12 @@
 import {User} from "../../shared/types/User.tsx";
 import {Endpoints} from "../endpoints.ts";
-import {LoginData} from "../../AuthContext.tsx";
 
 export interface GetUsersResponse {
     users: User[];
     nextPageToken: string;
 }
 
-export const getUsers = async (pageSize: number, pageToken: string, {token}: LoginData) => {
+export const getUsers = async (pageSize: number, pageToken: string, token: string) => {
     let url = `${Endpoints.users}?page_size=${pageSize}`;
     if (pageToken) {
         url += `&page_token=${pageToken}`;
