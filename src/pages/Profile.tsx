@@ -9,7 +9,7 @@ import {deleteUser} from "../api/DELETE/deleteUser.ts";
 import {FadeOverlay} from "../components/ui/navbar/FadeOverlay.tsx";
 
 export const ProfilePage = () => {
-    const {loginData, removeLoginData} = useAuth();
+    const {authTokens, removeAuthTokens, getAccessToken} = useAuth();
     const [profile, setProfile] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -19,13 +19,14 @@ export const ProfilePage = () => {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            if (!loginData?.token) {
-                setLoading(false);
-                setError('No token available');
-                return;
-            }
             try {
-                const profileData = await getCurrentUser(loginData.token);
+                const token = await getAccessToken();
+                if (!token) {
+                    setLoading(false);
+                    setError('No token available');
+                    return;
+                }
+                const profileData = await getCurrentUser(token);
                 setProfile(profileData);
                 setLoading(false);
             } catch (err: any) {
@@ -35,7 +36,7 @@ export const ProfilePage = () => {
         };
 
         fetchProfile();
-    }, [loginData]);
+    }, [getAccessToken]);
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -49,17 +50,18 @@ export const ProfilePage = () => {
     };
 
     const handleDeleteProfile = async () => {
-        if (!loginData?.token) {
-            setDeleteError('Not authenticated');
-            return;
-        }
-
         setIsDeleting(true);
         setDeleteError(null);
 
         try {
-            await deleteUser(loginData);
-            removeLoginData();
+            const token = await getAccessToken();
+            if (!token || !authTokens) {
+                setDeleteError('Not authenticated');
+                return;
+            }
+
+            await deleteUser(authTokens);
+            removeAuthTokens();
             window.location.replace('/login');
         } catch (err: any) {
             setDeleteError(err.message);
