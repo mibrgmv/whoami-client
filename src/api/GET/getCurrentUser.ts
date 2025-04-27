@@ -8,9 +8,10 @@ export const getCurrentUser = async (accessToken: string): Promise<User> => {
             'Authorization': `Bearer ${accessToken}`,
         },
     });
+
     if (!response.ok) {
         throw new Error('Failed to fetch current user');
     }
-    const data: User = await response.json();
-    return data;
+
+    return await response.json();
 };
