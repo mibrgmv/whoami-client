@@ -17,9 +17,6 @@ export const ResultView: React.FC<ResultViewProps> = ({result}) => {
                 <h2 className="text-2xl font-semibold text-center mb-4 text-blue-800">
                     Your result: {JSON.stringify(result.result, null, 2)}
                 </h2>
-                <h2 className="text-xl text-center mb-4 text-blue-800">
-                    {JSON.stringify(result.description, null, 2)}
-                </h2>
 
                 <div className="flex flex-col items-center justify-center py-4">
                     <div className="text-blue-700 text-xl font-semibold">

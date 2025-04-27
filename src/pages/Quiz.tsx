@@ -14,12 +14,12 @@ import {Result} from "../shared/types/Result.tsx";
 import {ResultView} from "../components/ui/quiz/ResultView.tsx";
 import {useAuth} from "../AuthContext.tsx";
 import {getQuestionsByQuizId} from "../api/GET/getQuestionsByQuizId.ts";
-import {getQuizById} from "../api/GET/quizById.ts";
+import {getQuizById} from "../api/GET/getQuizById.ts";
 import {evaluate} from "../api/POST/evaluate.ts";
 
 export const QuizPage: React.FC = () => {
     const {quizId} = useParams();
-    const {loginData} = useAuth();
+    const {authTokens, getAccessToken} = useAuth();
     const [quiz, setQuiz] = useState<Quiz | null>(null);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [answers, setAnswers] = useState<Answer[]>([]);
@@ -37,17 +37,25 @@ export const QuizPage: React.FC = () => {
                 return;
             }
 
-            if (!loginData) {
+            if (!authTokens) {
                 setLoading(false);
                 setError('Not logged in');
                 return;
             }
 
             try {
+                const token = await getAccessToken();
+                if (!token) {
+                    setLoading(false);
+                    setError('No token available');
+                    return;
+                }
+
                 const [quizResponse, questionsResponse] = await Promise.all([
-                    getQuizById(quizId, loginData),
-                    getQuestionsByQuizId({quizId: quizId, loginData: loginData}),
+                    getQuizById(quizId, token),
+                    getQuestionsByQuizId(quizId, token),
                 ]);
+
                 setQuiz(quizResponse);
                 setQuestions(questionsResponse.questions);
             } catch (err: any) {
@@ -58,7 +66,7 @@ export const QuizPage: React.FC = () => {
         };
 
         fetchQuizAndQuestions();
-    }, [quizId, loginData]);
+    }, [quizId, authTokens]);
 
     const handleOptionSelect = (questionId: string, option: string) => {
         const quizId = String(quiz?.id);
@@ -91,7 +99,7 @@ export const QuizPage: React.FC = () => {
         if (!quiz)
             return;
 
-        if (!loginData) {
+        if (!authTokens) {
             setLoading(false);
             setError('Not logged in');
             return;
@@ -105,7 +113,19 @@ export const QuizPage: React.FC = () => {
         setSubmitting(true);
 
         try {
-            const result: Result = await evaluate({quizId: quiz.id, answers: answers, loginData: loginData})
+            const token = await getAccessToken();
+            if (!token) {
+                setLoading(false);
+                setError('No token available');
+                return;
+            }
+
+            const result: Result = await evaluate({
+                quizId: quiz.id,
+                accessToken: token,
+                answers: answers
+            })
+
             setResult(result);
         } catch (err: any) {
             setError(err.message);

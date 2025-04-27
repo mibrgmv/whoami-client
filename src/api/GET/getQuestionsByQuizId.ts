@@ -1,23 +1,17 @@
 import {Question} from "../../shared/types/Question.tsx";
 import {Endpoints} from "../endpoints.ts";
-import {LoginData} from "../../AuthContext.tsx";
-
-interface Props {
-    quizId: string
-    loginData: LoginData
-}
 
 export interface GetQuestionsByQuizIdResponse {
     questions: Question[]
 }
 
-export const getQuestionsByQuizId = async ({quizId, loginData}: Props): Promise<GetQuestionsByQuizIdResponse> => {
+export const getQuestionsByQuizId = async (quizId: string, accessToken: string): Promise<GetQuestionsByQuizIdResponse> => {
     const url = `${Endpoints.getQuizzes}/${quizId}/questions`;
 
     const response = await fetch(url, {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${loginData.token}`,
+            Authorization: `Bearer ${accessToken}`,
         },
     });
 
@@ -35,10 +29,10 @@ export const getQuestionsByQuizId = async ({quizId, loginData}: Props): Promise<
     let buffer = '';
 
     while (true) {
-        const { done, value } = await reader.read();
+        const {done, value} = await reader.read();
         if (done) break;
 
-        buffer += decoder.decode(value, { stream: true });
+        buffer += decoder.decode(value, {stream: true});
 
         while (buffer.includes('\n')) {
             const newlineIndex = buffer.indexOf('\n');
@@ -48,7 +42,6 @@ export const getQuestionsByQuizId = async ({quizId, loginData}: Props): Promise<
             if (line) {
                 try {
                     const parsedLine = JSON.parse(line);
-                    // Extract the question data from the "result" field
                     if (parsedLine && parsedLine.result) {
                         const questionData = parsedLine.result;
                         const question: Question = {
@@ -66,7 +59,5 @@ export const getQuestionsByQuizId = async ({quizId, loginData}: Props): Promise<
         }
     }
 
-    return {
-        questions
-    };
+    return {questions};
 }

@@ -1,24 +1,23 @@
 import {Endpoints} from "../endpoints.ts";
 import {Answer} from "../../shared/types/Answer.tsx";
-import {LoginData} from "../../AuthContext.tsx";
 
 interface EvaluateRequest {
     quizId: string
+    accessToken: string
     answers: Answer[]
-    loginData: LoginData
 }
 
 interface EvaluateResponse {
     result: string
 }
 
-export const evaluate = async ({quizId, answers, loginData}: EvaluateRequest) => {
+export const evaluate = async ({quizId, accessToken, answers}: EvaluateRequest) => {
     const url = `${Endpoints.getQuizzes}/${quizId}/evaluate`;
 
     const response = await fetch(url, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${loginData.token}`,
+                'Authorization': `Bearer ${accessToken}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
