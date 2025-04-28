@@ -1,38 +1,39 @@
-import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
-import {useAuth} from '../AuthContext.tsx';
-import {Button} from "../components/ui/Button.tsx";
-import {Container} from "../components/Container.tsx";
-import {InputWrapper} from "../components/ui/inputs/InputWrapper.tsx";
-import {PasswordInput} from "../components/ui/inputs/PasswordInput.tsx";
-import {CustomInput} from "../components/ui/inputs/CustomInput.tsx";
-import {InputError} from "../components/ui/inputs/InputError.tsx";
-import z from "zod";
-import {login} from "../api/POST/login.ts";
-import {Success} from "./Success.tsx";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext.tsx';
+import { FormContainer } from "../components/ui/FormContainer.tsx";
+import { Button } from "../components/ui/Button.tsx";
+import { InputWrapper } from "../components/ui/inputs/InputWrapper.tsx";
+import { PasswordInput } from "../components/ui/inputs/PasswordInput.tsx";
+import { CustomInput } from "../components/ui/inputs/CustomInput.tsx";
+import { ErrorMessage } from "../components/ui/ErrorMessage.tsx";
+import { LoadingSpinner } from "../components/ui/LoadingSpinner.tsx";
+import { login } from "../api/POST/login.ts";
+import { z } from "zod";
 
 const loginSchema = z.object({
-    username: z.string().min(1, {message: "Username is required"}),
-    password: z.string().min(1, {message: "Password is required"}),
+    username: z.string().min(1, { message: "Username is required" }),
+    password: z.string().min(1, { message: "Password is required" }),
 });
 
 export const LoginPage = () => {
-    const {setAuthTokens} = useAuth();
-    const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
+    const navigate = useNavigate();
+    const { setAuthTokens } = useAuth();
+    const [isLoading, setIsLoading] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    const [error, setError] = useState('');
+    const [generalError, setGeneralError] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setUsernameError('');
         setPasswordError('');
-        setError('')
+        setGeneralError('');
 
         try {
-            const validationResult = loginSchema.safeParse({username, password});
+            const validationResult = loginSchema.safeParse({ username, password });
 
             if (!validationResult.success) {
                 validationResult.error.issues.forEach((issue) => {
@@ -45,49 +46,83 @@ export const LoginPage = () => {
                 return;
             }
 
+            setIsLoading(true);
             const loginResponse = await login(validationResult.data);
+
             setAuthTokens({
                 accessToken: loginResponse.accessToken,
                 refreshToken: loginResponse.refreshToken,
                 userId: loginResponse.userId
             });
 
-            setIsLoginSuccessful(true);
+            navigate('/');
+
         } catch (error: any) {
-            setError(error.message);
+            setGeneralError(error.message || 'Failed to login. Please try again.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    if (isLoginSuccessful) {
-        return <Success name="login" />;
-    }
-
     return (
-        <Container>
-            <form onSubmit={handleSubmit} className="form">
-                <InputWrapper label="Username" error={usernameError}>
-                    <CustomInput
-                        value={username}
-                        type="text"
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </InputWrapper>
+        <FormContainer
+            title="Welcome back!"
+            subtitle="Please sign in to your account"
+        >
+            <div className="min-h-[400px] flex flex-col justify-center">
+                {isLoading ? (
+                    <div className="py-10 flex flex-col items-center justify-center">
+                        <LoadingSpinner size="large" />
+                        <p className="text-center mt-4 text-gray-600">Logging in...</p>
+                    </div>
+                ) : (
+                    <>
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <InputWrapper label="Username" error={usernameError}>
+                                <CustomInput
+                                    value={username}
+                                    type="text"
+                                    placeholder="Enter your username"
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    disabled={isLoading}
+                                />
+                            </InputWrapper>
 
-                <InputWrapper label="Password" error={passwordError}>
-                    <PasswordInput
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </InputWrapper>
+                            <InputWrapper label="Password" error={passwordError}>
+                                <PasswordInput
+                                    value={password}
+                                    placeholder="Enter your password"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    disabled={isLoading}
+                                />
+                            </InputWrapper>
 
-                <div className="flex flex-col mt-8 gap-2">
-                    <Button text="Log in" type="submit"/>
-                    <Link to="/register">
-                        <Button text="Register" type="button"/>
-                    </Link>
-                </div>
-            </form>
-            <InputError error={error}/>
-        </Container>
+                            {generalError && (
+                                <ErrorMessage message={generalError} className="mt-4" />
+                            )}
+
+                            <div className="pt-4">
+                                <Button
+                                    text="Log In"
+                                    type="submit"
+                                    variant="primary"
+                                    fullWidth
+                                    isLoading={isLoading}
+                                />
+                            </div>
+                        </form>
+
+                        <div className="mt-6 text-center">
+                            <p className="text-sm text-gray-600">
+                                Don't have an account?{' '}
+                                <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
+                                    Register here
+                                </Link>
+                            </p>
+                        </div>
+                    </>
+                )}
+            </div>
+        </FormContainer>
     );
 };

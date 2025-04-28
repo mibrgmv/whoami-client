@@ -6,7 +6,7 @@ interface InputErrorProps {
 
 export const InputError: React.FC<InputErrorProps> = ({error}) => {
     return (
-        <div className="h-4 text-sm text-red-500">
+        <div className="h-6 text-sm text-red-500 mt-1">
             {error && (
                 <>{error}</>
             )}

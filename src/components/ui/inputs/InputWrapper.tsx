@@ -9,10 +9,12 @@ interface InputWrapperProps {
 
 export const InputWrapper: React.FC<InputWrapperProps> = ({label, children, error}) => {
     return (
-        <div>
-            <label className="block">
-                {label}
-            </label>
+        <div className="mb-4">
+            {label && (
+                <label className="block text-gray-700 text-sm font-medium mb-2">
+                    {label}
+                </label>
+            )}
 
             {children}
 

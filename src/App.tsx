@@ -3,7 +3,7 @@ import {PrivateRoute} from "./components/PrivateRoute.tsx";
 import {Layout} from "./components/Layout.tsx";
 import {HomePage} from "./pages/Home.tsx";
 import {LoginPage} from "./pages/Login.tsx";
-import {Register} from "./pages/Register.tsx";
+import {RegisterPage} from "./pages/Register.tsx";
 import {ProfilePage} from "./pages/Profile.tsx";
 import {Users} from "./pages/Users.tsx";
 import {Quizzes} from "./pages/Quizzes.tsx";
@@ -16,7 +16,7 @@ export function App() {
                 <Route path="/" element={<Layout/>}>
                     <Route index element={<HomePage/>}/>
                     <Route path="/login" element={<LoginPage/>}/>
-                    <Route path="/register" element={<Register/>}/>
+                    <Route path="/register" element={<RegisterPage/>}/>
                     <Route path="/quizzes" element={<Quizzes/>}/>
                     <Route element={<PrivateRoute/>}>
                         <Route
