@@ -10,16 +10,16 @@ interface RouteData {
 }
 
 const routes: RouteData[] = [
-    {name: "Home", path: "/"},
-    {name: "Quizzes", path: "/quizzes"},
-    {name: "Users", path: "/users"},
-    {name: "Profile", path: "/profile"},
+    { name: "Home", path: "/" },
+    { name: "Quizzes", path: "/quizzes" },
+    { name: "Users", path: "/users" },
+    { name: "Profile", path: "/profile" },
 ];
 
 export const Navbar = () => {
     const [nav, setNav] = useState(false);
     const handleClick = () => setNav(!nav);
-    const {authTokens, removeAuthTokens} = useAuth();
+    const {authTokens, logout} = useAuth();
 
     return (
         <div>
@@ -30,7 +30,7 @@ export const Navbar = () => {
                 routes={routes}
                 handleClick={handleClick}
                 token={authTokens?.accessToken}
-                logout={removeAuthTokens}
+                logout={logout}
             />
         </div>
     );

@@ -1,35 +1,51 @@
-import {useAuth} from '../AuthContext';
-
-export const createAuthenticatedFetch = (getAccessToken: () => Promise<string | null>) => {
-    return async (url: string, options: RequestInit = {}): Promise<Response> => {
-        const requestOptions = {...options};
-
-        requestOptions.headers = requestOptions.headers
-            ? {...requestOptions.headers}
-            : {};
-
-        if (!url.includes('/login') && !url.includes('/refresh') && !url.includes('/register')) {
-            try {
-                const token = await getAccessToken();
-
-                if (token) {
-                    (requestOptions.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
-                }
-            } catch (error) {
-                console.error('Error getting access token:', error);
-            }
-        }
-
-        return await fetch(url, requestOptions);
-    };
-};
+import { useAuth } from '../AuthContext';
+import { useCallback } from 'react';
 
 export const useApiClient = () => {
-    const {getAccessToken} = useAuth();
+    const { getAccessToken, refreshAccessToken } = useAuth();
 
-    const authenticatedFetch = createAuthenticatedFetch(getAccessToken);
+    const fetchWithAuth = useCallback(
+        async (url: string, options: RequestInit = {}): Promise<Response> => {
+            const accessToken = await getAccessToken();
+            if (!accessToken) {
+                throw new Error('No access token available');
+            }
 
-    return {
-        fetch: authenticatedFetch
-    };
+            const authorizedOptions: RequestInit = {
+                ...options,
+                headers: {
+                    ...options.headers,
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            };
+
+            const response = await fetch(url, authorizedOptions);
+
+            if (response.status === 401) {
+                const refreshed = await refreshAccessToken();
+                if (refreshed) {
+                    const newAccessToken = await getAccessToken();
+                    if (newAccessToken) {
+                        const retryOptions: RequestInit = {
+                            ...options,
+                            headers: {
+                                ...options.headers,
+                                Authorization: `Bearer ${newAccessToken}`,
+                            },
+                        };
+                        return fetch(url, retryOptions);
+                    } else {
+                        throw new Error('Failed to get new access token after refresh');
+                    }
+                } else {
+                    throw new Error('Unauthorized and failed to refresh token');
+                }
+            }
+
+            return response;
+        },
+        [getAccessToken, refreshAccessToken]
+    );
+
+    return { fetch: fetchWithAuth };
 };

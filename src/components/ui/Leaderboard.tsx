@@ -1,22 +1,12 @@
 import React from 'react';
 import { User } from "../../shared/types/User.tsx";
+import {formatDate} from "../../shared/functions/formatDate.ts";
 
 interface LeaderboardProps {
     users: User[];
 }
 
 export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return new Intl.DateTimeFormat('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        }).format(date);
-    };
-
     const thClass = "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
     const tdBase = "px-6 py-4 whitespace-nowrap text-sm";
     const tdClasses = {

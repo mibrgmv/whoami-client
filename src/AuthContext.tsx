@@ -7,24 +7,22 @@ import React, {
     Dispatch,
     SetStateAction,
 } from 'react';
-import {refreshToken} from './api/POST/refreshToken.ts';
+import { refreshToken as refreshApi } from './api/POST/refreshToken';
 
-interface AuthContextType {
-    isAuthenticated: boolean;
+interface AuthTokens {
     accessToken: string | null;
     refreshToken: string | null;
     userId: string | null;
+}
+
+interface AuthContextType {
+    isAuthenticated: boolean;
+    authTokens: AuthTokens;
     login: (accessToken: string, refreshToken: string, userId: string) => void;
     logout: () => void;
     getAccessToken: () => Promise<string | null>;
     refreshAccessToken: () => Promise<boolean>;
-    setAuthInfo: Dispatch<SetStateAction<AuthInfo>>;
-}
-
-interface AuthInfo {
-    accessToken: string | null;
-    refreshToken: string | null;
-    userId: string | null;
+    setAuthTokens: Dispatch<SetStateAction<AuthTokens>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,24 +31,24 @@ interface AuthProviderProps {
     children: React.ReactNode;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
-    const [authInfo, setAuthInfo] = useState<AuthInfo>({
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+    const [authTokens, setAuthTokens] = useState<AuthTokens>({
         accessToken: localStorage.getItem('accessToken'),
         refreshToken: localStorage.getItem('refreshToken'),
         userId: localStorage.getItem('userId'),
     });
 
-    const isAuthenticated = !!authInfo.accessToken;
+    const isAuthenticated = !!authTokens.accessToken;
 
     const login = useCallback((accessToken: string, refreshToken: string, userId: string) => {
-        setAuthInfo({accessToken, refreshToken, userId});
+        setAuthTokens({ accessToken, refreshToken, userId });
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
         localStorage.setItem('userId', userId);
     }, []);
 
     const logout = useCallback(() => {
-        setAuthInfo({accessToken: null, refreshToken: null, userId: null});
+        setAuthTokens({ accessToken: null, refreshToken: null, userId: null });
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('userId');
@@ -64,8 +62,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         }
 
         try {
-            const {accessToken: newAccessToken, userId: newUserId} = await refreshToken({refreshToken: localRefreshToken});
-            setAuthInfo({accessToken: newAccessToken, refreshToken: localRefreshToken, userId: newUserId});
+            const { accessToken: newAccessToken, userId: newUserId } = await refreshApi({ refreshToken: localRefreshToken });
+            setAuthTokens(prevTokens => ({ ...prevTokens, accessToken: newAccessToken, userId: newUserId }));
             localStorage.setItem('accessToken', newAccessToken);
             localStorage.setItem('userId', newUserId);
             return true;
@@ -92,14 +90,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     return (
         <AuthContext.Provider value={{
             isAuthenticated,
-            accessToken: authInfo.accessToken,
-            refreshToken: authInfo.refreshToken,
-            userId: authInfo.userId,
+            authTokens,
             login,
             logout,
             getAccessToken,
             refreshAccessToken,
-            setAuthInfo,
+            setAuthTokens,
         }}>
             {children}
         </AuthContext.Provider>

@@ -7,7 +7,7 @@ import {User} from "../shared/types/User";
 import {useGetUsers} from "../hooks/useGetUsers";
 
 export const Users = () => {
-    const {isAuthenticated, getAccessToken} = useAuth();
+    const {isAuthenticated} = useAuth();
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [nextPageToken, setNextPageToken] = useState<string>("");
@@ -24,36 +24,28 @@ export const Users = () => {
         }
 
         try {
-            const token = await getAccessToken();
-            if (!token) {
-                setLoading(false);
-                setError('No token available');
-                return;
-            }
-
-            if (loadMore) {
-                const response = await getUsers(pageSize, nextPageToken);
-                setUsers(prevUsers => [...prevUsers, ...response.users]);
-                setNextPageToken(response.nextPageToken);
-                setIsLoadingMore(false);
-            } else {
-                const response = await getUsers(pageSize, "");
-                setUsers(response.users);
-                setNextPageToken(response.nextPageToken);
-                setLoading(false);
-            }
+            const response = await getUsers(pageSize, loadMore ? nextPageToken : "");
+            setUsers(prevUsers => loadMore ? [...prevUsers, ...response.users] : response.users);
+            setNextPageToken(response.nextPageToken || "");
+            setLoading(false);
+            setError(null);
+            setIsLoadingMore(false);
         } catch (err: any) {
-            setError(err.message);
+            console.error("Error fetching users:", err);
+            setError(err.message || 'Failed to load users.');
             setLoading(false);
             setIsLoadingMore(false);
         }
-    }, [isAuthenticated, getAccessToken, getUsers, nextPageToken, pageSize]);
+    }, [isAuthenticated, getUsers, nextPageToken, pageSize]);
 
     useEffect(() => {
-        if (loading) {
+        if (loading && isAuthenticated) {
             fetchUsers(false);
+        } else if (!isAuthenticated) {
+            setLoading(false);
+            setError('Not logged in');
         }
-    }, [loading, fetchUsers]);
+    }, [loading, fetchUsers, isAuthenticated]);
 
     useEffect(() => {
         if (isLoadingMore) {
@@ -88,7 +80,7 @@ export const Users = () => {
                                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                                 disabled={isLoadingMore}
                             >
-                                {isLoadingMore ? <LoadingSpinner/> : 'Load More Users'}
+                                {isLoadingMore ? <LoadingSpinner size="small"/> : 'Load More Users'}
                             </button>
                         </div>
                     )}

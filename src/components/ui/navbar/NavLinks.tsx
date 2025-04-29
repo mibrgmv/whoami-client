@@ -1,7 +1,7 @@
 import React from "react";
-import {Link as RouterLink} from "react-router-dom";
-import {LoginLogout} from "./LoginLogout";
-import {FadeOverlay} from "./FadeOverlay.tsx";
+import { Link as RouterLink } from "react-router-dom";
+import { FadeOverlay } from "./FadeOverlay.tsx";
+import {LoginLogout} from "./LoginLogout.tsx";
 
 interface RouteData {
     name: string;
@@ -11,12 +11,12 @@ interface RouteData {
 interface Props {
     nav: boolean;
     handleClick: () => void;
-    token: string | undefined;
+    token: string | null;
     logout: () => void;
     routes: RouteData[];
 }
 
-export const NavLinks: React.FC<Props> = ({nav, handleClick, token, logout, routes}) => {
+export const NavLinks: React.FC<Props> = ({ nav, handleClick, token, logout, routes }) => {
     const liStyle = "px-6 py-3 mx-3 rounded-lg text-2xl md:text-xl cursor-pointer hover:bg-black/10";
     return (
         <>
