@@ -1,6 +1,5 @@
 import {User} from "../../shared/types/User.tsx";
 import {Endpoints} from "../endpoints.ts";
-import {useApiClient} from "../../hooks/useApiClient.ts";
 
 export interface GetUsersResponse {
     users: User[];
@@ -25,16 +24,5 @@ export const fetchUsers = async (
         throw new Error(`Failed to fetch users: ${response.status} ${response.statusText}`);
     }
 
-    const data: GetUsersResponse = await response.json();
-    return data;
-};
-
-export const useGetUsers = () => {
-    const {fetch} = useApiClient();
-
-    const getUsers = async (pageSize: number, pageToken: string): Promise<GetUsersResponse> => {
-        return fetchUsers(pageSize, pageToken, fetch);
-    };
-
-    return {getUsers};
+    return await response.json();
 };

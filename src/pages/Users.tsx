@@ -4,7 +4,7 @@ import {Leaderboard} from "../components/ui/Leaderboard.tsx";
 import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
 import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
 import {User} from "../shared/types/User.tsx";
-import {useGetUsers} from "../api/GET/getUsers.ts";
+import {useGetUsers} from "../hooks/useGetUsers.ts";
 
 export const Users = () => {
     const {authTokens, getAccessToken} = useAuth();

@@ -20,9 +20,7 @@ export const createAuthenticatedFetch = (getAccessToken: () => Promise<string | 
             }
         }
 
-        const response = await fetch(url, requestOptions);
-
-        return response;
+        return await fetch(url, requestOptions);
     };
 };
 
