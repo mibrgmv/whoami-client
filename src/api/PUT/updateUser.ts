@@ -1,26 +1,29 @@
-import {Endpoints} from "../endpoints.ts";
-import {AuthTokens} from "../../AuthContext.tsx";
+import { User } from "../../shared/types/User.tsx";
+import { Endpoints } from "../endpoints.ts";
 
-interface UpdateUserRequest {
+export const updateUser = async (
+  fetch: (url: string, options: RequestInit) => Promise<Response>,
+  userId: string,
+  updateData: {
     username?: string;
     currentPassword: string;
     newPassword?: string;
-}
+  },
+): Promise<User> => {
+  const response = await fetch(`${Endpoints.users}/${userId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updateData),
+  });
 
-export const updateUser = async ({accessToken, userId}: AuthTokens, updateData: UpdateUserRequest) => {
-    const response = await fetch(`${Endpoints.users}/${userId}`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updateData),
-    });
+  if (!response.ok) {
+    const data = await response.json();
+    const errorMessage =
+      data?.message || `Failed to update user with ID: ${userId}`;
+    throw new Error(errorMessage);
+  }
 
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData?.message || 'Failed to update user');
-    }
-
-    return response.json();
+  return await response.json();
 };

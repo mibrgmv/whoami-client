@@ -1,16 +1,17 @@
-import {Endpoints} from "../endpoints.ts";
-import {AuthTokens} from "../../AuthContext.tsx";
+import { Endpoints } from "../endpoints.ts";
 
-export const deleteUser = async ({accessToken, userId}: AuthTokens) => {
-    const response = await fetch(`${Endpoints.users}/${userId}`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        },
-    });
+export const deleteUser = async (
+  fetch: (url: string, options: RequestInit) => Promise<Response>,
+  userId: string,
+): Promise<void> => {
+  const response = await fetch(`${Endpoints.users}/${userId}`, {
+    method: "DELETE",
+  });
 
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData?.message || 'Failed to delete user');
-    }
+  if (!response.ok) {
+    const data = await response.json();
+    const errorMessage =
+      data?.message || `Failed to delete user with ID: ${userId}`;
+    throw new Error(errorMessage);
+  }
 };
