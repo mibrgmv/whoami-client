@@ -1,5 +1,5 @@
 import {User} from "../../shared/types/User.tsx";
-import {Endpoints} from "../endpoints.ts";
+import {Endpoints} from "../endpoints";
 
 export interface GetUsersResponse {
     users: User[];

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../AuthContext'; // Import the useAuth hook
 import { FormContainer } from "../components/ui/FormContainer";
 import { Button } from "../components/ui/Button";
 import { InputWrapper } from "../components/ui/inputs/InputWrapper";
@@ -8,7 +8,7 @@ import { PasswordInput } from "../components/ui/inputs/PasswordInput";
 import { CustomInput } from "../components/ui/inputs/CustomInput";
 import { ErrorMessage } from "../components/ui/ErrorMessage";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
-import { login } from "../api/POST/login";
+import { login as loginApi } from "../api/POST/login"; // Rename import to avoid conflict
 import { z } from "zod";
 
 const loginSchema = z.object({
@@ -18,7 +18,7 @@ const loginSchema = z.object({
 
 export const LoginPage = () => {
     const navigate = useNavigate();
-    const { setAuthTokens, authTokens } = useAuth();
+    const { login } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -27,10 +27,11 @@ export const LoginPage = () => {
     const [generalError, setGeneralError] = useState('');
 
     useEffect(() => {
-        if (authTokens) {
+        const storedAccessToken = localStorage.getItem('accessToken');
+        if (storedAccessToken) {
             navigate('/');
         }
-    }, [authTokens, navigate]);
+    }, [navigate]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -53,13 +54,9 @@ export const LoginPage = () => {
             }
 
             setIsLoading(true);
-            const loginResponse = await login(validationResult.data);
+            const loginResponse = await loginApi(validationResult.data);
 
-            setAuthTokens({
-                accessToken: loginResponse.accessToken,
-                refreshToken: loginResponse.refreshToken,
-                userId: loginResponse.userId
-            });
+            login(loginResponse.accessToken, loginResponse.refreshToken, loginResponse.userId);
 
             navigate('/');
 

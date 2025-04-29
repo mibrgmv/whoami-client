@@ -1,144 +1,115 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { refreshToken } from "./api/POST/refreshToken";
-
-export interface AuthTokens {
-    accessToken: string;
-    refreshToken: string;
-    userId: string;
-}
+import React, {
+    createContext,
+    useState,
+    useEffect,
+    useContext,
+    useCallback,
+    Dispatch,
+    SetStateAction,
+} from 'react';
+import {refreshToken} from './api/POST/refreshToken.ts';
 
 interface AuthContextType {
-    authTokens: AuthTokens | null;
-    setAuthTokens(tokens: AuthTokens): void;
-    removeAuthTokens(): void;
-    getAccessToken(): Promise<string | null>;
     isAuthenticated: boolean;
+    accessToken: string | null;
+    refreshToken: string | null;
+    userId: string | null;
+    login: (accessToken: string, refreshToken: string, userId: string) => void;
+    logout: () => void;
+    getAccessToken: () => Promise<string | null>;
+    refreshAccessToken: () => Promise<boolean>;
+    setAuthInfo: Dispatch<SetStateAction<AuthInfo>>;
 }
 
-const AuthContext = createContext<AuthContextType>({
-    authTokens: null,
-    setAuthTokens: () => {},
-    removeAuthTokens: () => {},
-    getAccessToken: async () => null,
-    isAuthenticated: false
-});
-
-function isTokenExpired(token: string): boolean {
-    if (!token) return true;
-
-    try {
-        const payloadBase64 = token.split('.')[1];
-        const payload = JSON.parse(atob(payloadBase64));
-
-        if (!payload.exp) return false;
-
-        const buffer = 10;
-        return (payload.exp - buffer) < Math.floor(Date.now() / 1000);
-    } catch (error) {
-        console.error('Error checking token expiration:', error);
-        return true;
-    }
+interface AuthInfo {
+    accessToken: string | null;
+    refreshToken: string | null;
+    userId: string | null;
 }
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [authTokens, setAuthTokensState] = useState<AuthTokens | null>(null);
-    const [refreshInProgress, setRefreshInProgress] = useState(false);
-    const [refreshPromise, setRefreshPromise] = useState<Promise<string | null> | null>(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-    useEffect(() => {
-        const loadSavedTokens = () => {
-            const savedRefreshToken = localStorage.getItem("refreshToken");
-            const savedUserId = localStorage.getItem("userId");
-            const savedAccessToken = localStorage.getItem("accessToken");
+interface AuthProviderProps {
+    children: React.ReactNode;
+}
 
-            if (savedRefreshToken && savedUserId && savedAccessToken) {
-                setAuthTokensState({
-                    accessToken: savedAccessToken,
-                    refreshToken: savedRefreshToken,
-                    userId: savedUserId
-                });
-                setIsAuthenticated(true);
-            }
-        };
+export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
+    const [authInfo, setAuthInfo] = useState<AuthInfo>({
+        accessToken: localStorage.getItem('accessToken'),
+        refreshToken: localStorage.getItem('refreshToken'),
+        userId: localStorage.getItem('userId'),
+    });
 
-        loadSavedTokens();
+    const isAuthenticated = !!authInfo.accessToken;
+
+    const login = useCallback((accessToken: string, refreshToken: string, userId: string) => {
+        setAuthInfo({accessToken, refreshToken, userId});
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('userId', userId);
     }, []);
 
-    const setAuthTokens = useCallback((tokens: AuthTokens) => {
-        setAuthTokensState(tokens);
-        setIsAuthenticated(true);
-        localStorage.setItem("accessToken", tokens.accessToken);
-        localStorage.setItem("refreshToken", tokens.refreshToken);
-        localStorage.setItem("userId", tokens.userId);
+    const logout = useCallback(() => {
+        setAuthInfo({accessToken: null, refreshToken: null, userId: null});
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('userId');
     }, []);
 
-    const removeAuthTokens = useCallback(() => {
-        setAuthTokensState(null);
-        setIsAuthenticated(false);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        localStorage.removeItem("userId");
-    }, []);
-
-    const refreshAuthToken = useCallback(async (): Promise<string | null> => {
-        const savedRefreshToken = localStorage.getItem("refreshToken");
-
-        if (!savedRefreshToken) {
-            return null;
+    const refreshAccessToken = useCallback(async (): Promise<boolean> => {
+        const localRefreshToken = localStorage.getItem('refreshToken');
+        if (!localRefreshToken) {
+            logout();
+            return false;
         }
 
         try {
-            setRefreshInProgress(true);
-            const response = await refreshToken({ refreshToken: savedRefreshToken });
-
-            const updatedTokens = {
-                accessToken: response.accessToken,
-                refreshToken: savedRefreshToken,
-                userId: response.userId
-            };
-
-            setAuthTokens(updatedTokens);
-            return response.accessToken;
+            const {accessToken: newAccessToken, userId: newUserId} = await refreshToken({refreshToken: localRefreshToken});
+            setAuthInfo({accessToken: newAccessToken, refreshToken: localRefreshToken, userId: newUserId});
+            localStorage.setItem('accessToken', newAccessToken);
+            localStorage.setItem('userId', newUserId);
+            return true;
         } catch (error) {
-            console.error('Error refreshing token:', error);
-            removeAuthTokens();
-            return null;
-        } finally {
-            setRefreshInProgress(false);
-            setRefreshPromise(null);
+            console.error('Failed to refresh token:', error);
+            logout();
+            return false;
         }
-    }, [setAuthTokens, removeAuthTokens]);
+    }, [logout]);
 
     const getAccessToken = useCallback(async (): Promise<string | null> => {
-        if (authTokens?.accessToken && !isTokenExpired(authTokens.accessToken)) {
-            return authTokens.accessToken;
+        const localAccessToken = localStorage.getItem('accessToken');
+        if (localAccessToken) {
+            return localAccessToken;
         }
 
-        if (refreshInProgress && refreshPromise) {
-            return refreshPromise;
-        }
+        const refreshed = await refreshAccessToken();
+        return refreshed ? localStorage.getItem('accessToken') : null;
+    }, [refreshAccessToken]);
 
-        const promise = refreshAuthToken();
-        setRefreshPromise(promise);
-        return promise;
-    }, [authTokens, refreshInProgress, refreshPromise, refreshAuthToken]);
+    useEffect(() => {
+    }, [refreshAccessToken]);
 
     return (
-        <AuthContext.Provider
-            value={{
-                authTokens,
-                setAuthTokens,
-                removeAuthTokens,
-                getAccessToken,
-                isAuthenticated
-            }}
-        >
+        <AuthContext.Provider value={{
+            isAuthenticated,
+            accessToken: authInfo.accessToken,
+            refreshToken: authInfo.refreshToken,
+            userId: authInfo.userId,
+            login,
+            logout,
+            getAccessToken,
+            refreshAccessToken,
+            setAuthInfo,
+        }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
 export const useAuth = () => {
-    return useContext(AuthContext);
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
 };

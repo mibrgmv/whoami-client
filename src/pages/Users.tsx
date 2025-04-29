@@ -1,13 +1,13 @@
-import {useEffect, useState} from 'react';
-import {useAuth} from '../AuthContext.tsx';
-import {Leaderboard} from "../components/ui/Leaderboard.tsx";
-import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
-import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
-import {User} from "../shared/types/User.tsx";
-import {useGetUsers} from "../hooks/useGetUsers.ts";
+import {useEffect, useState, useCallback} from 'react';
+import {useAuth} from '../AuthContext';
+import {Leaderboard} from "../components/ui/Leaderboard";
+import {LoadingSpinner} from "../components/ui/LoadingSpinner";
+import {ErrorMessage} from "../components/ui/ErrorMessage";
+import {User} from "../shared/types/User";
+import {useGetUsers} from "../hooks/useGetUsers";
 
 export const Users = () => {
-    const {authTokens, getAccessToken} = useAuth();
+    const {isAuthenticated, getAccessToken} = useAuth();
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [nextPageToken, setNextPageToken] = useState<string>("");
@@ -16,47 +16,53 @@ export const Users = () => {
     const [error, setError] = useState<string | null>(null);
     const {getUsers} = useGetUsers();
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            if (!authTokens) {
+    const fetchUsers = useCallback(async (loadMore = false) => {
+        if (!isAuthenticated) {
+            setLoading(false);
+            setError('Not logged in');
+            return;
+        }
+
+        try {
+            const token = await getAccessToken();
+            if (!token) {
                 setLoading(false);
-                setError('Not logged in');
+                setError('No token available');
                 return;
             }
 
-            try {
-                const token = await getAccessToken();
-                if (!token) {
-                    setLoading(false);
-                    setError('No token available');
-                    return;
-                }
-
-                if (isLoadingMore) {
-                    const response = await getUsers(pageSize, nextPageToken);
-                    setUsers(prevUsers => [...prevUsers, ...response.users]);
-                    setNextPageToken(response.nextPageToken);
-                    setIsLoadingMore(false);
-                } else {
-                    const response = await getUsers(pageSize, "");
-                    setUsers(response.users);
-                    setNextPageToken(response.nextPageToken);
-                    setLoading(false);
-                }
-            } catch (err: any) {
-                setError(err.message);
-                setLoading(false);
+            if (loadMore) {
+                const response = await getUsers(pageSize, nextPageToken);
+                setUsers(prevUsers => [...prevUsers, ...response.users]);
+                setNextPageToken(response.nextPageToken);
                 setIsLoadingMore(false);
+            } else {
+                const response = await getUsers(pageSize, "");
+                setUsers(response.users);
+                setNextPageToken(response.nextPageToken);
+                setLoading(false);
             }
-        };
-
-        if (loading || isLoadingMore) {
-            fetchUsers();
+        } catch (err: any) {
+            setError(err.message);
+            setLoading(false);
+            setIsLoadingMore(false);
         }
-    }, [loading, isLoadingMore, nextPageToken, authTokens, getAccessToken]);
+    }, [isAuthenticated, getAccessToken, getUsers, nextPageToken, pageSize]);
+
+    useEffect(() => {
+        if (loading) {
+            fetchUsers(false);
+        }
+    }, [loading, fetchUsers]);
+
+    useEffect(() => {
+        if (isLoadingMore) {
+            fetchUsers(true);
+        }
+    }, [isLoadingMore, fetchUsers]);
 
     const handleLoadMore = () => {
-        if (nextPageToken) {
+        if (nextPageToken && !isLoadingMore) {
             setIsLoadingMore(true);
         }
     };
