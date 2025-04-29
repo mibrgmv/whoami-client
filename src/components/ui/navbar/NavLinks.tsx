@@ -23,7 +23,12 @@ export const NavLinks: React.FC<Props> = ({nav, handleClick, token, logout, rout
             <FadeOverlay isVisible={nav} onClick={handleClick}/>
             <div className={`${nav ? "z-1 flex flex-col justify-center fixed top-0 right-0 w-2/3 md:w-1/4 h-screen text-black bg-white" : "hidden"}`}>
                 {routes.map((route) => (
-                    <RouterLink className={liStyle} to={route.path} onClick={handleClick}>
+                    <RouterLink
+                        key={route.path}
+                        className={liStyle}
+                        to={route.path}
+                        onClick={handleClick}
+                    >
                         {route.name}
                     </RouterLink>
                 ))}
