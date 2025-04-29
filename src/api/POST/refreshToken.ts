@@ -1,12 +1,12 @@
-import {Endpoints} from "../endpoints.ts";
+import {Endpoints} from "../endpoints";
 
 interface RefreshTokenRequest {
-    refreshToken: string
+    refreshToken: string;
 }
 
 interface RefreshTokenResponse {
-    accessToken: string,
-    userId: string
+    accessToken: string;
+    userId: string;
 }
 
 export const refreshToken = async ({refreshToken}: RefreshTokenRequest) => {
@@ -27,4 +27,4 @@ export const refreshToken = async ({refreshToken}: RefreshTokenRequest) => {
         accessToken: data.accessToken,
         userId: data.userId
     };
-}
+};

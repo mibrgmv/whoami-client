@@ -1,13 +1,13 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import {PrivateRoute} from "./components/PrivateRoute.tsx";
-import {Layout} from "./components/Layout.tsx";
-import {HomePage} from "./pages/Home.tsx";
-import {LoginPage} from "./pages/Login.tsx";
-import {RegisterPage} from "./pages/Register.tsx";
-import {ProfilePage} from "./pages/Profile.tsx";
-import {Users} from "./pages/Users.tsx";
-import {Quizzes} from "./pages/Quizzes.tsx";
-import {QuizPage} from "./pages/Quiz.tsx";
+import {PrivateRoute} from "./components/PrivateRoute";
+import {Layout} from "./components/Layout";
+import {HomePage} from "./pages/Home";
+import {LoginPage} from "./pages/Login";
+import {RegisterPage} from "./pages/Register";
+import {ProfilePage} from "./pages/Profile";
+import {Users} from "./pages/Users";
+import {Quizzes} from "./pages/Quizzes";
+import {QuizPage} from "./pages/Quiz";
 
 export function App() {
     return (
@@ -19,18 +19,9 @@ export function App() {
                     <Route path="/register" element={<RegisterPage/>}/>
                     <Route path="/quizzes" element={<Quizzes/>}/>
                     <Route element={<PrivateRoute/>}>
-                        <Route
-                            path="/profile"
-                            element={<ProfilePage/>}
-                        />
-                        <Route
-                            path="/users"
-                            element={<Users/>}
-                        />
-                        <Route
-                            path="/quizzes/:quizId"
-                            element={<QuizPage/>}
-                        />
+                        <Route path="/profile" element={<ProfilePage/>}/>
+                        <Route path="/users" element={<Users/>}/>
+                        <Route path="/quizzes/:quizId" element={<QuizPage/>}/>
                     </Route>
                 </Route>
             </Routes>

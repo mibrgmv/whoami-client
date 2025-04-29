@@ -4,7 +4,7 @@ import {Leaderboard} from "../components/ui/Leaderboard.tsx";
 import {LoadingSpinner} from "../components/ui/LoadingSpinner.tsx";
 import {ErrorMessage} from "../components/ui/ErrorMessage.tsx";
 import {User} from "../shared/types/User.tsx";
-import {getUsers, GetUsersResponse} from "../api/GET/getUsers.ts";
+import {useGetUsers} from "../api/GET/getUsers.ts";
 
 export const Users = () => {
     const {authTokens, getAccessToken} = useAuth();
@@ -14,6 +14,7 @@ export const Users = () => {
     const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
     const pageSize = 10;
     const [error, setError] = useState<string | null>(null);
+    const {getUsers} = useGetUsers();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -32,12 +33,12 @@ export const Users = () => {
                 }
 
                 if (isLoadingMore) {
-                    const response: GetUsersResponse = await getUsers(pageSize, nextPageToken, token);
+                    const response = await getUsers(pageSize, nextPageToken);
                     setUsers(prevUsers => [...prevUsers, ...response.users]);
                     setNextPageToken(response.nextPageToken);
                     setIsLoadingMore(false);
                 } else {
-                    const response: GetUsersResponse = await getUsers(pageSize, "", token);
+                    const response = await getUsers(pageSize, "");
                     setUsers(response.users);
                     setNextPageToken(response.nextPageToken);
                     setLoading(false);

@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext.tsx';
-import { FormContainer } from "../components/ui/FormContainer.tsx";
-import { Button } from "../components/ui/Button.tsx";
-import { InputWrapper } from "../components/ui/inputs/InputWrapper.tsx";
-import { PasswordInput } from "../components/ui/inputs/PasswordInput.tsx";
-import { CustomInput } from "../components/ui/inputs/CustomInput.tsx";
-import { ErrorMessage } from "../components/ui/ErrorMessage.tsx";
-import { LoadingSpinner } from "../components/ui/LoadingSpinner.tsx";
-import { login } from "../api/POST/login.ts";
+import { useAuth } from '../AuthContext';
+import { FormContainer } from "../components/ui/FormContainer";
+import { Button } from "../components/ui/Button";
+import { InputWrapper } from "../components/ui/inputs/InputWrapper";
+import { PasswordInput } from "../components/ui/inputs/PasswordInput";
+import { CustomInput } from "../components/ui/inputs/CustomInput";
+import { ErrorMessage } from "../components/ui/ErrorMessage";
+import { LoadingSpinner } from "../components/ui/LoadingSpinner";
+import { login } from "../api/POST/login";
 import { z } from "zod";
 
 const loginSchema = z.object({
@@ -18,13 +18,19 @@ const loginSchema = z.object({
 
 export const LoginPage = () => {
     const navigate = useNavigate();
-    const { setAuthTokens } = useAuth();
+    const { setAuthTokens, authTokens } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [generalError, setGeneralError] = useState('');
+
+    useEffect(() => {
+        if (authTokens) {
+            navigate('/');
+        }
+    }, [authTokens, navigate]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
