@@ -1,7 +1,7 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../AuthContext";
 import { useEffect, useState } from "react";
-import { LoadingSpinner } from "./ui/LoadingSpinner";
+import { useAuth } from "../AuthContext.tsx";
+import { LoadingSpinner } from "./ui/LoadingSpinner.tsx";
+import { Navigate, Outlet } from "react-router-dom";
 
 export const PrivateRoute = () => {
   const { isAuthenticated, getAccessToken } = useAuth();
@@ -12,7 +12,6 @@ export const PrivateRoute = () => {
     const validateAuth = async () => {
       try {
         const token = await getAccessToken();
-
         setIsValid(!!token);
       } catch (error) {
         setIsValid(false);
