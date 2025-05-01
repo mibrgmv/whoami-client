@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../AuthContext.tsx";
-import { Container } from "../components/Container.tsx";
-import { LoadingSpinner } from "../components/ui/LoadingSpinner.tsx";
-import { ErrorMessage } from "../components/ui/ErrorMessage.tsx";
-import { User } from "../shared/types/User.tsx";
-import { useGetCurrentUser } from "../hooks/useGetCurrentUser.ts";
-import { useDeleteUser } from "../hooks/useDeleteUser.ts";
-import { useUpdateUser } from "../hooks/useUpdateUser.ts";
-import { ProfileInfoSection } from "../components/ui/profile/ProfileInfoSection.tsx";
-import { EditProfileModal } from "../components/ui/profile/EditProfileModal.tsx";
-import { DeleteConfirmationModal } from "../components/ui/profile/DeleteConfirmationModal.tsx";
+import { useUpdateUser } from "../../hooks/useUpdateUser.ts";
+import { useGetCurrentUser } from "../../hooks/useGetCurrentUser.ts";
+import { useDeleteUser } from "../../hooks/useDeleteUser.ts";
+import { useAuth } from "../../AuthContext.tsx";
+import { User } from "../../shared/types/User.tsx";
+import {
+  DeleteConfirmationModal,
+  EditProfileModal,
+  GeneralError,
+  LoadingSpinner,
+  ProfileInfoSection,
+} from "../ui";
+import { Container } from "../Container.tsx";
 
 export const ProfilePage = () => {
   const { logout, isAuthenticated } = useAuth();
@@ -126,7 +128,7 @@ export const ProfilePage = () => {
   if (error) {
     return (
       <Container>
-        <ErrorMessage message={error} />
+        <GeneralError message={error} />
       </Container>
     );
   }

@@ -1,5 +1,5 @@
-import { Container } from "../components/Container.tsx";
 import React from "react";
+import { Container } from "../Container.tsx";
 
 interface Props {
   name: string;

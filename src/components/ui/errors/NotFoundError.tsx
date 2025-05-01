@@ -7,7 +7,7 @@ interface NotFoundMessageProps {
   navigateTo: string;
 }
 
-export const NotFoundMessage: React.FC<NotFoundMessageProps> = ({
+export const NotFoundError: React.FC<NotFoundMessageProps> = ({
   message,
   buttonText,
   navigateTo,

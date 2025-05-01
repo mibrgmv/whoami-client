@@ -5,7 +5,7 @@ type ErrorMessageProps = {
   className?: string;
 };
 
-export const ErrorMessage: React.FC<ErrorMessageProps> = ({
+export const GeneralError: React.FC<ErrorMessageProps> = ({
   message,
   className = "",
 }) => {

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoadingSpinner } from "../components/ui/LoadingSpinner.tsx";
-import { ErrorMessage } from "../components/ui/ErrorMessage.tsx";
-import { Quiz } from "../shared/types/Quiz.tsx";
-import { getQuizzes, GetQuizzesResponse } from "../api/GET/getQuizzes.ts";
+import { getQuizzes, GetQuizzesResponse } from "../../api/GET/getQuizzes.ts";
+import { Quiz } from "../../shared/types/Quiz.tsx";
+import { GeneralError, LoadingSpinner } from "../ui";
 
 export const Quizzes: React.FC = () => {
   const navigate = useNavigate();
@@ -61,7 +60,7 @@ export const Quizzes: React.FC = () => {
         </div>
       ) : error ? (
         <div className="mt-8">
-          <ErrorMessage message={error} />
+          <GeneralError message={error} />
         </div>
       ) : (
         <>

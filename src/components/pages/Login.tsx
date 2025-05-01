@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext"; // Import the useAuth hook
-import { FormContainer } from "../components/ui/FormContainer";
-import { Button } from "../components/ui/Button";
-import { InputWrapper } from "../components/ui/inputs/InputWrapper";
-import { PasswordInput } from "../components/ui/inputs/PasswordInput";
-import { CustomInput } from "../components/ui/inputs/CustomInput";
-import { ErrorMessage } from "../components/ui/ErrorMessage";
-import { LoadingSpinner } from "../components/ui/LoadingSpinner";
-import { login as loginApi } from "../api/POST/login"; // Rename import to avoid conflict
 import { z } from "zod";
+import { useAuth } from "../../AuthContext.tsx";
+import { login as loginApi } from "../../api/POST/login";
+import {
+  Button,
+  CustomInput,
+  FormContainer,
+  GeneralError,
+  InputWrapper,
+  LoadingSpinner,
+  PasswordInput,
+} from "../ui";
 
 const loginSchema = z.object({
   username: z.string().min(1, { message: "Username is required" }),
@@ -104,7 +106,7 @@ export const LoginPage = () => {
               </InputWrapper>
 
               {generalError && (
-                <ErrorMessage message={generalError} className="mt-4" />
+                <GeneralError message={generalError} className="mt-4" />
               )}
 
               <div className="pt-4">

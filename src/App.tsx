@@ -1,13 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { PrivateRoute } from "./components/PrivateRoute";
-import { Layout } from "./components/Layout";
-import { HomePage } from "./pages/Home";
-import { LoginPage } from "./pages/Login";
-import { RegisterPage } from "./pages/Register";
-import { ProfilePage } from "./pages/Profile";
-import { Users } from "./pages/Users";
-import { Quizzes } from "./pages/Quizzes";
-import { QuizPage } from "./pages/Quiz";
+import { Layout, PrivateRoute } from "./components";
+import {
+  HomePage,
+  LoginPage,
+  ProfilePage,
+  QuizPage,
+  Quizzes,
+  RegisterPage,
+  Users,
+} from "./components/pages";
 
 export function App() {
   return (

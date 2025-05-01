@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FormContainer } from "../components/ui/FormContainer.tsx";
-import { Button } from "../components/ui/Button.tsx";
-import { InputWrapper } from "../components/ui/inputs/InputWrapper.tsx";
-import { PasswordInput } from "../components/ui/inputs/PasswordInput.tsx";
-import { CustomInput } from "../components/ui/inputs/CustomInput.tsx";
-import { ErrorMessage } from "../components/ui/ErrorMessage.tsx";
-import { LoadingSpinner } from "../components/ui/LoadingSpinner.tsx";
-import { register } from "../api/POST/register.ts";
 import { z } from "zod";
+import { register } from "../../api/POST/register.ts";
+import {
+  Button,
+  CustomInput,
+  FormContainer,
+  GeneralError,
+  InputWrapper,
+  LoadingSpinner,
+  PasswordInput,
+} from "../ui";
 
 const registerSchema = z
   .object({
@@ -160,7 +162,7 @@ export const RegisterPage = () => {
             </InputWrapper>
 
             {generalError && (
-              <ErrorMessage message={generalError} className="mt-4" />
+              <GeneralError message={generalError} className="mt-4" />
             )}
 
             <div className="pt-4">

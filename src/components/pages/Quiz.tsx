@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container } from "../components/Container.tsx";
-import { LoadingSpinner } from "../components/ui/LoadingSpinner.tsx";
-import { NotFoundMessage } from "../components/ui/NotFoundMessage.tsx";
-import { ErrorMessage } from "../components/ui/ErrorMessage.tsx";
-import { QuestionView } from "../components/ui/quiz/QuestionView.tsx";
-import { QuizNavigation } from "../components/ui/quiz/QuizNavigation.tsx";
-import { QuizProgress } from "../components/ui/quiz/QuizProgress.tsx";
-import { Quiz } from "../shared/types/Quiz.tsx";
-import { Question } from "../shared/types/Question.tsx";
-import { Answer } from "../shared/types/Answer.tsx";
-import { Result } from "../shared/types/Result.tsx";
-import { ResultView } from "../components/ui/quiz/ResultView.tsx";
-import { useAuth } from "../AuthContext.tsx";
-import { getQuestionsByQuizId } from "../api/GET/getQuestionsByQuizId.ts";
-import { getQuizById } from "../api/GET/getQuizById.ts";
-import { evaluate } from "../api/POST/evaluate.ts";
+import { useAuth } from "../../AuthContext.tsx";
+import { Quiz } from "../../shared/types/Quiz.tsx";
+import { Question } from "../../shared/types/Question.tsx";
+import { Answer } from "../../shared/types/Answer.tsx";
+import { Result } from "../../shared/types/Result.tsx";
+import { getQuizById } from "../../api/GET/getQuizById.ts";
+import { getQuestionsByQuizId } from "../../api/GET/getQuestionsByQuizId.ts";
+import { evaluate } from "../../api/POST/evaluate.ts";
+import { Container } from "../Container.tsx";
+import {
+  GeneralError,
+  LoadingSpinner,
+  NotFoundError,
+  QuestionView,
+  QuizNavigation,
+  QuizProgress,
+  ResultView,
+} from "../ui";
 
 export const QuizPage: React.FC = () => {
   const { quizId } = useParams();
@@ -156,7 +158,7 @@ export const QuizPage: React.FC = () => {
   if (error) {
     return (
       <Container>
-        <ErrorMessage message={error} />
+        <GeneralError message={error} />
       </Container>
     );
   }
@@ -164,7 +166,7 @@ export const QuizPage: React.FC = () => {
   if (!quiz) {
     return (
       <Container>
-        <NotFoundMessage
+        <NotFoundError
           message="Quiz not found"
           buttonText="Back to Quizzes"
           navigateTo="/quizzes"
@@ -176,7 +178,7 @@ export const QuizPage: React.FC = () => {
   if (!questions || questions.length === 0) {
     return (
       <Container>
-        <NotFoundMessage
+        <NotFoundError
           message="No questions found for this quiz"
           buttonText="Back to Quizzes"
           navigateTo="/quizzes"
