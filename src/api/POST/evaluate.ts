@@ -16,7 +16,7 @@ export const evaluate = async ({
   accessToken,
   answers,
 }: EvaluateRequest) => {
-  const url = `${Endpoints.getQuizzes}/${quizId}/evaluate`;
+  const url = `${Endpoints.quizzes}/${quizId}/evaluate`;
 
   const response = await fetch(url, {
     method: "POST",

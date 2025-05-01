@@ -52,6 +52,10 @@ export const Quizzes: React.FC = () => {
     }
   };
 
+  const handleCreateClick = () => {
+    navigate("/quizzes/create");
+  };
+
   return (
     <div className="min-h-screen pt-20 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto overflow-y-auto">
       {loading ? (
@@ -66,13 +70,21 @@ export const Quizzes: React.FC = () => {
         <>
           {/* Desktop */}
           <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-800">
-                Available Quizzes
-              </h2>
-              <p className="text-sm text-gray-500 mt-1">
-                Total quizzes shown: {quizzes.length}
-              </p>
+            <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Available Quizzes
+                </h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  Total quizzes shown: {quizzes.length}
+                </p>
+              </div>
+              <button
+                onClick={handleCreateClick}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              >
+                Create Quiz
+              </button>
             </div>
 
             <div className="p-6">
@@ -91,7 +103,6 @@ export const Quizzes: React.FC = () => {
                       </div>
                       <div className="p-4 flex items-center justify-between">
                         {" "}
-                        {/* Added flex and justify-between */}
                         <div>
                           <h3 className="font-medium text-gray-900">
                             {quiz.title}
@@ -99,7 +110,6 @@ export const Quizzes: React.FC = () => {
                         </div>
                         <div className="text-blue-600">
                           {" "}
-                          {/* Added the arrow icon */}
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-5 w-5"
@@ -137,6 +147,18 @@ export const Quizzes: React.FC = () => {
 
           {/* Mobile */}
           <div className="md:hidden">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold text-gray-800">
+                Available Quizzes
+              </h2>
+              <button
+                onClick={handleCreateClick}
+                className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              >
+                Create
+              </button>
+            </div>
+
             {quizzes.length > 0 ? (
               <div className="divide-y divide-gray-200">
                 {quizzes.map((quiz, index) => (

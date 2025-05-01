@@ -10,7 +10,7 @@ export const getQuizzes = async (
   pageSize: number,
   pageToken: string,
 ): Promise<GetQuizzesResponse> => {
-  let url = `${Endpoints.getQuizzes}?page_size=${pageSize}`;
+  let url = `${Endpoints.quizzes}?page_size=${pageSize}`;
   if (pageToken) {
     url += `&page_token=${pageToken}`;
   }

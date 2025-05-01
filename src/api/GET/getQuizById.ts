@@ -1,12 +1,12 @@
 import { Endpoints } from "../endpoints.ts";
 import { Quiz } from "../../shared/types/Quiz.tsx";
 
-export const getQuizById = async (quizId: string, accessToken: string) => {
-  const quizResponse = await fetch(`${Endpoints.getQuizzes}/${quizId}`, {
+export const getQuizById = async (
+  quizId: string,
+  fetch: (url: string, options: RequestInit) => Promise<Response>,
+): Promise<Quiz | null> => {
+  const quizResponse = await fetch(`${Endpoints.quizzes}/${quizId}`, {
     method: "GET",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
   });
 
   if (quizResponse.status === 404) {

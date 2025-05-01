@@ -5,8 +5,6 @@ import { Quiz } from "../../shared/types/Quiz.tsx";
 import { Question } from "../../shared/types/Question.tsx";
 import { Answer } from "../../shared/types/Answer.tsx";
 import { Result } from "../../shared/types/Result.tsx";
-import { getQuizById } from "../../api/GET/getQuizById.ts";
-import { getQuestionsByQuizId } from "../../api/GET/getQuestionsByQuizId.ts";
 import { evaluate } from "../../api/POST/evaluate.ts";
 import { Container } from "../Container.tsx";
 import {
@@ -18,9 +16,13 @@ import {
   QuizProgress,
   ResultView,
 } from "../ui";
+import { useGetQuizById } from "../../hooks/useGetQuizById.ts";
+import { useGetQuestionsByQuizId } from "../../hooks/useGetQuestionsByQuizId.ts";
 
 export const QuizPage: React.FC = () => {
   const { quizId } = useParams();
+  const { getQuiz } = useGetQuizById();
+  const { getQuestions } = useGetQuestionsByQuizId();
   const { authTokens, getAccessToken } = useAuth();
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -54,8 +56,8 @@ export const QuizPage: React.FC = () => {
         }
 
         const [quizResponse, questionsResponse] = await Promise.all([
-          getQuizById(quizId, token),
-          getQuestionsByQuizId(quizId, token),
+          getQuiz(quizId),
+          getQuestions(quizId),
         ]);
 
         setQuiz(quizResponse);

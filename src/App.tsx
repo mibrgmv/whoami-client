@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Layout, PrivateRoute } from "./components";
 import {
+  CreateQuiz,
   HomePage,
   LoginPage,
   ProfilePage,
@@ -22,6 +23,7 @@ export function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/quizzes/create" element={<CreateQuiz />} />
             <Route path="/quizzes/:quizId" element={<QuizPage />} />
           </Route>
         </Route>

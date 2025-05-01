@@ -7,15 +7,12 @@ export interface GetQuestionsByQuizIdResponse {
 
 export const getQuestionsByQuizId = async (
   quizId: string,
-  accessToken: string,
+  fetch: (url: string, options: RequestInit) => Promise<Response>,
 ): Promise<GetQuestionsByQuizIdResponse> => {
-  const url = `${Endpoints.getQuizzes}/${quizId}/questions`;
+  const url = `${Endpoints.quizzes}/${quizId}/questions`;
 
   const response = await fetch(url, {
     method: "GET",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
   });
 
   if (!response.ok) {

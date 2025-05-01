@@ -9,14 +9,14 @@ export interface GetUsersResponse {
 export const fetchUsers = async (
   pageSize: number,
   pageToken: string,
-  fetchFunction: (url: string, options: RequestInit) => Promise<Response>,
+  fetch: (url: string, options: RequestInit) => Promise<Response>,
 ): Promise<GetUsersResponse> => {
   let url = `${Endpoints.users}?page_size=${pageSize}`;
   if (pageToken) {
     url += `&page_token=${pageToken}`;
   }
 
-  const response = await fetchFunction(url, {
+  const response = await fetch(url, {
     method: "GET",
   });
 
