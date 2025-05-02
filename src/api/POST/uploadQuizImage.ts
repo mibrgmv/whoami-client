@@ -1,4 +1,4 @@
-import { Endpoints } from "../endpoints.ts";
+import { Endpoints } from "../endpoints";
 
 export interface UploadQuizImageResponse {
   image_url: string;

@@ -1,4 +1,4 @@
-import { Endpoints } from "../endpoints.ts";
+import { Endpoints } from "../endpoints";
 
 export const deleteUser = async (
   fetch: (url: string, options: RequestInit) => Promise<Response>,

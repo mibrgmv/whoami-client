@@ -1,5 +1,5 @@
 import { Quiz } from "../../shared/types";
-import { Endpoints } from "../endpoints.ts";
+import { Endpoints } from "../endpoints";
 
 export interface CreateQuizRequest {
   title: string;
@@ -26,5 +26,5 @@ export const createQuiz = async (
     );
   }
 
-  return await response.json();
+  return (await response.json()) as Quiz;
 };

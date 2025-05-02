@@ -1,4 +1,4 @@
-import { Endpoints } from "../endpoints.ts";
+import { Endpoints } from "../endpoints";
 import { User } from "../../shared/types";
 
 type RegisterRequest = { username: string; password: string };

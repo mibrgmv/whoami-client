@@ -1,4 +1,4 @@
-import { Endpoints } from "../endpoints.ts";
+import { Endpoints } from "../endpoints";
 import { Quiz } from "../../shared/types";
 
 export interface GetQuizzesResponse {
@@ -24,5 +24,5 @@ export const getQuizzes = async (
   if (!response.ok) {
     throw new Error("Failed to fetch quizzes");
   }
-  return await response.json();
+  return (await response.json()) as GetQuizzesResponse;
 };

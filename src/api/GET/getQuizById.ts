@@ -1,4 +1,4 @@
-import { Endpoints } from "../endpoints.ts";
+import { Endpoints } from "../endpoints";
 import { Quiz } from "../../shared/types";
 
 export const getQuizById = async (

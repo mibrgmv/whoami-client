@@ -1,4 +1,4 @@
-import { Endpoints } from "../endpoints.ts";
+import { Endpoints } from "../endpoints";
 import { Answer } from "../../shared/types";
 import { Result } from "postcss";
 

@@ -1,5 +1,5 @@
 import { User } from "../../shared/types";
-import { Endpoints } from "../endpoints.ts";
+import { Endpoints } from "../endpoints";
 
 export const updateUser = async (
   fetch: (url: string, options: RequestInit) => Promise<Response>,
