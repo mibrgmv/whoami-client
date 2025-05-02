@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../AuthContext.tsx";
-import { LoadingSpinner } from "./ui/LoadingSpinner.tsx";
+import { useAuth } from "../AuthContext";
+import { LoadingSpinner } from "./ui";
 import { Navigate, Outlet } from "react-router-dom";
 
 export const PrivateRoute = () => {
