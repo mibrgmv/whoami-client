@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { User } from "../shared/types/User.tsx";
+import { User } from "../shared/types";
 import { fetchCurrentUser } from "../api/GET/getCurrentUser.ts";
 import { useApiClient } from "./useApiClient.ts";
 

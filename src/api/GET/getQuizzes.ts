@@ -1,5 +1,5 @@
 import { Endpoints } from "../endpoints.ts";
-import { Quiz } from "../../shared/types/Quiz.tsx";
+import { Quiz } from "../../shared/types";
 
 export interface GetQuizzesResponse {
   quizzes: Quiz[];

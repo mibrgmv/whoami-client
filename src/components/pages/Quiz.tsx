@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext.tsx";
-import { Quiz } from "../../shared/types/Quiz.tsx";
-import { Question } from "../../shared/types/Question.tsx";
-import { Answer } from "../../shared/types/Answer.tsx";
-import { Result } from "../../shared/types/Result.tsx";
 import { Container } from "../Container.tsx";
 import {
   GeneralError,
@@ -20,6 +16,7 @@ import {
   useGetQuestionsByQuizId,
   useGetQuizById,
 } from "../../hooks";
+import { Answer, Question, Quiz, Result } from "../../shared/types";
 
 export const QuizPage: React.FC = () => {
   const { quizId } = useParams();

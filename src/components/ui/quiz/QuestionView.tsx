@@ -1,6 +1,5 @@
 import React from "react";
-import { Question } from "../../../shared/types/Question.tsx";
-import { Answer } from "../../../shared/types/Answer.tsx";
+import { Answer, Question } from "../../../shared/types";
 
 interface QuestionViewProps {
   question: Question;

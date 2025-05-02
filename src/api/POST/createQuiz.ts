@@ -1,4 +1,4 @@
-import { Quiz } from "../../shared/types/Quiz.tsx";
+import { Quiz } from "../../shared/types";
 import { Endpoints } from "../endpoints.ts";
 
 export interface CreateQuizRequest {

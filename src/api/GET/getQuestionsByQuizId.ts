@@ -1,13 +1,15 @@
-// api/GET/getQuestionsByQuizId.ts
-import {
-  QuestionResponse,
-  BatchGetQuestionsResponse,
-} from "../../shared/types/Question";
 import { Endpoints } from "../endpoints.ts";
 
-export type GetQuestionsByQuizIdResponse = {
+interface QuestionResponse {
+  id: string;
+  quiz_id: string;
+  body: string;
+  options: string[];
+}
+
+interface GetQuestionsByQuizIdResponse {
   questions: QuestionResponse[];
-};
+}
 
 export const getQuestionsByQuizId = async (
   quizId: string,
@@ -25,7 +27,7 @@ export const getQuestionsByQuizId = async (
     );
   }
 
-  const data = (await response.json()) as BatchGetQuestionsResponse;
+  const data = (await response.json()) as GetQuestionsByQuizIdResponse;
 
   return {
     questions: data.questions.map((question) => ({

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Result } from "../../../shared/types/Result.tsx";
+import { Result } from "../../../shared/types";
 
 interface ResultViewProps {
   result: Result;

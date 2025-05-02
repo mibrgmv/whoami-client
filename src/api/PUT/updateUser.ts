@@ -1,4 +1,4 @@
-import { User } from "../../shared/types/User.tsx";
+import { User } from "../../shared/types";
 import { Endpoints } from "../endpoints.ts";
 
 export const updateUser = async (
@@ -25,5 +25,5 @@ export const updateUser = async (
     throw new Error(errorMessage);
   }
 
-  return await response.json();
+  return (await response.json()) as User;
 };

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../AuthContext.tsx";
-import { User } from "../../shared/types/User.tsx";
+import { User } from "../../shared/types";
 import {
   DeleteConfirmationModal,
   EditProfileModal,

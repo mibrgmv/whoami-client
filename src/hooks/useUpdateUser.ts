@@ -1,4 +1,4 @@
-import { User } from "../shared/types/User.tsx";
+import { User } from "../shared/types";
 import { updateUser } from "../api/PUT/updateUser.ts";
 import { useApiClient } from "./useApiClient.ts";
 import { useAuth } from "../AuthContext.tsx";

@@ -1,4 +1,4 @@
-import { User } from "../../shared/types/User.tsx";
+import { User } from "../../shared/types";
 import { Endpoints } from "../endpoints.ts";
 
 export const fetchCurrentUser = async (
@@ -14,5 +14,5 @@ export const fetchCurrentUser = async (
     );
   }
 
-  return await response.json();
+  return (await response.json()) as User;
 };

@@ -3,7 +3,7 @@ import {
   createQuiz as createQuizApi,
   CreateQuizRequest,
 } from "../api/POST/createQuiz.ts";
-import { Quiz } from "../shared/types/Quiz.tsx";
+import { Quiz } from "../shared/types";
 import { useApiClient } from "./useApiClient";
 
 export const useCreateQuiz = () => {

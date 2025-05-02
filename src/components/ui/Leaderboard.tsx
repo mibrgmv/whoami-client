@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "../../shared/types/User.tsx";
+import { User } from "../../shared/types";
 import dayjs from "dayjs";
 
 interface LeaderboardProps {

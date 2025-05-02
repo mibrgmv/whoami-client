@@ -1,4 +1,4 @@
-import { User } from "../../../shared/types/User.tsx";
+import { User } from "../../../shared/types";
 import dayjs from "dayjs";
 
 interface ProfileInfoSectionProps {
