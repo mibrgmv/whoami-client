@@ -16,8 +16,7 @@ import {
   QuizProgress,
   ResultView,
 } from "../ui";
-import { useGetQuizById } from "../../hooks/useGetQuizById.ts";
-import { useGetQuestionsByQuizId } from "../../hooks/useGetQuestionsByQuizId.ts";
+import { useGetQuestionsByQuizId, useGetQuizById } from "../../hooks";
 
 export const QuizPage: React.FC = () => {
   const { quizId } = useParams();

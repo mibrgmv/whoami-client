@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import { useUpdateUser } from "../../hooks/useUpdateUser.ts";
-import { useGetCurrentUser } from "../../hooks/useGetCurrentUser.ts";
-import { useDeleteUser } from "../../hooks/useDeleteUser.ts";
 import { useAuth } from "../../AuthContext.tsx";
 import { User } from "../../shared/types/User.tsx";
 import {
@@ -12,6 +9,7 @@ import {
   ProfileInfoSection,
 } from "../ui";
 import { Container } from "../Container.tsx";
+import { useDeleteUser, useGetCurrentUser, useUpdateUser } from "../../hooks";
 
 export const ProfilePage = () => {
   const { logout, isAuthenticated } = useAuth();

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GeneralError } from "../ui";
-import { useCreateQuiz } from "../../hooks/useCreateQuiz.ts";
-import { useUploadQuizImage } from "../../hooks/useUploadQuizImage.ts";
 import {
   QuizFormContainer,
   FormHeader,
@@ -11,6 +9,7 @@ import {
   ResultsList,
   FormActions,
 } from "../ui/QuizFormComponents";
+import { useCreateQuiz, useUploadQuizImage } from "../../hooks";
 
 export const CreateQuiz: React.FC = () => {
   const navigate = useNavigate();
