@@ -1,9 +1,13 @@
-import { Question } from "../../shared/types/Question.tsx";
+// api/GET/getQuestionsByQuizId.ts
+import {
+  QuestionResponse,
+  BatchGetQuestionsResponse,
+} from "../../shared/types/Question";
 import { Endpoints } from "../endpoints.ts";
 
-export interface GetQuestionsByQuizIdResponse {
-  questions: Question[];
-}
+export type GetQuestionsByQuizIdResponse = {
+  questions: QuestionResponse[];
+};
 
 export const getQuestionsByQuizId = async (
   quizId: string,
@@ -21,45 +25,14 @@ export const getQuestionsByQuizId = async (
     );
   }
 
-  const reader = response.body?.getReader();
-  if (!reader) {
-    throw new Error("Response body is not readable");
-  }
+  const data = (await response.json()) as BatchGetQuestionsResponse;
 
-  const questions: Question[] = [];
-  const decoder = new TextDecoder();
-  let buffer = "";
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-
-    buffer += decoder.decode(value, { stream: true });
-
-    while (buffer.includes("\n")) {
-      const newlineIndex = buffer.indexOf("\n");
-      const line = buffer.substring(0, newlineIndex).trim();
-      buffer = buffer.substring(newlineIndex + 1);
-
-      if (line) {
-        try {
-          const parsedLine = JSON.parse(line);
-          if (parsedLine && parsedLine.result) {
-            const questionData = parsedLine.result;
-            const question: Question = {
-              id: questionData.id,
-              quiz_id: questionData.quizId,
-              body: questionData.body,
-              options: questionData.options,
-            };
-            questions.push(question);
-          }
-        } catch (e) {
-          console.error("Error parsing JSON from stream:", e);
-        }
-      }
-    }
-  }
-
-  return { questions };
+  return {
+    questions: data.questions.map((question) => ({
+      id: question.id,
+      quiz_id: question.quiz_id,
+      body: question.body,
+      options: question.options,
+    })),
+  };
 };

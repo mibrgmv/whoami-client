@@ -5,7 +5,6 @@ import { Quiz } from "../../shared/types/Quiz.tsx";
 import { Question } from "../../shared/types/Question.tsx";
 import { Answer } from "../../shared/types/Answer.tsx";
 import { Result } from "../../shared/types/Result.tsx";
-import { evaluate } from "../../api/POST/evaluate.ts";
 import { Container } from "../Container.tsx";
 import {
   GeneralError,
@@ -16,11 +15,16 @@ import {
   QuizProgress,
   ResultView,
 } from "../ui";
-import { useGetQuestionsByQuizId, useGetQuizById } from "../../hooks";
+import {
+  useEvaluateAnswers,
+  useGetQuestionsByQuizId,
+  useGetQuizById,
+} from "../../hooks";
 
 export const QuizPage: React.FC = () => {
   const { quizId } = useParams();
   const { getQuiz } = useGetQuizById();
+  const { evaluateAnswers } = useEvaluateAnswers();
   const { getQuestions } = useGetQuestionsByQuizId();
   const { authTokens, getAccessToken } = useAuth();
   const [quiz, setQuiz] = useState<Quiz | null>(null);
@@ -122,10 +126,9 @@ export const QuizPage: React.FC = () => {
         return;
       }
 
-      const result: Result = await evaluate({
-        quizId: quiz.id,
-        accessToken: token,
+      const result: Result = await evaluateAnswers({
         answers: answers,
+        quiz_id: quiz.id,
       });
 
       setResult(result);

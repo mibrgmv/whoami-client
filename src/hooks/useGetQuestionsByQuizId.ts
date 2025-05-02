@@ -1,19 +1,19 @@
 import { useCallback } from "react";
 import {
-    getQuestionsByQuizId as getQuestionsByQuizIdApi,
-    GetQuestionsByQuizIdResponse
+  getQuestionsByQuizId as getQuestionsByQuizIdApi,
+  GetQuestionsByQuizIdResponse,
 } from "../api/GET/getQuestionsByQuizId.ts";
 import { useApiClient } from "./useApiClient";
 
 export const useGetQuestionsByQuizId = () => {
-    const { fetch } = useApiClient();
+  const { fetch } = useApiClient();
 
-    const getQuestions = useCallback(
-        async (quizId: string): Promise<GetQuestionsByQuizIdResponse> => {
-            return getQuestionsByQuizIdApi(quizId, fetch);
-        },
-        [fetch],
-    );
+  const getQuestions = useCallback(
+    async (quizId: string): Promise<GetQuestionsByQuizIdResponse> => {
+      return getQuestionsByQuizIdApi(quizId, fetch);
+    },
+    [fetch],
+  );
 
-    return { getQuestions };
+  return { getQuestions };
 };

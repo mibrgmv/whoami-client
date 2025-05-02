@@ -5,6 +5,9 @@ export { useGetQuizById } from "./useGetQuizById";
 export { useGetQuestionsByQuizId } from "./useGetQuestionsByQuizId";
 export { useUploadQuizImage } from "./useUploadQuizImage";
 
+export { useCreateQuestions } from "./useCreateQuestions";
+export { useEvaluateAnswers } from "./useEvaluateAnswers";
+
 export { useGetCurrentUser } from "./useGetCurrentUser";
 export { useGetUsers } from "./useGetUsers";
 export { useUpdateUser } from "./useUpdateUser";

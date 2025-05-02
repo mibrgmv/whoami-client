@@ -1,39 +1,34 @@
 import { Endpoints } from "../endpoints.ts";
 import { Answer } from "../../shared/types/Answer.tsx";
 
-interface EvaluateRequest {
-  quizId: string;
-  accessToken: string;
+export interface EvaluateAnswersRequest {
   answers: Answer[];
+  quiz_id: string;
 }
 
-interface EvaluateResponse {
+export interface EvaluateAnswersResponse {
   result: string;
 }
 
-export const evaluate = async ({
-  quizId,
-  accessToken,
-  answers,
-}: EvaluateRequest) => {
-  const url = `${Endpoints.quizzes}/${quizId}/evaluate`;
+export const evaluateAnswers = async (
+  request: EvaluateAnswersRequest,
+  fetch: (url: string, options: RequestInit) => Promise<Response>,
+): Promise<EvaluateAnswersResponse> => {
+  const url = `${Endpoints.quizzes}/${request.quiz_id}/evaluate`;
 
   const response = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      answers: answers,
-      quiz_id: quizId,
-    }),
+    body: JSON.stringify(request),
   });
 
   if (!response.ok) {
-    throw new Error("Failed to submit answers");
+    throw new Error(
+      `Failed to evaluate answers: ${response.status} ${response.statusText}`,
+    );
   }
 
-  const data: EvaluateResponse = await response.json();
-  return data;
+  return (await response.json()) as EvaluateAnswersResponse;
 };
