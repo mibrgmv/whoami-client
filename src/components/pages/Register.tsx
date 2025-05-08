@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { z } from "zod";
 import { register } from "../../api/POST/register.ts";
 import {
   Button,
@@ -11,22 +10,9 @@ import {
   LoadingSpinner,
   PasswordInput,
 } from "../ui";
+import { RegisterSchema } from "../../schemas";
 
-const registerSchema = z
-  .object({
-    username: z.string().min(1, { message: "Username is required" }),
-    password: z
-      .string()
-      .min(1, { message: "Password is required" })
-      .min(6, { message: "Password must be at least 6 characters" }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: "Confirm password is required" }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+// todo react hook form
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
@@ -48,7 +34,7 @@ export const RegisterPage = () => {
     setGeneralError("");
 
     try {
-      const validationResult = registerSchema.safeParse({
+      const validationResult = RegisterSchema.safeParse({
         username,
         password,
         confirmPassword,
@@ -68,7 +54,7 @@ export const RegisterPage = () => {
       }
 
       setIsLoading(true);
-      await register({ username, password });
+      await register(username, password);
       setRegistrationSuccess(true);
     } catch (error: any) {
       setGeneralError(

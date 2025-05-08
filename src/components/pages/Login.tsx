@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { z } from "zod";
 import { useAuth } from "../../AuthContext.tsx";
 import { login as loginApi } from "../../api/POST/login";
 import {
@@ -12,11 +11,7 @@ import {
   LoadingSpinner,
   PasswordInput,
 } from "../ui";
-
-const loginSchema = z.object({
-  username: z.string().min(1, { message: "Username is required" }),
-  password: z.string().min(1, { message: "Password is required" }),
-});
+import { LoginSchema } from "../../schemas";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -42,7 +37,7 @@ export const LoginPage = () => {
     setGeneralError("");
 
     try {
-      const validationResult = loginSchema.safeParse({ username, password });
+      const validationResult = LoginSchema.safeParse({ username, password });
 
       if (!validationResult.success) {
         validationResult.error.issues.forEach((issue) => {
