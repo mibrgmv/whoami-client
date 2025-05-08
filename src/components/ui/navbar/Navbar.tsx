@@ -13,6 +13,7 @@ const routes: RouteData[] = [
   { name: "Home", path: "/" },
   { name: "Quizzes", path: "/quizzes" },
   { name: "Users", path: "/users" },
+  { name: "History", path: "/history" },
   { name: "Profile", path: "/profile" },
 ];
 

@@ -1,15 +1,30 @@
 import { Endpoints } from "../endpoints";
 import { User } from "../../shared/types";
 
-type RegisterRequest = { username: string; password: string };
+interface CreateUserRequest {
+  user: {
+    username: string;
+    password: string;
+  };
+}
 
-export const register = async ({ username, password }: RegisterRequest) => {
-  const response = await fetch(Endpoints.register, {
+export const register = async (
+  username: string,
+  password: string,
+): Promise<User> => {
+  const body: CreateUserRequest = {
+    user: {
+      username,
+      password,
+    },
+  };
+
+  const response = await fetch(Endpoints.users, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {

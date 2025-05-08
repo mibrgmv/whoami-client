@@ -12,3 +12,5 @@ export { useGetCurrentUser } from "./useGetCurrentUser";
 export { useGetUsers } from "./useGetUsers";
 export { useUpdateUser } from "./useUpdateUser";
 export { useDeleteUser } from "./useDeleteUser";
+
+export { useGetQuizHistory } from "./useGetQuizHistory";

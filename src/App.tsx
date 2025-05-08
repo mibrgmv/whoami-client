@@ -9,6 +9,7 @@ import {
   Quizzes,
   RegisterPage,
   Users,
+  HistoryPage,
 } from "./components/pages";
 
 export function App() {
@@ -23,6 +24,7 @@ export function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/history" element={<HistoryPage />} />
             <Route path="/quizzes/create" element={<CreateQuiz />} />
             <Route path="/quizzes/:quizId" element={<QuizPage />} />
           </Route>

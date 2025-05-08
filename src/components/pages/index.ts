@@ -1,4 +1,5 @@
 export * from "./CreateQuizPage";
+export * from "./History";
 export * from "./Home";
 export * from "./Login";
 export * from "./Profile";
