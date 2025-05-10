@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { register } from "../../api/POST/register.ts";
+import { useRegister } from "../../hooks/useRegister";
 import {
   Button,
   CustomInput,
@@ -16,6 +16,7 @@ import { RegisterSchema } from "../../schemas";
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
+  const { register } = useRegister();
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

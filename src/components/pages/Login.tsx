@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../AuthContext.tsx";
-import { login as loginApi } from "../../api/POST/login";
+import { useLogin } from "../../hooks/useLogin";
 import {
   Button,
   CustomInput,
@@ -15,7 +14,7 @@ import { LoginSchema } from "../../schemas";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login } = useLogin();
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -51,14 +50,10 @@ export const LoginPage = () => {
       }
 
       setIsLoading(true);
-      const loginResponse = await loginApi(validationResult.data);
-
-      login(
-        loginResponse.accessToken,
-        loginResponse.refreshToken,
-        loginResponse.userId,
+      await login(
+        validationResult.data.username,
+        validationResult.data.password,
       );
-
       navigate("/");
     } catch (error: any) {
       setGeneralError(error.message || "Failed to login. Please try again.");

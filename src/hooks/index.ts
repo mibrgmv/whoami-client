@@ -3,7 +3,6 @@ export { useApiClient } from "./useApiClient";
 export { useCreateQuiz } from "./useCreateQuiz";
 export { useGetQuizById } from "./useGetQuizById";
 export { useGetQuestionsByQuizId } from "./useGetQuestionsByQuizId";
-export { useUploadQuizImage } from "./useUploadQuizImage";
 
 export { useCreateQuestions } from "./useCreateQuestions";
 export { useEvaluateAnswers } from "./useEvaluateAnswers";

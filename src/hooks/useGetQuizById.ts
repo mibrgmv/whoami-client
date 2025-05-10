@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { getQuizById as getQuizByIdApi } from "../api/GET/getQuizById.ts";
+import { getQuizById as getQuizByIdApi } from "../api";
 import { Quiz } from "../shared/types";
 import { useApiClient } from "./useApiClient";
 
