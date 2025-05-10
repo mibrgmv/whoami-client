@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import {
   getQuestionsByQuizId as getQuestionsByQuizIdApi,
   GetQuestionsByQuizIdResponse,
-} from "../api/GET/getQuestionsByQuizId.ts";
+} from "../api";
 import { useApiClient } from "./useApiClient";
 
 export const useGetQuestionsByQuizId = () => {

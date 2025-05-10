@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import {
   fetchQuizHistory as fetchQuizHistoryApi,
   GetQuizHistoryResponse,
-} from "../api/GET/getQuizHistory.ts";
+} from "../api";
 import { useApiClient } from "./useApiClient";
 
 export const useGetQuizHistory = () => {
@@ -10,12 +10,12 @@ export const useGetQuizHistory = () => {
 
   const getQuizHistory = useCallback(
     async (
-      userId: string | null,
-      quizId: string | null,
+      userIds: string[] | null,
+      quizIds: string[] | null,
       pageSize: number,
       pageToken: string,
     ): Promise<GetQuizHistoryResponse> => {
-      return fetchQuizHistoryApi(userId, quizId, pageSize, pageToken, fetch);
+      return fetchQuizHistoryApi(userIds, quizIds, pageSize, pageToken, fetch);
     },
     [fetch],
   );

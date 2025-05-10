@@ -7,7 +7,7 @@ interface QuestionResponse {
   options: string[];
 }
 
-interface GetQuestionsByQuizIdResponse {
+export interface GetQuestionsByQuizIdResponse {
   questions: QuestionResponse[];
 }
 

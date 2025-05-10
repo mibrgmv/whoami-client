@@ -7,24 +7,28 @@ export interface GetQuizHistoryResponse {
 }
 
 export const fetchQuizHistory = async (
-  userId: string | null,
-  quizId: string | null,
+  userIds: string[] | null,
+  quizIds: string[] | null,
   pageSize: number,
   pageToken: string,
   fetch: (url: string, options: RequestInit) => Promise<Response>,
 ): Promise<GetQuizHistoryResponse> => {
   let url = `${Endpoints.history}?page_size=${pageSize}`;
 
-  if (userId) {
-    url += `&user_id=${userId}`;
+  if (userIds && userIds.length > 0) {
+    userIds.forEach((userId) => {
+      url += `&user_ids=${encodeURIComponent(userId)}`;
+    });
   }
 
-  if (quizId) {
-    url += `&quiz_id=${quizId}`;
+  if (quizIds && quizIds.length > 0) {
+    quizIds.forEach((quizId) => {
+      url += `&quiz_ids=${encodeURIComponent(quizId)}`;
+    });
   }
 
   if (pageToken) {
-    url += `&page_token=${pageToken}`;
+    url += `&page_token=${encodeURIComponent(pageToken)}`;
   }
 
   const response = await fetch(url, {

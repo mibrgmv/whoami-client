@@ -23,12 +23,15 @@ export const HistoryPage = () => {
       }
 
       try {
+        const userIds = authTokens.userId ? [authTokens.userId] : null;
+
         const response = await getQuizHistory(
-          authTokens.userId,
+          userIds,
           null,
           pageSize,
           loadMore ? nextPageToken : "",
         );
+
         setHistoryItems((prevItems) =>
           loadMore ? [...prevItems, ...response.items] : response.items,
         );
@@ -85,7 +88,13 @@ export const HistoryPage = () => {
         </div>
       ) : (
         <>
-          <QuizHistoryList historyItems={historyItems} />
+          {historyItems.length === 0 ? (
+            <div className="text-center text-gray-600 py-8">
+              You haven't completed any quizzes yet.
+            </div>
+          ) : (
+            <QuizHistoryList historyItems={historyItems} />
+          )}
 
           {nextPageToken && (
             <div className="mt-6 pt-4 border-t border-gray-200 flex justify-center">

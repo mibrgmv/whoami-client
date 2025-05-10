@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { User } from "../shared/types";
-import { fetchCurrentUser } from "../api/GET/getCurrentUser.ts";
+import { fetchCurrentUser } from "../api";
 import { useApiClient } from "./useApiClient.ts";
 
 export const useGetCurrentUser = () => {

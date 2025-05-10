@@ -1,6 +1,5 @@
 import { Endpoints } from "../endpoints";
-import { Answer } from "../../shared/types";
-import { Result } from "postcss";
+import { Answer, Result } from "../../shared/types";
 
 export interface EvaluateAnswersRequest {
   answers: Answer[];

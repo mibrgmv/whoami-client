@@ -1,4 +1,4 @@
-import { deleteUser } from "../api/DELETE/deleteUser.ts";
+import { deleteUser } from "../api";
 import { useApiClient } from "./useApiClient.ts";
 import { useAuth } from "../AuthContext.tsx";
 
