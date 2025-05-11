@@ -13,7 +13,7 @@ export * from "./POST/login";
 export * from "./POST/refresh";
 export * from "./POST/register";
 
-export * from "./PUT/updateUser";
+export * from "./PATCH/updateUser";
 
 export * from "./axios";
 export * from "./endpoints";

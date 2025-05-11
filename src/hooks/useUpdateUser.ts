@@ -1,13 +1,7 @@
 import { User } from "../shared/types";
-import { updateUser } from "../api";
-import { useApiClient } from "./useApiClient.ts";
-import { useAuth } from "../AuthContext.tsx";
-
-interface UpdateUserRequest {
-  username?: string;
-  currentPassword: string;
-  newPassword?: string;
-}
+import { updateUser, UpdateUserRequest } from "../api";
+import { useApiClient } from "./useApiClient";
+import { useAuth } from "../AuthContext";
 
 export const useUpdateUser = () => {
   const { authTokens } = useAuth();

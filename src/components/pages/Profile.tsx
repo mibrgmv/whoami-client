@@ -99,8 +99,8 @@ export const ProfilePage = () => {
 
       const updateData = {
         username: profile?.username !== username ? username : undefined,
-        currentPassword,
-        newPassword: newPassword || undefined,
+        password: newPassword || undefined,
+        currentPassword: currentPassword,
       };
 
       const updatedUser = await updateCurrentUser(updateData);
