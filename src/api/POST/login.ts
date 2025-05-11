@@ -21,5 +21,5 @@ export const login = async ({
     password,
   });
 
-  return response.data as LoginResponse;
+  return response.data;
 };

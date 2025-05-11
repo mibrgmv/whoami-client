@@ -7,7 +7,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { refresh as refreshApi } from "./api/POST/refresh.ts";
+import { refresh as refreshApi } from "./api";
 
 interface AuthTokens {
   accessToken: string | null;

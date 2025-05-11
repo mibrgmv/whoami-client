@@ -7,20 +7,14 @@ export interface RegisterRequest {
   password: string;
 }
 
-export interface RegisterResponse {
-  user: User;
-}
-
 export const register = async ({
   username,
   password,
 }: RegisterRequest): Promise<User> => {
-  const response = await api.post<RegisterResponse>(Endpoints.users, {
-    user: {
-      username,
-      password,
-    },
+  const response = await api.post<User>(Endpoints.users, {
+    username,
+    password,
   });
 
-  return response.data.user;
+  return response.data;
 };
