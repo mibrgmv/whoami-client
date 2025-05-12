@@ -6,25 +6,21 @@ export interface GetUsersResponse {
   nextPageToken: string;
 }
 
-export const fetchUsers = async (
+export const getUsers = async (
   pageSize: number,
   pageToken: string,
-  fetch: (url: string, options: RequestInit) => Promise<Response>,
+  fetchFn: <T>(url: string, options?: any) => Promise<T>,
 ): Promise<GetUsersResponse> => {
-  let url = `${Endpoints.users}?page_size=${pageSize}`;
+  const params: Record<string, string | number> = {
+    page_size: pageSize,
+  };
+
   if (pageToken) {
-    url += `&page_token=${pageToken}`;
+    params.page_token = pageToken;
   }
 
-  const response = await fetch(url, {
+  return fetchFn<GetUsersResponse>(Endpoints.users, {
     method: "GET",
+    params,
   });
-
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch users: ${response.status} ${response.statusText}`,
-    );
-  }
-
-  return (await response.json()) as GetUsersResponse;
 };

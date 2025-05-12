@@ -1,8 +1,5 @@
 import { useCallback } from "react";
-import {
-  fetchUsers as fetchUsersApi,
-  GetUsersResponse,
-} from "../api/GET/getUsers.ts";
+import { getUsers as getUsersApi, GetUsersResponse } from "../api";
 import { useApiClient } from "./useApiClient";
 
 export const useGetUsers = () => {
@@ -10,7 +7,7 @@ export const useGetUsers = () => {
 
   const getUsers = useCallback(
     async (pageSize: number, pageToken: string): Promise<GetUsersResponse> => {
-      return fetchUsersApi(pageSize, pageToken, fetch);
+      return getUsersApi(pageSize, pageToken, fetch);
     },
     [fetch],
   );

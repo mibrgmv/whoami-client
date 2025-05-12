@@ -1,48 +1,57 @@
 import { useAuth } from "../AuthContext";
 import { useCallback } from "react";
+import { api } from "../api";
+import { AxiosRequestConfig } from "axios";
 
 export const useApiClient = () => {
   const { getAccessToken, refreshAccessToken } = useAuth();
 
   const fetchWithAuth = useCallback(
-    async (url: string, options: RequestInit = {}): Promise<Response> => {
+    async <T = any>(
+      url: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<T> => {
       const accessToken = await getAccessToken();
       if (!accessToken) {
         throw new Error("No access token available");
       }
 
-      const authorizedOptions: RequestInit = {
-        ...options,
-        headers: {
-          ...options.headers,
-          Authorization: `Bearer ${accessToken}`,
-        },
+      const headers = {
+        ...options.headers,
+        Authorization: `Bearer ${accessToken}`,
       };
 
-      const response = await fetch(url, authorizedOptions);
-
-      if (response.status === 401) {
-        const refreshed = await refreshAccessToken();
-        if (refreshed) {
-          const newAccessToken = await getAccessToken();
-          if (newAccessToken) {
-            const retryOptions: RequestInit = {
-              ...options,
-              headers: {
-                ...options.headers,
-                Authorization: `Bearer ${newAccessToken}`,
-              },
-            };
-            return fetch(url, retryOptions);
+      try {
+        const response = await api({
+          ...options,
+          url,
+          headers,
+        });
+        return response.data;
+      } catch (error: any) {
+        if (error.response?.status === 401) {
+          const refreshed = await refreshAccessToken();
+          if (refreshed) {
+            const newAccessToken = await getAccessToken();
+            if (newAccessToken) {
+              const response = await api({
+                ...options,
+                url,
+                headers: {
+                  ...options.headers,
+                  Authorization: `Bearer ${newAccessToken}`,
+                },
+              });
+              return response.data;
+            } else {
+              throw new Error("Failed to get new access token after refresh");
+            }
           } else {
-            throw new Error("Failed to get new access token after refresh");
+            throw new Error("Unauthorized and failed to refresh token");
           }
-        } else {
-          throw new Error("Unauthorized and failed to refresh token");
         }
+        throw error;
       }
-
-      return response;
     },
     [getAccessToken, refreshAccessToken],
   );
