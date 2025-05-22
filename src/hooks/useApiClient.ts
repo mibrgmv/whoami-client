@@ -1,53 +1,79 @@
+import axios, {
+  AxiosInstance,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
 import { useAuth } from "./useAuth";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 
 export const useApiClient = () => {
   const { getAccessToken, refreshAccessToken } = useAuth();
+  const axiosInstanceRef = useRef<AxiosInstance | null>(null);
 
-  const fetchWithAuth = useCallback(
-    async (url: string, options: RequestInit = {}): Promise<Response> => {
-      const accessToken = await getAccessToken();
-      if (!accessToken) {
-        throw new Error("No access token available");
-      }
-      // todo axios
-      // todo loader
-      // todo react-form
-      const authorizedOptions: RequestInit = {
-        ...options,
-        headers: {
-          ...options.headers,
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
+  const createAxiosInstance = useCallback(() => {
+    if (axiosInstanceRef.current) {
+      return axiosInstanceRef.current;
+    }
 
-      const response = await fetch(url, authorizedOptions);
+    const instance = axios.create({
+      // Add your base URL here if needed
+      // baseURL: 'https://your-api-base-url.com',
+      timeout: 10000,
+    });
 
-      if (response.status === 401) {
-        const refreshed = await refreshAccessToken();
-        if (refreshed) {
-          const newAccessToken = await getAccessToken();
-          if (newAccessToken) {
-            const retryOptions: RequestInit = {
-              ...options,
-              headers: {
-                ...options.headers,
-                Authorization: `Bearer ${newAccessToken}`,
-              },
-            };
-            return fetch(url, retryOptions);
-          } else {
-            throw new Error("Failed to get new access token after refresh");
-          }
-        } else {
-          throw new Error("Unauthorized and failed to refresh token");
+    // Request interceptor to add auth token
+    instance.interceptors.request.use(
+      async (config: InternalAxiosRequestConfig) => {
+        const accessToken = await getAccessToken();
+        if (accessToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
         }
-      }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      },
+    );
 
-      return response;
-    },
-    [getAccessToken, refreshAccessToken],
-  );
+    // Response interceptor to handle 401 and refresh token
+    instance.interceptors.response.use(
+      (response: AxiosResponse) => {
+        return response;
+      },
+      async (error) => {
+        const originalRequest = error.config;
 
-  return { fetch: fetchWithAuth };
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+
+          try {
+            const refreshed = await refreshAccessToken();
+            if (refreshed) {
+              const newAccessToken = await getAccessToken();
+              if (newAccessToken) {
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                return instance(originalRequest);
+              } else {
+                throw new Error("Failed to get new access token after refresh");
+              }
+            } else {
+              throw new Error("Unauthorized and failed to refresh token");
+            }
+          } catch (refreshError) {
+            // Handle refresh failure (e.g., redirect to login)
+            return Promise.reject(refreshError);
+          }
+        }
+
+        return Promise.reject(error);
+      },
+    );
+
+    axiosInstanceRef.current = instance;
+    return instance;
+  }, [getAccessToken, refreshAccessToken]);
+
+  const apiClient = createAxiosInstance();
+
+  return { apiClient };
 };

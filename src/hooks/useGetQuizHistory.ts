@@ -6,7 +6,7 @@ import {
 import { useApiClient } from "./useApiClient";
 
 export const useGetQuizHistory = () => {
-  const { fetch } = useApiClient();
+  const { apiClient } = useApiClient();
 
   const getQuizHistory = useCallback(
     async (
@@ -15,9 +15,15 @@ export const useGetQuizHistory = () => {
       pageSize: number,
       pageToken: string,
     ): Promise<GetQuizHistoryResponse> => {
-      return fetchQuizHistoryApi(userIds, quizIds, pageSize, pageToken, fetch);
+      return fetchQuizHistoryApi(
+        userIds,
+        quizIds,
+        pageSize,
+        pageToken,
+        apiClient,
+      );
     },
-    [fetch],
+    [apiClient],
   );
 
   return { getQuizHistory };

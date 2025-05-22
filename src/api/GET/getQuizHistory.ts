@@ -1,4 +1,5 @@
-import { QuizHistoryItem } from "../../shared/types";
+import { AxiosInstance } from "axios";
+import { QuizHistoryItem } from "../../shared";
 import { Endpoints } from "../endpoints";
 
 export interface GetQuizHistoryResponse {
@@ -11,7 +12,7 @@ export const fetchQuizHistory = async (
   quizIds: string[] | null,
   pageSize: number,
   pageToken: string,
-  fetch: (url: string, options: RequestInit) => Promise<Response>,
+  apiClient: AxiosInstance,
 ): Promise<GetQuizHistoryResponse> => {
   let url = `${Endpoints.history}?page_size=${pageSize}`;
 
@@ -31,15 +32,10 @@ export const fetchQuizHistory = async (
     url += `&page_token=${encodeURIComponent(pageToken)}`;
   }
 
-  const response = await fetch(url, {
-    method: "GET",
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch quiz history: ${response.status} ${response.statusText}`,
-    );
+  try {
+    const response = await apiClient.get<GetQuizHistoryResponse>(url);
+    return response.data;
+  } catch (error) {
+    throw new Error(`Failed to fetch quiz history: ${error}`);
   }
-
-  return (await response.json()) as GetQuizHistoryResponse;
 };
