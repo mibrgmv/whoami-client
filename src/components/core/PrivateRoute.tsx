@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../hooks";
-import { LoadingSpinner } from "./ui";
+import { useAuth } from "../../hooks";
+import { LoadingSpinner } from "../ui";
 import { Navigate, Outlet } from "react-router-dom";
 
 export const PrivateRoute = () => {

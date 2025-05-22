@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { User } from "../../shared/types";
+import { User } from "../../shared";
 import { useAuth, useGetUsers } from "../../hooks";
 import { GeneralError, Leaderboard, LoadingSpinner } from "../ui";
 

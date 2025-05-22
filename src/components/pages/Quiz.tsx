@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container } from "../Container.tsx";
 import {
+  Container,
   GeneralError,
   LoadingSpinner,
   NotFoundError,
@@ -9,14 +9,14 @@ import {
   QuizNavigation,
   QuizProgress,
   ResultView,
-} from "../ui";
+} from "../../components";
 import {
   useAuth,
   useEvaluateAnswers,
   useGetQuestionsByQuizId,
   useGetQuizById,
 } from "../../hooks";
-import { Answer, Question, Quiz, Result } from "../../shared/types";
+import { Answer, Question, Quiz, Result } from "../../shared";
 
 export const QuizPage: React.FC = () => {
   const { quizId } = useParams();

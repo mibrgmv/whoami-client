@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getQuizzes, GetQuizzesResponse } from "../../api";
-import { Quiz } from "../../shared/types";
+import { Quiz } from "../../shared";
 import { GeneralError, LoadingSpinner } from "../ui";
 
 export const Quizzes: React.FC = () => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useLogin } from "../../hooks/useLogin";
+import { useLogin } from "../../hooks";
 import {
   Button,
   CustomInput,
@@ -10,7 +10,7 @@ import {
   LoadingSpinner,
   PasswordInput,
 } from "../ui";
-import { LoginSchema } from "../../schemas";
+import { LoginSchema } from "../../shared";
 
 export const LoginPage = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { QuizHistoryItem } from "../../shared/types";
+import { QuizHistoryItem } from "../../shared";
 import { useAuth, useGetQuizHistory } from "../../hooks";
 import { GeneralError, LoadingSpinner, QuizHistoryList } from "../ui";
 

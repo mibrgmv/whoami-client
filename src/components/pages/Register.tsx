@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useRegister } from "../../hooks/useRegister";
+import { RegisterSchema } from "../../shared";
 import {
   Button,
   CustomInput,
@@ -10,7 +10,7 @@ import {
   LoadingSpinner,
   PasswordInput,
 } from "../ui";
-import { RegisterSchema } from "../../schemas";
+import { useRegister } from "../../hooks";
 
 // todo react hook form
 

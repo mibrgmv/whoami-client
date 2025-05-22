@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "../Container.tsx";
+import { Container } from "../core";
 
 interface Props {
   name: string;

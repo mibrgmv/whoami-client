@@ -1,16 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Layout, PrivateRoute } from "./components";
 import {
   CreateQuiz,
+  HistoryPage,
   HomePage,
+  Layout,
   LoginPage,
+  PrivateRoute,
   ProfilePage,
   QuizPage,
   Quizzes,
   RegisterPage,
   Users,
-  HistoryPage,
-} from "./components/pages";
+} from "./components";
 
 export function App() {
   return (

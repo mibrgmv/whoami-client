@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
-import { User } from "../../shared/types";
+import { User } from "../../shared";
 import {
+  Container,
   DeleteConfirmationModal,
   EditProfileModal,
   GeneralError,
   LoadingSpinner,
   ProfileInfoSection,
-} from "../ui";
-import { Container } from "../Container.tsx";
-import { useAuth, useDeleteUser, useGetCurrentUser, useUpdateUser } from "../../hooks";
+} from "../../components";
+import {
+  useAuth,
+  useDeleteUser,
+  useGetCurrentUser,
+  useUpdateUser,
+} from "../../hooks";
 
 export const ProfilePage = () => {
   const { logout, isAuthenticated } = useAuth();

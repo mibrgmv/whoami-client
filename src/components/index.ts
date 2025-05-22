@@ -1,3 +1,3 @@
-export * from "./Container";
-export * from "./Layout";
-export * from "./PrivateRoute";
+export * from "./core";
+export * from "./pages";
+export * from "./ui";

@@ -1,5 +1,4 @@
-import { Container } from "../Container.tsx";
-import { Button } from "../ui";
+import { Container, Button } from "../../components";
 
 export const HomePage = () => {
   return (
