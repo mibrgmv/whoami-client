@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getQuizzes, GetQuizzesResponse } from "../../api/GET/getQuizzes.ts";
+import { getQuizzes, GetQuizzesResponse } from "../../api";
 import { Quiz } from "../../shared/types";
 import { GeneralError, LoadingSpinner } from "../ui";
 
@@ -30,8 +30,12 @@ export const Quizzes: React.FC = () => {
           setNextPageToken(response.nextPageToken);
           setLoading(false);
         }
-      } catch (err: any) {
-        setError(err.message);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Failed to load quizzes.");
+        }
         setLoading(false);
         setIsLoadingMore(false);
       }

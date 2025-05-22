@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
-import { useAuth } from "../../AuthContext.tsx";
 import { User } from "../../shared/types";
-import { useGetUsers } from "../../hooks";
+import { useAuth, useGetUsers } from "../../hooks";
 import { GeneralError, Leaderboard, LoadingSpinner } from "../ui";
 
 export const Users = () => {
@@ -34,9 +33,13 @@ export const Users = () => {
         setLoading(false);
         setError(null);
         setIsLoadingMore(false);
-      } catch (err: any) {
-        console.error("Error fetching users:", err);
-        setError(err.message || "Failed to load users.");
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Failed to load users.");
+        }
         setLoading(false);
         setIsLoadingMore(false);
       }

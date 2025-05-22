@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../hooks";
 import { LoadingSpinner } from "./ui";
 import { Navigate, Outlet } from "react-router-dom";
 
@@ -15,6 +15,7 @@ export const PrivateRoute = () => {
         setIsValid(!!token);
       } catch (error) {
         setIsValid(false);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../../AuthContext.tsx";
 import { Container } from "../Container.tsx";
 import {
   GeneralError,
@@ -12,6 +11,7 @@ import {
   ResultView,
 } from "../ui";
 import {
+  useAuth,
   useEvaluateAnswers,
   useGetQuestionsByQuizId,
   useGetQuizById,
@@ -62,15 +62,19 @@ export const QuizPage: React.FC = () => {
 
         setQuiz(quizResponse);
         setQuestions(questionsResponse.questions);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Failed to load quiz data.");
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchQuizAndQuestions();
-  }, [quizId, authTokens]);
+  }, [quizId, getQuiz, getQuestions, authTokens, getAccessToken]);
 
   const handleOptionSelect = (questionId: string, option: string) => {
     const quizId = String(quiz?.id);
@@ -129,8 +133,12 @@ export const QuizPage: React.FC = () => {
       });
 
       setResult(result);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Failed to submit quiz results.");
+      }
     } finally {
       setSubmitting(false);
     }

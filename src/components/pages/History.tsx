@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
-import { useAuth } from "../../AuthContext.tsx";
 import { QuizHistoryItem } from "../../shared/types";
-import { useGetQuizHistory } from "../../hooks";
+import { useAuth, useGetQuizHistory } from "../../hooks";
 import { GeneralError, LoadingSpinner, QuizHistoryList } from "../ui";
 
 export const HistoryPage = () => {
@@ -39,9 +38,14 @@ export const HistoryPage = () => {
         setLoading(false);
         setError(null);
         setIsLoadingMore(false);
-      } catch (err: any) {
-        console.error("Error fetching quiz history:", err);
-        setError(err.message || "Failed to load quiz history.");
+      } catch (error) {
+        console.error("Error fetching quiz history:", error);
+
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Failed to load quiz history.");
+        }
         setLoading(false);
         setIsLoadingMore(false);
       }

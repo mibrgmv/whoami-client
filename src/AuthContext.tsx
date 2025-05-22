@@ -2,7 +2,6 @@ import React, {
   createContext,
   useState,
   useEffect,
-  useContext,
   useCallback,
   Dispatch,
   SetStateAction,
@@ -25,7 +24,9 @@ interface AuthContextType {
   setAuthTokens: Dispatch<SetStateAction<AuthTokens>>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined,
+);
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -109,12 +110,4 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 };

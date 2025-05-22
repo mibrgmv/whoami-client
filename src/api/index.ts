@@ -7,6 +7,7 @@ export * from "./GET/getQuizHistory";
 export * from "./GET/getQuizzes";
 export * from "./GET/getUsers";
 
+export * from "./POST/createQuestions";
 export * from "./POST/createQuiz";
 export * from "./POST/evaluate";
 export * from "./POST/login";

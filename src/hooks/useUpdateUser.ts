@@ -1,7 +1,7 @@
 import { User } from "../shared/types";
 import { updateUser, UpdateUserRequest } from "../api";
 import { useApiClient } from "./useApiClient";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "./";
 
 export const useUpdateUser = () => {
   const { authTokens } = useAuth();

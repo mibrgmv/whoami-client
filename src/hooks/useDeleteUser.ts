@@ -1,6 +1,6 @@
 import { deleteUser } from "../api";
 import { useApiClient } from "./useApiClient.ts";
-import { useAuth } from "../AuthContext.tsx";
+import { useAuth } from "./";
 
 export const useDeleteUser = () => {
   const { authTokens } = useAuth();

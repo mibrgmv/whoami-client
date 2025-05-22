@@ -1,4 +1,5 @@
 export { useApiClient } from "./useApiClient";
+export { useAuth } from "./useAuth";
 
 export { useCreateQuiz } from "./useCreateQuiz";
 export { useGetQuizById } from "./useGetQuizById";

@@ -57,10 +57,12 @@ export const RegisterPage = () => {
       setIsLoading(true);
       await register(username, password);
       setRegistrationSuccess(true);
-    } catch (error: any) {
-      setGeneralError(
-        error.message || "Registration failed. Please try again.",
-      );
+    } catch (error) {
+      if (error instanceof Error) {
+        setGeneralError(error.message);
+      } else {
+        setGeneralError("Registration failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../AuthContext.tsx";
 import { User } from "../../shared/types";
 import {
   DeleteConfirmationModal,
@@ -9,7 +8,7 @@ import {
   ProfileInfoSection,
 } from "../ui";
 import { Container } from "../Container.tsx";
-import { useDeleteUser, useGetCurrentUser, useUpdateUser } from "../../hooks";
+import { useAuth, useDeleteUser, useGetCurrentUser, useUpdateUser } from "../../hooks";
 
 export const ProfilePage = () => {
   const { logout, isAuthenticated } = useAuth();
@@ -42,9 +41,14 @@ export const ProfilePage = () => {
         setProfile(profileData);
         setLoading(false);
         setError(null);
-      } catch (err: any) {
+      } catch (err) {
         console.error("Error fetching profile:", err);
-        setError(err.message || "Failed to load profile.");
+
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Failed to load profile.");
+        }
         setLoading(false);
       }
     };
@@ -65,9 +69,14 @@ export const ProfilePage = () => {
       await deleteCurrentUser();
       logout();
       window.location.replace("/login");
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error deleting profile:", err);
-      setDeleteError(err.message || "Failed to delete profile.");
+
+      if (err instanceof Error) {
+        setDeleteError(err.message);
+      } else {
+        setDeleteError("Failed to delete profile.");
+      }
     } finally {
       setIsDeleting(false);
     }
@@ -107,9 +116,14 @@ export const ProfilePage = () => {
       setProfile(updatedUser);
       setShowEditForm(false);
       setUpdateError(null);
-    } catch (err: any) {
-      console.error("Error updating profile:", err);
-      setUpdateError(err.message || "Failed to update profile.");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+
+      if (error instanceof Error) {
+        setUpdateError(error.message);
+      } else {
+        setUpdateError("Failed to update profile.");
+      }
     } finally {
       setIsUpdating(false);
     }

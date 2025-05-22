@@ -55,8 +55,12 @@ export const LoginPage = () => {
         validationResult.data.password,
       );
       navigate("/");
-    } catch (error: any) {
-      setGeneralError(error.message || "Failed to login. Please try again.");
+    } catch (err) {
+      if (err instanceof Error) {
+        setGeneralError(err.message);
+      } else {
+        setGeneralError("Failed to login. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }

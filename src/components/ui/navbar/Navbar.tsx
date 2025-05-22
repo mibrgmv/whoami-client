@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Logo } from "./Logo.tsx";
 import { ToggleButton } from "./ToggleButton.tsx";
 import { NavLinks } from "./NavLinks.tsx";
-import { useAuth } from "../../../AuthContext.tsx";
+import { useAuth } from "../../../hooks";
 
 interface RouteData {
   name: string;
