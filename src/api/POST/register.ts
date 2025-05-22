@@ -1,6 +1,6 @@
 import { Endpoints } from "../endpoints";
 import { api } from "../axios";
-import { User } from "../../shared/types";
+import { User } from "../../shared";
 
 export interface RegisterRequest {
   username: string;
@@ -12,8 +12,10 @@ export const register = async ({
   password,
 }: RegisterRequest): Promise<User> => {
   const response = await api.post<User>(Endpoints.users, {
-    username,
-    password,
+    user: {
+      username,
+      password,
+    },
   });
 
   return response.data;

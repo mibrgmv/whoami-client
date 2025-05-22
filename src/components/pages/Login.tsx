@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useLogin } from "../../hooks";
 import {
   Button,
@@ -11,16 +13,32 @@ import {
   PasswordInput,
 } from "../ui";
 import { LoginSchema } from "../../shared";
+import type { z } from "zod";
+
+type LoginFormData = z.infer<typeof LoginSchema>;
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useLogin();
   const [isLoading, setIsLoading] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [usernameError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
   const [generalError, setGeneralError] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const username = watch("username");
+  const password = watch("password");
 
   useEffect(() => {
     const storedAccessToken = localStorage.getItem("accessToken");
@@ -29,31 +47,12 @@ export const LoginPage = () => {
     }
   }, [navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setUsernameError("");
-    setPasswordError("");
+  const onSubmit = async (data: LoginFormData) => {
     setGeneralError("");
 
     try {
-      const validationResult = LoginSchema.safeParse({ username, password });
-
-      if (!validationResult.success) {
-        validationResult.error.issues.forEach((issue) => {
-          if (issue.path[0] === "username") {
-            setUsernameError(issue.message);
-          } else if (issue.path[0] === "password") {
-            setPasswordError(issue.message);
-          }
-        });
-        return;
-      }
-
       setIsLoading(true);
-      await login(
-        validationResult.data.username,
-        validationResult.data.password,
-      );
+      await login(data.username, data.password);
       navigate("/");
     } catch (err) {
       if (err instanceof Error) {
@@ -79,22 +78,24 @@ export const LoginPage = () => {
           </div>
         ) : (
           <>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <InputWrapper label="Username" error={usernameError}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <InputWrapper label="Username" error={errors.username?.message}>
                 <CustomInput
+                  {...register("username")}
                   value={username}
                   type="text"
                   placeholder="Enter your username"
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => setValue("username", e.target.value)}
                   disabled={isLoading}
                 />
               </InputWrapper>
 
-              <InputWrapper label="Password" error={passwordError}>
+              <InputWrapper label="Password" error={errors.password?.message}>
                 <PasswordInput
+                  {...register("password")}
                   value={password}
                   placeholder="Enter your password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setValue("password", e.target.value)}
                   disabled={isLoading}
                 />
               </InputWrapper>

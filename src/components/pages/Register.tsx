@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "../../shared";
 import {
   Button,
@@ -11,51 +13,42 @@ import {
   PasswordInput,
 } from "../ui";
 import { useRegister } from "../../hooks";
+import type { z } from "zod";
 
-// todo react hook form
+type RegisterFormData = z.infer<typeof RegisterSchema>;
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
-  const { register } = useRegister();
+  const { register: registerUser } = useRegister();
   const [isLoading, setIsLoading] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [usernameError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [generalError, setGeneralError] = useState("");
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setUsernameError("");
-    setPasswordError("");
-    setConfirmPasswordError("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(RegisterSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const username = watch("username");
+  const password = watch("password");
+  const confirmPassword = watch("confirmPassword");
+
+  const onSubmit = async (data: RegisterFormData) => {
     setGeneralError("");
 
     try {
-      const validationResult = RegisterSchema.safeParse({
-        username,
-        password,
-        confirmPassword,
-      });
-
-      if (!validationResult.success) {
-        validationResult.error.issues.forEach((issue) => {
-          if (issue.path[0] === "username") {
-            setUsernameError(issue.message);
-          } else if (issue.path[0] === "password") {
-            setPasswordError(issue.message);
-          } else if (issue.path[0] === "confirmPassword") {
-            setConfirmPasswordError(issue.message);
-          }
-        });
-        return;
-      }
-
       setIsLoading(true);
-      await register(username, password);
+      await registerUser(data.username, data.password);
       setRegistrationSuccess(true);
     } catch (error) {
       if (error instanceof Error) {
@@ -121,31 +114,37 @@ export const RegisterPage = () => {
         </div>
       ) : (
         <>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <InputWrapper label="Username" error={usernameError}>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <InputWrapper label="Username" error={errors.username?.message}>
               <CustomInput
+                {...register("username")}
                 value={username}
                 type="text"
                 placeholder="Choose a username"
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setValue("username", e.target.value)}
                 disabled={isLoading}
               />
             </InputWrapper>
 
-            <InputWrapper label="Password" error={passwordError}>
+            <InputWrapper label="Password" error={errors.password?.message}>
               <PasswordInput
+                {...register("password")}
                 value={password}
                 placeholder="Create a password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setValue("password", e.target.value)}
                 disabled={isLoading}
               />
             </InputWrapper>
 
-            <InputWrapper label="Confirm Password" error={confirmPasswordError}>
+            <InputWrapper
+              label="Confirm Password"
+              error={errors.confirmPassword?.message}
+            >
               <PasswordInput
+                {...register("confirmPassword")}
                 value={confirmPassword}
                 placeholder="Confirm your password"
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => setValue("confirmPassword", e.target.value)}
                 disabled={isLoading}
               />
             </InputWrapper>
