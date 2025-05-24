@@ -12,10 +12,10 @@ export interface RefreshResponse {
 
 export const refresh = async (
   { refreshToken }: RefreshRequest,
-  apiClient: AxiosInstance,
-) => {
-  const response = await apiClient.post<RefreshResponse>(Endpoints.refresh, {
-    refresh_token: refreshToken,
-  });
-  return response.data;
-};
+  api: AxiosInstance,
+) =>
+  (
+    await api.post<RefreshResponse>(Endpoints.refresh, {
+      refresh_token: refreshToken,
+    })
+  ).data;

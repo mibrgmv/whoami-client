@@ -9,6 +9,6 @@ export interface RegisterRequest {
 
 export const register = async (
   request: RegisterRequest,
-  apiClient: AxiosInstance,
+  api: AxiosInstance,
 ): Promise<User> =>
-  (await apiClient.post<User>(Endpoints.users, { user: request })).data;
+  (await api.post<User>(Endpoints.users, { user: request })).data;

@@ -7,7 +7,7 @@ export const useRefresh = () => {
 
   const refresh = useCallback(
     async (refreshToken: string): Promise<RefreshResponse> => {
-      return await refreshApi({ refreshToken }, apiClient);
+      return refreshApi({ refreshToken }, apiClient);
     },
     [apiClient],
   );

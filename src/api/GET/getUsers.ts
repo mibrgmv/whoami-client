@@ -1,5 +1,6 @@
-import { User } from "../../shared/types";
+import { User } from "../../shared";
 import { Endpoints } from "../endpoints";
+import { AxiosInstance } from "axios";
 
 export interface GetUsersResponse {
   users: User[];
@@ -9,22 +10,13 @@ export interface GetUsersResponse {
 export const getUsers = async (
   pageSize: number,
   pageToken: string,
-  fetch: (url: string, options: RequestInit) => Promise<Response>,
+  api: AxiosInstance,
 ): Promise<GetUsersResponse> => {
   let url = `${Endpoints.users}?page_size=${pageSize}`;
+
   if (pageToken) {
     url += `&page_token=${pageToken}`;
   }
-
-  const response = await fetch(url, {
-    method: "GET",
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch users: ${response.status} ${response.statusText}`,
-    );
-  }
-
-  return (await response.json()) as GetUsersResponse;
+  // todo make a pagination helper to transform urls
+  return (await api.get<GetUsersResponse>(url)).data;
 };

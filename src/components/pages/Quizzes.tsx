@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getQuizzes, GetQuizzesResponse } from "../../api";
 import { Quiz } from "../../shared";
 import { GeneralError, LoadingSpinner } from "../ui";
+import { useGetQuizzes } from "../../hooks/useGetQuizzes.ts";
 
 export const Quizzes: React.FC = () => {
   const navigate = useNavigate();
@@ -11,21 +11,19 @@ export const Quizzes: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [nextPageToken, setNextPageToken] = useState<string>("");
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
+  const { getQuizzes } = useGetQuizzes();
   const pageSize = 8;
 
   useEffect(() => {
     const fetchQuizzes = async () => {
       try {
         if (isLoadingMore) {
-          const response: GetQuizzesResponse = await getQuizzes(
-            pageSize,
-            nextPageToken,
-          );
+          const response = await getQuizzes(pageSize, nextPageToken);
           setQuizzes((prevQuizzes) => [...prevQuizzes, ...response.quizzes]);
           setNextPageToken(response.nextPageToken);
           setIsLoadingMore(false);
         } else {
-          const response: GetQuizzesResponse = await getQuizzes(pageSize, "");
+          const response = await getQuizzes(pageSize, "");
           setQuizzes(response.quizzes);
           setNextPageToken(response.nextPageToken);
           setLoading(false);
