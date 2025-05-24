@@ -1,8 +1,10 @@
-export { useApiClient } from "./useApiClient";
 export { useAuth } from "./useAuth";
+export { useAuthenticatedApi } from "./useAuthApi";
+export { usePublicApi } from "./usePublicApi";
 
 export { useLogin } from "./useLogin";
 export { useRegister } from "./useRegister";
+export { useRefresh } from "./useRefresh";
 
 export { useCreateQuiz } from "./useCreateQuiz";
 export { useGetQuizById } from "./useGetQuizById";

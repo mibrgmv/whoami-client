@@ -1,5 +1,5 @@
 import { Endpoints } from "../endpoints";
-import { Answer, Result } from "../../shared/types";
+import { Answer, Result } from "../../shared";
 
 export interface EvaluateAnswersRequest {
   answers: Answer[];

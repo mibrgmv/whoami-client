@@ -1,19 +1,21 @@
 import { Endpoints } from "../endpoints";
-import { api } from "../axios";
+import { AxiosInstance } from "axios";
 
-interface RefreshRequest {
+export interface RefreshRequest {
   refreshToken: string;
 }
 
-interface RefreshResponse {
+export interface RefreshResponse {
   accessToken: string;
   userId: string;
 }
 
-export const refresh = async ({ refreshToken }: RefreshRequest) => {
-  const response = await api.post<RefreshResponse>(Endpoints.refresh, {
+export const refresh = async (
+  { refreshToken }: RefreshRequest,
+  apiClient: AxiosInstance,
+) => {
+  const response = await apiClient.post<RefreshResponse>(Endpoints.refresh, {
     refresh_token: refreshToken,
   });
-
   return response.data;
 };

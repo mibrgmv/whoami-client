@@ -1,5 +1,5 @@
 import { Endpoints } from "../endpoints";
-import { Quiz } from "../../shared/types";
+import { Quiz } from "../../shared";
 
 export interface GetQuizzesResponse {
   quizzes: Quiz[];

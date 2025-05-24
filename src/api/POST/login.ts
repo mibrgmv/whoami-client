@@ -1,5 +1,5 @@
 import { Endpoints } from "../endpoints";
-import { api } from "../axios";
+import { AxiosInstance } from "axios";
 
 export interface LoginRequest {
   username: string;
@@ -12,14 +12,13 @@ export interface LoginResponse {
   userId: string;
 }
 
-export const login = async ({
-  username,
-  password,
-}: LoginRequest): Promise<LoginResponse> => {
-  const response = await api.post<LoginResponse>(Endpoints.login, {
-    username,
-    password,
-  });
-
+export const login = async (
+  request: LoginRequest,
+  apiClient: AxiosInstance,
+): Promise<LoginResponse> => {
+  const response = await apiClient.post<LoginResponse>(
+    Endpoints.login,
+    request,
+  );
   return response.data;
 };

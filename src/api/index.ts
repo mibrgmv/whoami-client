@@ -16,5 +16,4 @@ export * from "./POST/register";
 
 export * from "./PATCH/updateUser";
 
-export * from "./axios";
 export * from "./endpoints";

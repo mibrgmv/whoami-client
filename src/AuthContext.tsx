@@ -6,7 +6,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { refresh as refreshApi } from "./api";
+import { useRefresh } from "./hooks";
 
 interface AuthTokens {
   accessToken: string | null;
@@ -39,6 +39,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     userId: localStorage.getItem("userId"),
   });
 
+  const { refresh } = useRefresh();
+
   const isAuthenticated = !!authTokens.accessToken;
 
   const login = useCallback(
@@ -67,7 +69,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       const { accessToken: newAccessToken, userId: newUserId } =
-        await refreshApi({ refreshToken: localRefreshToken });
+        await refresh(localRefreshToken);
       setAuthTokens((prevTokens) => ({
         ...prevTokens,
         accessToken: newAccessToken,
@@ -81,7 +83,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       logout();
       return false;
     }
-  }, [logout]);
+  }, [logout, refresh]);
 
   const getAccessToken = useCallback(async (): Promise<string | null> => {
     const localAccessToken = localStorage.getItem("accessToken");

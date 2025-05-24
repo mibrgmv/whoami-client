@@ -1,18 +1,11 @@
-import { User } from "../../shared/types";
+import { AxiosInstance } from "axios";
+import { User } from "../../shared";
 import { Endpoints } from "../endpoints";
 
 export const fetchCurrentUser = async (
-  fetch: (url: string, options: RequestInit) => Promise<Response>,
+  apiClient: AxiosInstance,
 ): Promise<User> => {
-  const response = await fetch(`${Endpoints.users}/current`, {
-    method: "GET",
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch current user: ${response.status} ${response.statusText}`,
-    );
-  }
-
-  return (await response.json()) as User;
+  return await apiClient
+    .get<User>(`${Endpoints.users}/current`)
+    .then(({ data }) => data);
 };

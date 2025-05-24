@@ -1,17 +1,23 @@
 import { useCallback } from "react";
 import { login as loginApi, LoginResponse } from "../api/POST/login";
 import { useAuth } from "./";
+import { usePublicApi } from "./usePublicApi.ts";
 
 export const useLogin = () => {
-  const { login: authLogin } = useAuth();
+  const { apiClient } = usePublicApi();
+  const { login: setAuthTokens } = useAuth();
 
   const login = useCallback(
     async (username: string, password: string): Promise<LoginResponse> => {
-      const response = await loginApi({ username, password });
-      authLogin(response.accessToken, response.refreshToken, response.userId);
+      const response = await loginApi({ username, password }, apiClient);
+      setAuthTokens(
+        response.accessToken,
+        response.refreshToken,
+        response.userId,
+      );
       return response;
     },
-    [authLogin],
+    [apiClient, setAuthTokens],
   );
 
   return { login };
