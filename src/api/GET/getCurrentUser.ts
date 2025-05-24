@@ -4,8 +4,5 @@ import { Endpoints } from "../endpoints";
 
 export const fetchCurrentUser = async (
   apiClient: AxiosInstance,
-): Promise<User> => {
-  return await apiClient
-    .get<User>(`${Endpoints.users}/current`)
-    .then(({ data }) => data);
-};
+): Promise<User> =>
+  (await apiClient.get<User>(`${Endpoints.users}/current`)).data;

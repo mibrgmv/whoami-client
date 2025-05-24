@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { User } from "../shared";
 import { fetchCurrentUser } from "../api";
-import { useAuthenticatedApi } from "./useAuthApi";
+import { useAuthenticatedApi } from "./useAuthenticatedApi";
 
 export const useGetCurrentUser = () => {
   const { apiClient } = useAuthenticatedApi();

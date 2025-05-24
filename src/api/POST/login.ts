@@ -15,10 +15,5 @@ export interface LoginResponse {
 export const login = async (
   request: LoginRequest,
   apiClient: AxiosInstance,
-): Promise<LoginResponse> => {
-  const response = await apiClient.post<LoginResponse>(
-    Endpoints.login,
-    request,
-  );
-  return response.data;
-};
+): Promise<LoginResponse> =>
+  (await apiClient.post<LoginResponse>(Endpoints.login, request)).data;

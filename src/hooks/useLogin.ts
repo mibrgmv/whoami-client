@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { login as loginApi, LoginResponse } from "../api/POST/login";
+import { login as loginApi, LoginResponse } from "../api";
 import { useAuth } from "./";
 import { usePublicApi } from "./usePublicApi.ts";
 

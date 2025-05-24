@@ -8,7 +8,7 @@ export const useRegister = () => {
 
   const register = useCallback(
     async (username: string, password: string): Promise<User> => {
-      return await registerApi({ username, password }, apiClient);
+      return registerApi({ username, password }, apiClient);
     },
     [apiClient],
   );
