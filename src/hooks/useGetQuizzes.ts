@@ -3,7 +3,7 @@ import {
   getQuizzes as getQuizzesApi,
   GetQuizzesResponse,
 } from "../api";
-import { usePublicApi } from "./usePublicApi";
+import { usePublicApi } from "./";
 
 export const useGetQuizzes = () => {
   const { apiClient } = usePublicApi();

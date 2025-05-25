@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { register as registerApi } from "../api";
 import { User } from "../shared";
-import { usePublicApi } from "./usePublicApi";
+import { usePublicApi } from "./";
 
 export const useRegister = () => {
   const { apiClient } = usePublicApi();

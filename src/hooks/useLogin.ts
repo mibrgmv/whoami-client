@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { login as loginApi, LoginResponse } from "../api";
 import { useAuth } from "./";
-import { usePublicApi } from "./usePublicApi";
+import { usePublicApi } from "./";
 
 export const useLogin = () => {
   const { apiClient } = usePublicApi();

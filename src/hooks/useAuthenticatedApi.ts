@@ -44,7 +44,7 @@ export const useAuthenticatedApi = () => {
             return Promise.reject(error);
           }
         }
-        console.log(error)
+
         const errorMessage =
           error.response?.data?.message || "An error occurred";
 

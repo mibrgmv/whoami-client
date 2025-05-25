@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { getUsers as getUsersApi, GetUsersResponse } from "../api";
-import { useAuthenticatedApi } from "./useAuthenticatedApi";
+import { useAuthenticatedApi } from "./";
 
 export const useGetUsers = () => {
   const { apiClient } = useAuthenticatedApi();
