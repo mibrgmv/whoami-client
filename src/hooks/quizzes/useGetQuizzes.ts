@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import {
   getQuizzes as getQuizzesApi,
   GetQuizzesResponse,
-} from "../api";
-import { usePublicApi } from "./";
+} from "../../api";
+import { usePublicApi } from "../";
 
 export const useGetQuizzes = () => {
   const { apiClient } = usePublicApi();

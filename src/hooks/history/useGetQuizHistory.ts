@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import {
   fetchQuizHistory as fetchQuizHistoryApi,
   GetQuizHistoryResponse,
-} from "../api";
-import { useAuthenticatedApi } from "./";
+} from "../../api";
+import { useAuthenticatedApi } from "../";
 
 export const useGetQuizHistory = () => {
   const { apiClient } = useAuthenticatedApi();

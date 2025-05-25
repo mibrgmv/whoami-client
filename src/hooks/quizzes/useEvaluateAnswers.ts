@@ -1,10 +1,10 @@
 import { useCallback } from "react";
-import { Result } from "../shared";
+import { Result } from "../../shared";
 import {
   evaluateAnswers as evaluateAnswersApi,
   EvaluateAnswersRequest,
-} from "../api";
-import { useAuthenticatedApi } from "./";
+} from "../../api";
+import { useAuthenticatedApi } from "../";
 
 export const useEvaluateAnswers = () => {
   const { apiClient } = useAuthenticatedApi();

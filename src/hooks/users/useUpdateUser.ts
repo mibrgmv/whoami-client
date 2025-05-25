@@ -1,6 +1,6 @@
-import { User } from "../shared";
-import { updateUser, UpdateUserRequest } from "../api";
-import { useAuth, useAuthenticatedApi } from "./";
+import { User } from "../../shared";
+import { updateUser, UpdateUserRequest } from "../../api";
+import { useAuth, useAuthenticatedApi } from "../";
 
 export const useUpdateUser = () => {
   const { authTokens } = useAuth();

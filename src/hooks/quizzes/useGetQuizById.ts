@@ -1,7 +1,7 @@
 import { useCallback } from "react";
-import { Quiz } from "../shared";
-import { getQuizById as getQuizByIdApi } from "../api";
-import { useAuthenticatedApi } from "./";
+import { Quiz } from "../../shared";
+import { getQuizById as getQuizByIdApi } from "../../api";
+import { useAuthenticatedApi } from "../";
 
 export const useGetQuizById = () => {
   const { apiClient } = useAuthenticatedApi();

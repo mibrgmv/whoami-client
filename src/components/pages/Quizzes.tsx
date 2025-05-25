@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Quiz } from "../../shared";
 import { GeneralError, LoadingSpinner } from "../ui";
-import { useGetQuizzes } from "../../hooks/useGetQuizzes.ts";
+import { useGetQuizzes } from "../../hooks";
 
 export const Quizzes: React.FC = () => {
   const navigate = useNavigate();

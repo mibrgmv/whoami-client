@@ -2,12 +2,10 @@ import { useCallback } from "react";
 import {
   createQuiz as createQuizApi,
   CreateQuizRequest,
-} from "../api/POST/createQuiz.ts";
-import { Quiz } from "../shared/types";
-import { useApiClient } from "./useApiClient";
+} from "../../api";
+import { Quiz } from "../../shared";
 
 export const useCreateQuiz = () => {
-  const { fetch } = useApiClient();
 
   const createQuiz = useCallback(
     async (quizData: CreateQuizRequest): Promise<Quiz> => {

@@ -1,19 +1,18 @@
-export * from "./DELETE/deleteUser";
+export * from "./auth/login";
+export * from "./auth/refresh";
 
-export * from "./GET/getCurrentUser";
-export * from "./GET/getQuestionsByQuizId";
-export * from "./GET/getQuizById";
-export * from "./GET/getQuizHistory";
-export * from "./GET/getQuizzes";
-export * from "./GET/getUsers";
+export * from "./history/getQuizHistory";
 
-export * from "./POST/createQuestions";
-export * from "./POST/createQuiz";
-export * from "./POST/evaluate";
-export * from "./POST/login";
-export * from "./POST/refresh";
-export * from "./POST/createUser";
+export * from "./quizzes/createQuiz";
+export * from "./quizzes/evaluate";
+export * from "./quizzes/getQuestionsByQuizId";
+export * from "./quizzes/getQuizById";
+export * from "./quizzes/getQuizzes";
 
-export * from "./PATCH/updateUser";
+export * from "./users/createUser";
+export * from "./users/deleteUser";
+export * from "./users/getCurrentUser";
+export * from "./users/getUsers";
+export * from "./users/updateUser";
 
 export * from "./endpoints";

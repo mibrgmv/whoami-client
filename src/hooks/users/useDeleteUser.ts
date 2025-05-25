@@ -1,5 +1,5 @@
-import { deleteUser } from "../api";
-import { useAuth, useAuthenticatedApi } from "./";
+import { deleteUser } from "../../api";
+import { useAuth, useAuthenticatedApi } from "../";
 
 export const useDeleteUser = () => {
   const { authTokens } = useAuth();

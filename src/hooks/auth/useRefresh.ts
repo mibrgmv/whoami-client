@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { refresh as refreshApi, RefreshResponse } from "../api";
-import { usePublicApi } from "./";
+import { refresh as refreshApi, RefreshResponse } from "../../api";
+import { usePublicApi } from "../";
 
 export const useRefresh = () => {
   const { apiClient } = usePublicApi();

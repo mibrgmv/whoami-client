@@ -1,21 +1,20 @@
+export { useLogin } from "./auth/useLogin";
+export { useRefresh } from "./auth/useRefresh";
+
+export { useGetQuizHistory } from "./history/useGetQuizHistory";
+
+export { useCreateQuiz } from "./quizzes/useCreateQuiz";
+export { useEvaluateAnswers } from "./quizzes/useEvaluateAnswers";
+export { useGetQuestionsByQuizId } from "./quizzes/useGetQuestionsByQuizId";
+export { useGetQuizById } from "./quizzes/useGetQuizById";
+export { useGetQuizzes } from "./quizzes/useGetQuizzes";
+
+export { useCreateUser } from "./users/useCreateUser";
+export { useDeleteUser } from "./users/useDeleteUser";
+export { useGetCurrentUser } from "./users/useGetCurrentUser";
+export { useGetUsers } from "./users/useGetUsers";
+export { useUpdateUser } from "./users/useUpdateUser";
+
 export { useAuth } from "./useAuth";
 export { useAuthenticatedApi } from "./useAuthenticatedApi";
 export { usePublicApi } from "./usePublicApi";
-
-export { useLogin } from "./useLogin";
-export { useCreateUser } from "./useCreateUser";
-export { useRefresh } from "./useRefresh";
-
-export { useCreateQuiz } from "./useCreateQuiz";
-export { useGetQuizById } from "./useGetQuizById";
-export { useGetQuestionsByQuizId } from "./useGetQuestionsByQuizId";
-
-export { useCreateQuestions } from "./useCreateQuestions";
-export { useEvaluateAnswers } from "./useEvaluateAnswers";
-
-export { useGetCurrentUser } from "./useGetCurrentUser";
-export { useGetUsers } from "./useGetUsers";
-export { useUpdateUser } from "./useUpdateUser";
-export { useDeleteUser } from "./useDeleteUser";
-
-export { useGetQuizHistory } from "./useGetQuizHistory";
