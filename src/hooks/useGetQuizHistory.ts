@@ -3,10 +3,10 @@ import {
   fetchQuizHistory as fetchQuizHistoryApi,
   GetQuizHistoryResponse,
 } from "../api";
-import { useApiClient } from "./useApiClient";
+import { useAuthenticatedApi } from "./";
 
 export const useGetQuizHistory = () => {
-  const { apiClient } = useApiClient();
+  const { apiClient } = useAuthenticatedApi();
 
   const getQuizHistory = useCallback(
     async (

@@ -1,16 +1,15 @@
 import { deleteUser } from "../api";
-import { useApiClient } from "./useApiClient.ts";
-import { useAuth } from "./";
+import { useAuth, useAuthenticatedApi } from "./";
 
 export const useDeleteUser = () => {
   const { authTokens } = useAuth();
-  const { fetch } = useApiClient();
+  const { apiClient } = useAuthenticatedApi();
 
   const deleteCurrentUser = async (): Promise<void> => {
     if (!authTokens?.userId) {
       throw new Error("User ID not available");
     }
-    return deleteUser(fetch, authTokens.userId);
+    return deleteUser(authTokens.userId, apiClient);
   };
 
   return { deleteCurrentUser };

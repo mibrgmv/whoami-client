@@ -3,16 +3,16 @@ import {
   getQuestionsByQuizId as getQuestionsByQuizIdApi,
   GetQuestionsByQuizIdResponse,
 } from "../api";
-import { useApiClient } from "./useApiClient";
+import { useAuthenticatedApi } from "./";
 
 export const useGetQuestionsByQuizId = () => {
-  const { fetch } = useApiClient();
+  const { apiClient } = useAuthenticatedApi();
 
   const getQuestions = useCallback(
     async (quizId: string): Promise<GetQuestionsByQuizIdResponse> => {
-      return getQuestionsByQuizIdApi(quizId, fetch);
+      return getQuestionsByQuizIdApi(quizId, apiClient);
     },
-    [fetch],
+    [apiClient],
   );
 
   return { getQuestions };

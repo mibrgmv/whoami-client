@@ -1,19 +1,19 @@
 import { useCallback } from "react";
-import { useApiClient } from "./useApiClient";
+import { Result } from "../shared";
 import {
   evaluateAnswers as evaluateAnswersApi,
   EvaluateAnswersRequest,
-} from "../api/POST/evaluate.ts";
-import { Result } from "../shared/types";
+} from "../api";
+import { useAuthenticatedApi } from "./";
 
 export const useEvaluateAnswers = () => {
-  const { fetch } = useApiClient();
+  const { apiClient } = useAuthenticatedApi();
 
   const evaluateAnswers = useCallback(
     async (request: EvaluateAnswersRequest): Promise<Result> => {
-      return evaluateAnswersApi(request, fetch);
+      return evaluateAnswersApi(request, apiClient);
     },
-    [fetch],
+    [apiClient],
   );
 
   return { evaluateAnswers };

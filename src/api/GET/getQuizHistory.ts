@@ -12,7 +12,7 @@ export const fetchQuizHistory = async (
   quizIds: string[] | null,
   pageSize: number,
   pageToken: string,
-  apiClient: AxiosInstance,
+  api: AxiosInstance,
 ): Promise<GetQuizHistoryResponse> => {
   let url = `${Endpoints.history}?page_size=${pageSize}`;
 
@@ -32,10 +32,5 @@ export const fetchQuizHistory = async (
     url += `&page_token=${encodeURIComponent(pageToken)}`;
   }
 
-  try {
-    const response = await apiClient.get<GetQuizHistoryResponse>(url);
-    return response.data;
-  } catch (error) {
-    throw new Error(`Failed to fetch quiz history: ${error}`);
-  }
+  return (await api.get<GetQuizHistoryResponse>(url)).data;
 };

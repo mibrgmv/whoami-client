@@ -1,5 +1,6 @@
-import { User } from "../../shared/types";
+import { User } from "../../shared";
 import { Endpoints } from "../endpoints";
+import { AxiosInstance } from "axios";
 
 export interface UpdateUserRequest {
   username?: string;
@@ -8,9 +9,9 @@ export interface UpdateUserRequest {
 }
 
 export const updateUser = async (
-  fetch: (url: string, options: RequestInit) => Promise<Response>,
   userId: string,
   updateData: UpdateUserRequest,
+  api: AxiosInstance,
 ): Promise<User> => {
   const user: Partial<User> = {};
   if (updateData.username) user.username = updateData.username;
@@ -27,20 +28,5 @@ export const updateUser = async (
     current_password: updateData.currentPassword,
   };
 
-  const response = await fetch(`${Endpoints.users}/${userId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestBody),
-  });
-
-  if (!response.ok) {
-    const data = await response.json();
-    const errorMessage =
-      data?.message || `Failed to update user with ID: ${userId}`;
-    throw new Error(errorMessage);
-  }
-
-  return (await response.json()) as User;
+  return (await api.post<User>(`${Endpoints.users}/${userId}`, requestBody)).data;
 };

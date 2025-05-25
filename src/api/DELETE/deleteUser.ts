@@ -1,17 +1,9 @@
 import { Endpoints } from "../endpoints";
+import { AxiosInstance } from "axios";
 
 export const deleteUser = async (
-  fetch: (url: string, options: RequestInit) => Promise<Response>,
   userId: string,
+  api: AxiosInstance,
 ): Promise<void> => {
-  const response = await fetch(`${Endpoints.users}/${userId}`, {
-    method: "DELETE",
-  });
-
-  if (!response.ok) {
-    const data = await response.json();
-    const errorMessage =
-      data?.message || `Failed to delete user with ID: ${userId}`;
-    throw new Error(errorMessage);
-  }
+  await api.delete<void>(`${Endpoints.users}/${userId}`);
 };

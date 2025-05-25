@@ -1,16 +1,16 @@
 import { useCallback } from "react";
+import { Quiz } from "../shared";
 import { getQuizById as getQuizByIdApi } from "../api";
-import { Quiz } from "../shared/types";
-import { useApiClient } from "./useApiClient";
+import { useAuthenticatedApi } from "./";
 
 export const useGetQuizById = () => {
-  const { fetch } = useApiClient();
+  const { apiClient } = useAuthenticatedApi();
 
   const getQuiz = useCallback(
     async (quizId: string): Promise<Quiz | null> => {
-      return getQuizByIdApi(quizId, fetch);
+      return getQuizByIdApi(quizId, apiClient);
     },
-    [fetch],
+    [apiClient],
   );
 
   return { getQuiz };

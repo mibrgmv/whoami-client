@@ -1,5 +1,5 @@
 export { useAuth } from "./useAuth";
-export { useAuthenticatedApi } from "./useAuthenticatedApi.ts";
+export { useAuthenticatedApi } from "./useAuthenticatedApi";
 export { usePublicApi } from "./usePublicApi";
 
 export { useLogin } from "./useLogin";

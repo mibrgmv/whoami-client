@@ -1,11 +1,10 @@
-import { User } from "../shared/types";
+import { User } from "../shared";
 import { updateUser, UpdateUserRequest } from "../api";
-import { useApiClient } from "./useApiClient";
-import { useAuth } from "./";
+import { useAuth, useAuthenticatedApi } from "./";
 
 export const useUpdateUser = () => {
   const { authTokens } = useAuth();
-  const { fetch } = useApiClient();
+  const { apiClient } = useAuthenticatedApi();
 
   const updateCurrentUser = async (
     updateData: UpdateUserRequest,
@@ -13,7 +12,7 @@ export const useUpdateUser = () => {
     if (!authTokens?.userId) {
       throw new Error("User ID not available");
     }
-    return updateUser(fetch, authTokens.userId, updateData);
+    return updateUser(authTokens.userId, updateData, apiClient);
   };
 
   return { updateCurrentUser };
