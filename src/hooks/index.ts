@@ -3,7 +3,7 @@ export { useAuthenticatedApi } from "./useAuthenticatedApi";
 export { usePublicApi } from "./usePublicApi";
 
 export { useLogin } from "./useLogin";
-export { useRegister } from "./useRegister";
+export { useCreateUser } from "./useCreateUser";
 export { useRefresh } from "./useRefresh";
 
 export { useCreateQuiz } from "./useCreateQuiz";

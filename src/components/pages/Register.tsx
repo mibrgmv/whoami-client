@@ -12,14 +12,14 @@ import {
   LoadingSpinner,
   PasswordInput,
 } from "../ui";
-import { useRegister } from "../../hooks";
+import { useCreateUser } from "../../hooks";
 import type { z } from "zod";
 
 type RegisterFormData = z.infer<typeof RegisterSchema>;
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
-  const { register: registerUser } = useRegister();
+  const { createUser } = useCreateUser();
   const [isLoading, setIsLoading] = useState(false);
   const [generalError, setGeneralError] = useState("");
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
@@ -48,7 +48,7 @@ export const RegisterPage = () => {
 
     try {
       setIsLoading(true);
-      await registerUser(data.username, data.password);
+      await createUser(data.username, data.password);
       setRegistrationSuccess(true);
     } catch (error) {
       if (error instanceof Error) {

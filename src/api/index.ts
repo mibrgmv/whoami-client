@@ -12,7 +12,7 @@ export * from "./POST/createQuiz";
 export * from "./POST/evaluate";
 export * from "./POST/login";
 export * from "./POST/refresh";
-export * from "./POST/register";
+export * from "./POST/createUser";
 
 export * from "./PATCH/updateUser";
 

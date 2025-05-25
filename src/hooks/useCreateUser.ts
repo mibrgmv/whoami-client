@@ -1,17 +1,17 @@
 import { useCallback } from "react";
-import { register as registerApi } from "../api";
+import { createUser as createUserApi } from "../api";
 import { User } from "../shared";
 import { usePublicApi } from "./";
 
-export const useRegister = () => {
+export const useCreateUser = () => {
   const { apiClient } = usePublicApi();
 
-  const register = useCallback(
+  const createUser = useCallback(
     async (username: string, password: string): Promise<User> => {
-      return registerApi({ username, password }, apiClient);
+      return createUserApi({ username, password }, apiClient);
     },
     [apiClient],
   );
 
-  return { register };
+  return { createUser };
 };
