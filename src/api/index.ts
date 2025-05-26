@@ -3,6 +3,7 @@ export * from "./auth/refresh";
 
 export * from "./history/getQuizHistory";
 
+export * from "./quizzes/createQuestions";
 export * from "./quizzes/createQuiz";
 export * from "./quizzes/evaluate";
 export * from "./quizzes/getQuestionsByQuizId";

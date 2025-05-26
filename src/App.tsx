@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
-  CreateQuiz,
+  QuizCreationPage,
   HistoryPage,
   HomePage,
   Layout,
@@ -26,7 +26,7 @@ export function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/users" element={<Users />} />
             <Route path="/history" element={<HistoryPage />} />
-            <Route path="/quizzes/create" element={<CreateQuiz />} />
+            <Route path="/quizzes/create" element={<QuizCreationPage />} />
             <Route path="/quizzes/:quizId" element={<QuizPage />} />
           </Route>
         </Route>

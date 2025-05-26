@@ -11,9 +11,4 @@ export const evaluateAnswers = async (
   request: EvaluateAnswersRequest,
   api: AxiosInstance,
 ): Promise<Result> =>
-  (
-    await api.post<Result>(
-      `${Endpoints.quizzes}/${request.quiz_id}/evaluate`,
-      request,
-    )
-  ).data;
+  (await api.post<Result>(`${Endpoints.quizzes}/${request.quiz_id}/evaluate`, request)).data;

@@ -1,4 +1,4 @@
-export * from "./CreateQuizPage";
+export * from "./QuizCreationPage.tsx";
 export * from "./History";
 export * from "./Home";
 export * from "./Login";

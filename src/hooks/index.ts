@@ -3,6 +3,7 @@ export { useRefresh } from "./auth/useRefresh";
 
 export { useGetQuizHistory } from "./history/useGetQuizHistory";
 
+export { useCreateQuestions } from "./quizzes/useCreateQuestions";
 export { useCreateQuiz } from "./quizzes/useCreateQuiz";
 export { useEvaluateAnswers } from "./quizzes/useEvaluateAnswers";
 export { useGetQuestionsByQuizId } from "./quizzes/useGetQuestionsByQuizId";
