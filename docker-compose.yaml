@@ -1,0 +1,11 @@
+services:
+  client:
+    container_name: whoami-client
+    image: ghcr.io/mibrgmv/whoami-client:latest
+    platform: linux/arm64
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_BACKEND_URL=http://localhost:8080
+    stdin_open: true
+    tty: true
